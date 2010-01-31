@@ -152,7 +152,7 @@ namespace FileHatchery
                 Win32.SHExecute(file, "-mount 0," + item.FullPath, false);
                 return;
             }
-            if (cmd == "cmd")
+            if (cmd == "!cmd")
             {
                 Win32.SHExecute("cmd", "", false);
                 return;

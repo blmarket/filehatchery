@@ -80,7 +80,8 @@ namespace FileHatchery
             browser.onChangeDirectory += new changeDelegate(browser_onChangeDirectory);
             browserPanel.PageService = browser;
             browser.onChangeCursor += new changeDelegate(browserPanel.onCursorChanged);
-            browser.CurrentDir = new DirectoryInfo(@"C:\");
+
+            browser.CurrentDir = new DirectoryInfo(Directory.GetCurrentDirectory());
 
             Timer timer = new Timer();
             timer.Interval = 1000;

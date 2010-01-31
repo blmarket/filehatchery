@@ -233,6 +233,8 @@ namespace FileHatchery
             try
             {
                 ReadDirectoryContents();
+                onChangeDirectory();
+                Directory.SetCurrentDirectory(dir.FullName);
             }
             catch (Exception EE)
             {
@@ -240,7 +242,6 @@ namespace FileHatchery
                 m_CurrentDir = prev;
                 ReadDirectoryContents();
             }
-            onChangeDirectory();
         }
 
         public DirectoryInfo CurrentDir 
