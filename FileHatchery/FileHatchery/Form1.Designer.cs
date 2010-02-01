@@ -249,8 +249,10 @@
             // 모두선택ToolStripMenuItem
             // 
             this.모두선택ToolStripMenuItem.Name = "모두선택ToolStripMenuItem";
+            this.모두선택ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.U)));
             this.모두선택ToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.모두선택ToolStripMenuItem.Text = "모두 선택";
+            this.모두선택ToolStripMenuItem.Click += new System.EventHandler(this.모두선택ToolStripMenuItem_Click);
             // 
             // 도구ToolStripMenuItem
             // 

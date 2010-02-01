@@ -65,6 +65,10 @@ namespace FileHatchery
         /// <param name="item">선택하고 싶은 item</param>
         public void addItem(IBrowserItem item)
         {
+            // Mark할 수 없는 Item인 경우 Mark하지 않는다.
+            if ((item.State & BrowserItemState.UnMarkable) == BrowserItemState.UnMarkable)
+                return;
+
             m_Dict.Add(item);
             item.State = item.State | BrowserItemState.Marked;
         }

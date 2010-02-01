@@ -78,6 +78,14 @@ namespace FileHatchery
             m_curSelection.MarkItem(item);
         }
 
+        public Selection Selection
+        {
+            get
+            {
+                return m_curSelection;
+            }
+        }
+
         public IEnumerable<IBrowserItem> CurSelItems
         {
             get

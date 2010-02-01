@@ -130,6 +130,16 @@ namespace FileHatchery
                 Browser.MarkItem(Browser.Cursor);
                 return;
             }
+            if (cmd == "select all")
+            {
+                List<IBrowserItem> items = Browser.Items;
+                Selection sel = Browser.Selection;
+                foreach(IBrowserItem item in items)
+                {
+                    sel.addItem(item);
+                }
+                return;
+            }
             if (cmd.StartsWith("open ", true, null))
             {
                 Browser.CurrentDir = new DirectoryInfo(cmd.Substring(5));

@@ -221,5 +221,10 @@ namespace FileHatchery
         {
             Program.engine.RunCommand("copy selected");
         }
+
+        private void 모두선택ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.engine.RunCommand("select all");
+        }
     }
 }
