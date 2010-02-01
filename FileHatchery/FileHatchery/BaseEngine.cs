@@ -90,14 +90,14 @@ namespace FileHatchery
             {
                 FileInfo file = new FileInfo(vimpath);
                 IBrowserItem item = Browser.Cursor;
-                Win32.SHExecute(file, item.FullPath, false);
+                Win32.SHExecute(file, "\"" + item.FullPath + "\"", false);
                 return;
             }
             if (cmd == "sudo edit this")
             {
                 FileInfo file = new FileInfo(vimpath);
                 IBrowserItem item = Browser.Cursor;
-                Win32.SHExecute(file, item.FullPath, true);
+                Win32.SHExecute(file, "\"" + item.FullPath + "\"", true);
                 return;
             }
             if (cmd == "explore here")
