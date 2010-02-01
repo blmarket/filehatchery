@@ -11,17 +11,30 @@ namespace FileHatchery.Config
 {
     class PortableConfig : IConfig
     {
-        const string configfilename = "config.ini";
         Dictionary<string, string> m_Config;
+
+        private string ConfigPath
+        {
+            get
+            {
+                return Path.Combine(Application.LocalUserAppDataPath, "config.ini");
+            }
+        }
 
         public PortableConfig(EngineQuery engine)
         {
-            string LocalPath = Application.LocalUserAppDataPath;
-            string path = Path.Combine(LocalPath, configfilename);
-            FileStream stream;
-            stream = File.Open(path, FileMode.OpenOrCreate);
+            FileStream stream = File.Open(ConfigPath, FileMode.OpenOrCreate);
             XmlSerializer serializer = new XmlSerializer(typeof(Dictionary<string,string>));
             m_Config = (Dictionary<string,string>)serializer.Deserialize(stream);
+            stream.Close();
+        }
+
+        ~PortableConfig()
+        {
+            FileStream stream = File.Open(ConfigPath, FileMode.OpenOrCreate);
+            XmlSerializer serializer = new XmlSerializer(typeof(Dictionary<string, string>));
+            serializer.Serialize(stream, m_Config);
+            stream.Close();
         }
 
         #region IConfig 멤버
