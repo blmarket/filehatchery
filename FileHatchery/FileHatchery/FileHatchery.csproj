@@ -75,7 +75,7 @@
     <Compile Include="Browser\InterfaceImpl.cs" />
     <Compile Include="Browser\UnusedCodes.cs" />
     <Compile Include="Config\DynamicConfig.cs" />
-    <Compile Include="Config\Selector.cs" />
+    <Compile Include="Config\ConfigSelector.cs" />
     <Compile Include="ConsoleTextBox.cs">
       <SubType>Component</SubType>
     </Compile>

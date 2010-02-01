@@ -65,10 +65,10 @@ namespace FileHatchery
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            console = Config.Selector.Console;
+            console = Config.ConfigSelector.Console;
             console.Hide();
 
-            Font font = Config.Selector.Font;
+            Font font = Config.ConfigSelector.Font;
             if (font != null)
                 Program.engine.Font = font;
 

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace FileHatchery.Config
 {
-    class Selector
+    class ConfigSelector
     {
         public static Font Font
         {
