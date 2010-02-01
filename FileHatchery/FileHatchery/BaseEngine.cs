@@ -10,15 +10,10 @@ using ShellApi;
 
 namespace FileHatchery
 {
-    public interface IModule
-    {
-        void execute(object[] args);
-    }
-
     public class EngineQuery : IAutoCompletion
     {
         DirectoryBrowser m_browser;
-        IModule dConfig;
+        Config.IConfig m_Config;
 
         public DirectoryBrowser Browser
         {
@@ -29,12 +24,12 @@ namespace FileHatchery
             }
         }
 
-        public IModule DynamicConfig
+        public Config.IConfig DynamicConfig
         {
             get
             {
-                if (dConfig == null) dConfig = new Config.DynamicConfig(this);
-                return dConfig;
+                if (m_Config == null) m_Config = new Config.DynamicConfig(this);
+                return m_Config;
             }
         }
 

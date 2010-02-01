@@ -6,7 +6,7 @@ using System.IO;
 
 namespace FileHatchery.Config
 {
-    class DynamicConfig : IModule
+    class DynamicConfig : IConfig
     {
         private Dictionary<int, string> Config;
         private EngineQuery engine;
