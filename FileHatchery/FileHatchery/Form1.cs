@@ -206,7 +206,20 @@ namespace FileHatchery
             if (console.Visible)
             {
                 console.Paste();
+                return;
             }
+            Program.engine.RunCommand("paste");
+            Program.engine.RunCommand("refresh");
+        }
+
+        private void 잘라내기ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.engine.RunCommand("cut selected");
+        }
+
+        private void 복사ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.engine.RunCommand("copy selected");
         }
     }
 }

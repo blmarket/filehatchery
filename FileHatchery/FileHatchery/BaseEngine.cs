@@ -157,6 +157,21 @@ namespace FileHatchery
                 Win32.SHExecute("cmd", "", false);
                 return;
             }
+            if (cmd == "paste")
+            {
+                Paste();
+                return;
+            }
+            if (cmd == "cut selected")
+            {
+                SetDropFileList(true);
+                return;
+            }
+            if (cmd == "copy selected")
+            {
+                SetDropFileList(false);
+                return;
+            }
             throw new NotImplementedException();
         }
 
@@ -243,6 +258,56 @@ namespace FileHatchery
             scm.ShowContextMenu(Program.form.Handle, files.ToArray(), cursorPoint);
         }
 
+        void Paste()
+        {
+            IDataObject obj = Clipboard.GetDataObject();
+
+            int dropeffect = 0;
+            MemoryStream stream = (System.IO.MemoryStream)obj.GetData("Preferred DropEffect");
+            if (stream != null)
+            {
+                BinaryReader reader = new BinaryReader(stream);
+                dropeffect = reader.ReadInt32();
+            }
+
+            System.Collections.Specialized.StringCollection files = Clipboard.GetFileDropList();
+            ShellLib.ShellFileOperation fo = new ShellLib.ShellFileOperation();
+
+            string[] filearray = new string[files.Count];
+            files.CopyTo(filearray, 0);
+
+            if ((DragDropEffects.Move & (DragDropEffects)dropeffect) == DragDropEffects.Move)
+            {
+                fo.Operation = ShellLib.ShellFileOperation.FileOperations.FO_MOVE;
+            }
+            else
+            {
+                fo.Operation = ShellLib.ShellFileOperation.FileOperations.FO_COPY;
+            }
+
+            fo.OwnerWindow = Program.form.Handle;
+            fo.SourceFiles = filearray;
+            fo.OperationFlags = ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_ALLOWUNDO
+                | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NO_CONNECTED_ELEMENTS
+                | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_WANTNUKEWARNING;
+
+            fo.DestFiles = new string[] { Browser.CurrentDir.FullName };
+            /*                string[] destarray = new string[files.Count];
+                            for (int i = 0; i < files.Count; i++)
+                            {
+                                string filename = files[i].Substring(files[i].LastIndexOf('\\'));
+                                destarray[i] = Browser.CurrentDir.FullName + filename;
+                            }
+                            fo.DestFiles = destarray;*/
+
+            bool retVal = fo.DoOperation();
+
+            if (retVal == false)
+            {
+                MessageBox.Show("Error Occurs");
+            }
+        }
+
         public bool RunShortcut(Keys e)
         {
             if (e == (Keys.Control | Keys.D1))
@@ -253,67 +318,6 @@ namespace FileHatchery
             if (e == (Keys.Alt | Keys.D1))
             {
                 RunCommand("load 1");
-                return true;
-            }
-            if (e == (Keys.Control | Keys.C))
-            {
-                SetDropFileList(false);
-                return true;
-            }
-            if (e == (Keys.Control | Keys.X))
-            {
-                SetDropFileList(true);
-                return true;
-            }
-
-            if (e == (Keys.Control | Keys.V))
-            {
-                IDataObject obj = Clipboard.GetDataObject();
-
-                int dropeffect = 0;
-                MemoryStream stream = (System.IO.MemoryStream)obj.GetData("Preferred DropEffect");
-                if (stream != null)
-                {
-                    BinaryReader reader = new BinaryReader(stream);
-                    dropeffect = reader.ReadInt32();
-                }
-
-                System.Collections.Specialized.StringCollection files = Clipboard.GetFileDropList();
-                ShellLib.ShellFileOperation fo = new ShellLib.ShellFileOperation();
-
-                string[] filearray = new string[files.Count];
-                files.CopyTo(filearray, 0);
-
-                if ((DragDropEffects.Move & (DragDropEffects)dropeffect) == DragDropEffects.Move)
-                {
-                    fo.Operation = ShellLib.ShellFileOperation.FileOperations.FO_MOVE;
-                }
-                else
-                {
-                    fo.Operation = ShellLib.ShellFileOperation.FileOperations.FO_COPY;
-                }
-
-                fo.OwnerWindow = Program.form.Handle;
-                fo.SourceFiles = filearray;
-                fo.OperationFlags = ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_ALLOWUNDO
-                    | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NO_CONNECTED_ELEMENTS
-                    | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_WANTNUKEWARNING;
-
-                fo.DestFiles = new string[] { Browser.CurrentDir.FullName };
-/*                string[] destarray = new string[files.Count];
-                for (int i = 0; i < files.Count; i++)
-                {
-                    string filename = files[i].Substring(files[i].LastIndexOf('\\'));
-                    destarray[i] = Browser.CurrentDir.FullName + filename;
-                }
-                fo.DestFiles = destarray;*/
-
-                bool retVal = fo.DoOperation();
-
-                if (retVal == false)
-                {
-                    MessageBox.Show("Error Occurs");
-                }
                 return true;
             }
 
