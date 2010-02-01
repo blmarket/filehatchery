@@ -77,6 +77,7 @@
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\DynamicConfig.cs" />
     <Compile Include="Config\ConfigSelector.cs" />
+    <Compile Include="Config\PortableConfig.cs" />
     <Compile Include="ConsoleTextBox.cs">
       <SubType>Component</SubType>
     </Compile>

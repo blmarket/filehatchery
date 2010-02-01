@@ -28,7 +28,7 @@ namespace FileHatchery
         {
             get
             {
-                if (m_Config == null) m_Config = new Config.DynamicConfig(this);
+                if (m_Config == null) m_Config = new Config.PortableConfig(this);
                 return m_Config;
             }
         }
