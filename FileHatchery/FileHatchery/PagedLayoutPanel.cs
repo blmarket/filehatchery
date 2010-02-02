@@ -24,7 +24,7 @@ namespace FileHatchery
         {
         }
 
-        public override LayoutEngine LayoutEngine
+        private PagedLayoutEngine Layout
         {
             get
             {
@@ -34,6 +34,14 @@ namespace FileHatchery
                 }
 
                 return layoutEngine;
+            }
+        }
+
+        public override LayoutEngine LayoutEngine
+        {
+            get
+            {
+                return Layout;
             }
         }
 
@@ -49,13 +57,13 @@ namespace FileHatchery
         {
             get
             {
-                return layoutEngine.PageService;
+                return Layout.PageService;
             }
             set
             {
                 if (value != null)
                 {
-                    layoutEngine.PageService = value;
+                    Layout.PageService = value;
                 }
             }
         }

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using ShellApi;
 using System.IO;
 using System.Drawing;
+using FileHatchery;
 
 namespace Testing
 {
@@ -29,16 +31,41 @@ namespace Testing
             }
         }
 
+        static void Test2()
+        {
+            Form ff = new Form();
+            FileHatchery.PagedLayoutPanel pp = new PagedLayoutPanel();
+            pp.Size = new Size(0, 0);
+            pp.PageService = new SimplePagedLayoutInterface();
+            ff.Controls.Add(pp);
+            ff.Load += new EventHandler(delegate(object obj, EventArgs e)
+                {
+                    pp.PerformLayout();
+                    ff.Close();
+                });
+            try
+            {
+                ff.ShowDialog();
+            }
+            catch (System.DivideByZeroException ee)
+            {
+                throw;
+            }
+        }
+
         static void Main(string[] args)
         {
             try
             {
                 Test1();
+                Test2();
                 Console.WriteLine("Test Successful");
             }
-            catch(Exception)
+            catch(Exception e)
             {
                 Console.WriteLine("Test Failed");
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
             }
         }
     }
