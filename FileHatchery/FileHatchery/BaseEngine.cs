@@ -177,6 +177,11 @@ namespace FileHatchery
                 SetDropFileList(false);
                 return;
             }
+            if (cmd == "goroot")
+            {
+                Browser.CurrentDir = Browser.CurrentDir.Root;
+                return;
+            }
             throw new NotImplementedException();
         }
 

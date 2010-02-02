@@ -57,6 +57,12 @@ namespace FileHatchery
                     return true;
                 }
 
+                if (keyData == Keys.OemPipe)
+                {
+                    Program.engine.RunCommand("goroot");
+                    return true;
+                }
+
                 if (((IKeyHandler)browser).HandleKey(keyData)) return true;
 
             }
