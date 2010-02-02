@@ -16,12 +16,6 @@ namespace FileHatchery
         void setRowSize(int rowSize);
     }
 
-    public class SimplePagedLayoutInterface : IPagedLayoutInterface
-    {
-        public int CursorPos { get { return 0; } }
-        public void setRowSize(int rowSize) { }
-    }
-
     public class PagedLayoutPanel : Panel
     {
         private PagedLayoutEngine layoutEngine;
@@ -87,6 +81,7 @@ namespace FileHatchery
 
             Size curSize = parent.Size;
             int rowSize = RowSize(parent);
+            if (rowSize == 0) rowSize = 1; // fixes Issue 1 : http://code.google.com/p/filehatchery/issues/detail?id=1
 
             Size itemSize = new Size(curSize.Width / colSize, itemHeight);
             int numItems = rowSize * colSize;
@@ -124,5 +119,11 @@ namespace FileHatchery
 
             return parent.AutoSize;
         }
+    }
+
+    public class SimplePagedLayoutInterface : IPagedLayoutInterface
+    {
+        public int CursorPos { get { return 0; } }
+        public void setRowSize(int rowSize) { }
     }
 }
