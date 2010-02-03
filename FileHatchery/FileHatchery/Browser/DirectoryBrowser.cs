@@ -63,6 +63,22 @@ namespace FileHatchery
         int m_CursorIndex = -1;
         int m_RowSize;
         Algorithm.StupidSearcher m_Searcher;
+        bool m_ShowHiddenFiles = false;
+        public bool ShowHiddenFiles 
+        {
+            get
+            {
+                return m_ShowHiddenFiles;
+            }
+            set
+            {
+                if (m_ShowHiddenFiles != value)
+                {
+                    m_ShowHiddenFiles = value;
+                    Refresh();
+                }
+            }
+        }
 
         /// <summary>
         /// 탐색하고 있는 디렉토리가 변경되었을 때 발생하는 이벤트
@@ -285,12 +301,12 @@ namespace FileHatchery
             }
             foreach (DirectoryInfo dir in m_CurrentDir.GetDirectories())
             {
-                if ((dir.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
+                if (ShowHiddenFiles == false && (dir.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
                 m_ItemList.Add(new DirectoryItem(dir, dir.Name, this));
             }
             foreach (FileInfo file in m_CurrentDir.GetFiles())
             {
-                if ((file.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
+                if (ShowHiddenFiles == false && (file.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
                 m_ItemList.Add(new FileItem(file, this));
             }
 

@@ -232,5 +232,10 @@ namespace FileHatchery
         {
             Program.engine.RunCommand("select all");
         }
+
+        private void 숨겨진파일보기ToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.engine.Browser.ShowHiddenFiles = this.숨겨진파일보기ToolStripMenuItem.Checked;
+        }
     }
 }
