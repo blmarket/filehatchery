@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconExtractor", "AuxTools\IconExtractor.csproj", "{8EBBB1AB-2D64-4914-B0FF-38E3657ECBEE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconExtractor", "IconExtractor\IconExtractor.csproj", "{50B115EA-180C-48E6-AF26-A251BE07AEAC}"
 EndProject
 Global
 	GlobalSection(MercurialSourceControlSolutionProperties) = preSolution
@@ -13,10 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8EBBB1AB-2D64-4914-B0FF-38E3657ECBEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8EBBB1AB-2D64-4914-B0FF-38E3657ECBEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8EBBB1AB-2D64-4914-B0FF-38E3657ECBEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8EBBB1AB-2D64-4914-B0FF-38E3657ECBEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50B115EA-180C-48E6-AF26-A251BE07AEAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50B115EA-180C-48E6-AF26-A251BE07AEAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50B115EA-180C-48E6-AF26-A251BE07AEAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50B115EA-180C-48E6-AF26-A251BE07AEAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
