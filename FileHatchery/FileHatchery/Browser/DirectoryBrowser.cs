@@ -284,9 +284,15 @@ namespace FileHatchery
                 m_ItemList.Add(item);
             }
             foreach (DirectoryInfo dir in m_CurrentDir.GetDirectories())
+            {
+                if ((dir.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
                 m_ItemList.Add(new DirectoryItem(dir, dir.Name, this));
+            }
             foreach (FileInfo file in m_CurrentDir.GetFiles())
+            {
+                if ((file.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
                 m_ItemList.Add(new FileItem(file, this));
+            }
 
             //FIXME: Directory must have 1 or more contents.
             if (m_ItemList.Count == 0)
