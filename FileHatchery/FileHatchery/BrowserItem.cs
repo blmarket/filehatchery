@@ -33,11 +33,11 @@ namespace FileHatchery
         UnMarkable = 4,
     };
 
-    public enum ItemType
+    public interface IBrowserItemVisitor
     {
-        FileType,
-        DirectoryType,
-    };
+        void visit(FileItem file);
+        void visit(DirectoryItem directory);
+    }
 
     /// <summary>
     /// IBrowser 클래스에서 Browse할 수 있는 Item의 interface를 나타냅니다.
@@ -70,13 +70,10 @@ namespace FileHatchery
         void execute();
 
         /// <summary>
-        /// BrowserItem의 Type을 반환합니다. 다른 객체를 포함하는 경우(Browse 가능한 경우)엔 DirectoryType을,
-        /// 그렇지 않은 경우엔 FileType을 리턴합니다.
+        /// Visitor Pattern Implementation
         /// </summary>
-        ItemType GetItemType
-        {
-            get;
-        }
+        /// <param name="visitor">Specific Visitor</param>
+        void accept(IBrowserItemVisitor visitor);
 
         /// <summary>
         /// Item의 State가 변경되었을 때 발생하는 event입니다.
@@ -87,7 +84,7 @@ namespace FileHatchery
     /// <summary>
     /// 파일 형식에 대한 IBrowserItem 구현입니다.
     /// </summary>
-    class FileItem : IBrowserItem
+    public class FileItem : IBrowserItem
     {
         FileInfo m_file;
         IBrowser m_browser;
@@ -138,15 +135,15 @@ namespace FileHatchery
             get { return m_file.FullName; }
         }
 
-        ItemType IBrowserItem.GetItemType
+        public void accept(IBrowserItemVisitor visitor)
         {
-            get { return ItemType.FileType; }
+            visitor.visit(this);
         }
 
         #endregion
     }
 
-    class DirectoryItem : IBrowserItem
+    public class DirectoryItem : IBrowserItem
     {
         DirectoryInfo m_info;
         IBrowser m_browser;
@@ -215,9 +212,9 @@ namespace FileHatchery
             get { return m_info.FullName; }
         }
 
-        public ItemType GetItemType
+        public void accept(IBrowserItemVisitor visitor)
         {
-            get { return ItemType.DirectoryType; }
+            visitor.visit(this);
         }
 
         #endregion
