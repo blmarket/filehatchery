@@ -39,7 +39,7 @@ namespace FileHatchery
             }
             else
             {
-                //            const int WM_KEYDOWN = 0x100;
+                //const int WM_KEYDOWN = 0x100;
                 if ((keyData & Keys.Alt) == Keys.Alt || (keyData & Keys.Control) == Keys.Control)
                 {
                     Program.engine.RunShortcut(keyData);

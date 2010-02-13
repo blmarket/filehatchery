@@ -14,7 +14,7 @@ namespace FileHatchery
     /// <summary>
     /// BrowserItem의 상태 값들을 bitmask 형태로 표현합니다.
     /// </summary>
-    [FlagsAttribute]
+    [Flags]
     public enum BrowserItemState
     {
         /// <summary>
@@ -31,6 +31,12 @@ namespace FileHatchery
         /// 현재 Item이 선택 불가능한 경우 체크합니다.
         /// </summary>
         UnMarkable = 4,
+    };
+
+    public enum ItemType
+    {
+        FileType,
+        DirectoryType,
     };
 
     /// <summary>
@@ -54,7 +60,7 @@ namespace FileHatchery
         System.Drawing.Icon Icon { get; }
 
         /// <summary>
-        /// 이 Item의 현재 상태를 리턴합니다.
+        /// 이 Item의 현재 상태를 설정하거나 반환합니다.
         /// </summary>
         BrowserItemState State { get; set; }
 
@@ -62,6 +68,15 @@ namespace FileHatchery
         /// 이 Item을 실행합니다.
         /// </summary>
         void execute();
+
+        /// <summary>
+        /// BrowserItem의 Type을 반환합니다. 다른 객체를 포함하는 경우(Browse 가능한 경우)엔 DirectoryType을,
+        /// 그렇지 않은 경우엔 FileType을 리턴합니다.
+        /// </summary>
+        ItemType GetItemType
+        {
+            get;
+        }
 
         /// <summary>
         /// Item의 State가 변경되었을 때 발생하는 event입니다.
@@ -121,6 +136,11 @@ namespace FileHatchery
         public string FullPath
         {
             get { return m_file.FullName; }
+        }
+
+        ItemType IBrowserItem.GetItemType
+        {
+            get { return ItemType.FileType; }
         }
 
         #endregion
@@ -193,6 +213,11 @@ namespace FileHatchery
         public string FullPath
         {
             get { return m_info.FullName; }
+        }
+
+        public ItemType GetItemType
+        {
+            get { return ItemType.DirectoryType; }
         }
 
         #endregion

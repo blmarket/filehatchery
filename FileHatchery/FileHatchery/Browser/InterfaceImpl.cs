@@ -46,6 +46,8 @@ namespace FileHatchery
                     else
                         CursorIndex = CursorIndex - m_RowSize;
                     return true;
+                case Keys.Shift | Keys.Enter:
+                    return true;
                 case Keys.Enter:                    
                     if (Cursor != null)
                     {

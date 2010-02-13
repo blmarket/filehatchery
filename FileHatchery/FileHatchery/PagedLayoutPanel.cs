@@ -24,7 +24,7 @@ namespace FileHatchery
         {
         }
 
-        private PagedLayoutEngine Layout
+        private PagedLayoutEngine PagedLayout
         {
             get
             {
@@ -41,7 +41,7 @@ namespace FileHatchery
         {
             get
             {
-                return Layout;
+                return PagedLayout;
             }
         }
 
@@ -57,13 +57,13 @@ namespace FileHatchery
         {
             get
             {
-                return Layout.PageService;
+                return PagedLayout.PageService;
             }
             set
             {
                 if (value != null)
                 {
-                    Layout.PageService = value;
+                    PagedLayout.PageService = value;
                 }
             }
         }
