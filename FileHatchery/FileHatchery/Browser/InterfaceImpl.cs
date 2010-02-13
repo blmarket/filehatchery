@@ -16,12 +16,6 @@ namespace FileHatchery
 
         bool IKeyHandler.HandleKey(Keys kdata)
         {
-            if (kdata >= Keys.A && kdata <= Keys.Z)
-            {
-                m_Searcher.AddChar(this, (char)kdata);
-                return true;
-            }
-
             switch (kdata)
             {
                 case Keys.Space:
@@ -52,7 +46,7 @@ namespace FileHatchery
                     else
                         CursorIndex = CursorIndex - m_RowSize;
                     return true;
-                case Keys.Enter:
+                case Keys.Enter:                    
                     if (Cursor != null)
                     {
                         Cursor.execute();
@@ -60,8 +54,10 @@ namespace FileHatchery
                     return true;
                 case Keys.Tab:
                     return true;
+                default:
+                    m_Searcher.AddChar(this, (char)kdata);
+                    return true;
             }
-            return false;
         }
 
         bool IKeyHandler.NeedsFocus
