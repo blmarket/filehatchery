@@ -54,6 +54,9 @@ namespace FileHatchery
                     return true;
                 case Keys.Tab:
                     return true;
+                case Keys.Escape:
+                    m_Searcher.Clear();
+                    return true;
                 default:
                     m_Searcher.AddChar(this, (char)kdata);
                     return true;

@@ -1408,7 +1408,7 @@ namespace AndreasJohansson.Win32.Shell
                 m_hookType,
                 m_filterFunc,
                 IntPtr.Zero,
-                (int)AppDomain.GetCurrentThreadId());
+                GetCurrentThreadId());
         }
         // ************************************************************************
 
@@ -1422,6 +1422,14 @@ namespace AndreasJohansson.Win32.Shell
 
 
         #region Win32 Imports
+        /// <summary>
+        /// Same to AppDomain.GetCurrentThreadId but no obsolete warnings.
+        /// but it doesn't work in Lightweight thread enabled CLR(like SQL server 2005)
+        /// </summary>
+        /// <returns>Thread ID</returns>
+        [DllImport("kernel32.dll")]
+        protected static extern int GetCurrentThreadId();
+        
         // ************************************************************************
         // Win32: SetWindowsHookEx()
         [DllImport("user32.dll")]

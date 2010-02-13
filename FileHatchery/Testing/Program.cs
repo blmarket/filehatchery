@@ -47,7 +47,7 @@ namespace Testing
             {
                 ff.ShowDialog();
             }
-            catch (System.DivideByZeroException ee)
+            catch (System.DivideByZeroException)
             {
                 throw;
             }
