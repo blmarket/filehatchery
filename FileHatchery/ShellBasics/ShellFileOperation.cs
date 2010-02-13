@@ -212,7 +212,7 @@ namespace ShellLib
                 IntPtr.Zero);
 
             if (RetVal != 0)
-                return false;
+                throw new Exception("File Operation Failed : Errno " + RetVal);
 
             if (FileOpStruct.fAnyOperationsAborted != 0)
                 return false;

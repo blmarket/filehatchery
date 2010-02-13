@@ -297,24 +297,37 @@ namespace FileHatchery
 
             fo.OwnerWindow = Program.form.Handle;
             fo.SourceFiles = filearray;
-            fo.OperationFlags = ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_ALLOWUNDO
-                | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NO_CONNECTED_ELEMENTS
-                | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_WANTNUKEWARNING;
-
-            fo.DestFiles = new string[] { Browser.CurrentDir.FullName };
-            /*                string[] destarray = new string[files.Count];
-                            for (int i = 0; i < files.Count; i++)
-                            {
-                                string filename = files[i].Substring(files[i].LastIndexOf('\\'));
-                                destarray[i] = Browser.CurrentDir.FullName + filename;
-                            }
-                            fo.DestFiles = destarray;*/
-
-            bool retVal = fo.DoOperation();
-
-            if (retVal == false)
+/*            if (filearray.Length == 0)
             {
-                MessageBox.Show("Error Occurs");
+                string[] destarray = new string[files.Count];
+                for (int i = 0; i < files.Count; i++)
+                {
+                    string filename = files[i].Substring(files[i].LastIndexOf('\\'));
+                    destarray[i] = Browser.CurrentDir.FullName + filename;
+                }
+                fo.DestFiles = destarray;
+            }
+            else*/
+            {
+                fo.OperationFlags = ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_ALLOWUNDO
+                    | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_RENAMEONCOLLISION
+                    | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NO_CONNECTED_ELEMENTS                    
+                    | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_WANTNUKEWARNING;
+
+                fo.DestFiles = new string[] { Browser.CurrentDir.FullName };
+            }
+
+            try
+            {
+                bool retVal = fo.DoOperation();
+                if (retVal == false)
+                {
+                    MessageBox.Show("Error Occurs");
+                }
+            }
+            catch (Exception EE)
+            {
+                MessageBox.Show(EE.Message);
             }
         }
 
