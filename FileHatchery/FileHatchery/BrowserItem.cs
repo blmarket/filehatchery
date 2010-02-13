@@ -65,11 +65,6 @@ namespace FileHatchery
         BrowserItemState State { get; set; }
 
         /// <summary>
-        /// 이 Item을 실행합니다.
-        /// </summary>
-        void execute();
-
-        /// <summary>
         /// Visitor Pattern Implementation
         /// </summary>
         /// <param name="visitor">Specific Visitor</param>
@@ -121,11 +116,6 @@ namespace FileHatchery
                 m_state = value;
                 if (onChanged != null) onChanged();
             }
-        }
-
-        public void execute()
-        {
-            Win32.SHExecute(m_file, false);
         }
 
         public event changeDelegate onChanged;
@@ -196,11 +186,6 @@ namespace FileHatchery
                 if (onChanged != null)
                     onChanged();
             }
-        }
-
-        public void execute()
-        {
-            m_browser.CurrentDir = m_info;
         }
 
         public event changeDelegate onChanged;

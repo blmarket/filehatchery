@@ -169,7 +169,7 @@ namespace FileHatchery
         void tmp_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             TmpLabel tmp = (TmpLabel)sender;
-            tmp.m_item.execute();
+            tmp.m_item.accept(new NormalExecutor());
         }
 
         void tmp_MouseClick(object sender, MouseEventArgs e)

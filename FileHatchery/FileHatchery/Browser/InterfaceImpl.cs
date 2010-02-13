@@ -7,9 +7,44 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using ShellApi;
 
 namespace FileHatchery
 {
+    class AdminExecutor : IBrowserItemVisitor
+    {
+        #region IBrowserItemVisitor 멤버
+
+        public void visit(FileItem file)
+        {
+            Win32.SHExecute(file.FullPath, "", true);
+        }
+
+        public void visit(DirectoryItem directory)
+        {
+            Program.engine.Browser.CurrentDir = directory.DirInfo;
+        }
+
+        #endregion
+    }
+
+    class NormalExecutor : IBrowserItemVisitor
+    {
+        #region IBrowserItemVisitor 멤버
+
+        public void visit(FileItem file)
+        {
+            Win32.SHExecute(file.FullPath, "", false);
+        }
+
+        public void visit(DirectoryItem directory)
+        {
+            Program.engine.Browser.CurrentDir = directory.DirInfo;
+        }
+
+        #endregion
+    }
+
     public partial class DirectoryBrowser // 상속 정보는 DirectoryBrowser.cs 참조 : IBrowser, IKeyHandler, IPagedLayoutInterface
     {
         #region IKeyHandler 멤버
@@ -47,11 +82,14 @@ namespace FileHatchery
                         CursorIndex = CursorIndex - m_RowSize;
                     return true;
                 case Keys.Shift | Keys.Enter:
+                    {
+                        Cursor.accept(new AdminExecutor());
+                    }
                     return true;
                 case Keys.Enter:                    
                     if (Cursor != null)
                     {
-                        Cursor.execute();
+                        Cursor.accept(new NormalExecutor());
                     }
                     return true;
                 case Keys.Tab:
