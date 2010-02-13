@@ -98,9 +98,12 @@ namespace FileHatchery
                     m_Searcher.Clear();
                     return true;
                 default:
+                    if ((kdata & Keys.Alt) == Keys.Alt || (kdata & Keys.Control) == Keys.Control || (kdata & Keys.Shift) == Keys.Shift)
+                        break;
                     m_Searcher.AddChar(this, (char)kdata);
                     return true;
             }
+            return false;
         }
 
         bool IKeyHandler.NeedsFocus
