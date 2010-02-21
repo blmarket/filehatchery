@@ -83,9 +83,9 @@ namespace FileHatchery
             //            consoleTextBox1.engine = Program.engine;
 
             browser = Program.engine.Browser;
-            browser.onChangeDirectory += new changeDelegate(browser_onChangeDirectory);
+            browser.onChangeDirectory += new EventHandler(browser_onChangeDirectory);
             browserPanel.PageService = browser;
-            browser.onChangeCursor += new changeDelegate(browserPanel.onCursorChanged);
+            browser.onChangeCursor += new EventHandler(browserPanel.onCursorChanged);
 
             browser.CurrentDir = new DirectoryInfo(Directory.GetCurrentDirectory());
 
@@ -107,7 +107,7 @@ namespace FileHatchery
             public TmpLabel(IBrowserItem item) 
             { 
                 m_item = item;
-                m_item.onChanged += delegate()
+                m_item.onChanged += delegate(object obj, EventArgs e)
                 {
                     Refresh();
                 };
@@ -143,7 +143,7 @@ namespace FileHatchery
             }
         }
 
-        void browser_onChangeDirectory()
+        void browser_onChangeDirectory(object senderobj, EventArgs ee)
         {
             browserPanel.Controls.Clear();
             try
@@ -155,8 +155,16 @@ namespace FileHatchery
                     Control tmp = new TmpLabel(item);
                     tmp.Size = new Size(400, 20);
                     tmp.Text = item.showName;
-                    tmp.MouseClick += new MouseEventHandler(tmp_MouseClick);
+                    tmp.MouseDown += new MouseEventHandler(tmp_MouseClick);
                     tmp.MouseDoubleClick += new MouseEventHandler(tmp_MouseDoubleClick);
+                    tmp.GiveFeedback += delegate(object sender, GiveFeedbackEventArgs e)
+                    {
+                        MessageBox.Show("test");
+                    };
+                    tmp.DragOver += delegate(object obj, DragEventArgs e)
+                    {
+                        MessageBox.Show("Shout");
+                    };
                     browserPanel.Controls.Add(tmp);
                 }
             }

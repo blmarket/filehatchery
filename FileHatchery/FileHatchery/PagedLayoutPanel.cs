@@ -68,7 +68,7 @@ namespace FileHatchery
             }
         }
 
-        public void onCursorChanged()
+        public void onCursorChanged(object obj, EventArgs e)
         {
             PerformLayout();
         }

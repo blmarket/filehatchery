@@ -11,11 +11,6 @@ using System.Runtime.InteropServices;
 namespace FileHatchery
 {
     /// <summary>
-    /// 아무런 argument도 없는 delegate 타입 형식입니다.
-    /// </summary>
-    public delegate void changeDelegate();
-
-    /// <summary>
     /// FileHatchery 기본 Browser의 인터페이스 정의입니다.
     /// </summary>
     public interface IBrowser
@@ -83,11 +78,11 @@ namespace FileHatchery
         /// <summary>
         /// 탐색하고 있는 디렉토리가 변경되었을 때 발생하는 이벤트
         /// </summary>
-        public event changeDelegate onChangeDirectory;
+        public event EventHandler onChangeDirectory;
         /// <summary>
         /// 커서 위치가 변경되었을 때 발생하는 이벤트
         /// </summary>
-        public event changeDelegate onChangeCursor;
+        public event EventHandler onChangeCursor;
 
         public void MarkItem(IBrowserItem item)
         {
@@ -126,11 +121,11 @@ namespace FileHatchery
                 m_CurrentDir = null;
                 m_curSelection = new Selection();
                 m_Searcher = new FileHatchery.Algorithm.StupidSearcher();
-                onChangeDirectory += delegate()
+                onChangeDirectory += delegate(object obj, EventArgs e)
                 {
                     m_curSelection.clear();
                 };
-                onChangeDirectory += delegate()
+                onChangeDirectory += delegate(object obj, EventArgs e)
                 {
                     List<string> list = new List<string>();
                     foreach(IBrowserItem item in m_ItemList)
@@ -178,7 +173,7 @@ namespace FileHatchery
         {
             string fullPath = Cursor.FullPath;
             ReadDirectoryContents();
-            onChangeDirectory();
+            onChangeDirectory(this, EventArgs.Empty);
             SelectItem(fullPath);
         }
 
@@ -246,7 +241,7 @@ namespace FileHatchery
                     prevItem.State = prevItem.State & (~BrowserItemState.Selected);
                 if(newItem != null)
                     newItem.State = newItem.State | BrowserItemState.Selected;
-                onChangeCursor();
+                onChangeCursor(this, EventArgs.Empty);
             }
         }
 
@@ -257,7 +252,7 @@ namespace FileHatchery
             try
             {
                 ReadDirectoryContents();
-                onChangeDirectory();
+                onChangeDirectory(this, EventArgs.Empty);
                 Directory.SetCurrentDirectory(dir.FullName);
             }
             catch (Exception EE)

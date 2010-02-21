@@ -73,7 +73,7 @@ namespace FileHatchery
         /// <summary>
         /// Item의 State가 변경되었을 때 발생하는 event입니다.
         /// </summary>
-        event changeDelegate onChanged;
+        event EventHandler onChanged;
     };
 
     /// <summary>
@@ -114,11 +114,11 @@ namespace FileHatchery
             set
             {
                 m_state = value;
-                if (onChanged != null) onChanged();
+                if (onChanged != null) onChanged(this, EventArgs.Empty);
             }
         }
 
-        public event changeDelegate onChanged;
+        public event EventHandler onChanged;
 
         public string FullPath
         {
@@ -184,11 +184,11 @@ namespace FileHatchery
             {
                 m_state = value;
                 if (onChanged != null)
-                    onChanged();
+                    onChanged(this, EventArgs.Empty);
             }
         }
 
-        public event changeDelegate onChanged;
+        public event EventHandler onChanged;
 
         #region IBrowserItem 멤버
 
