@@ -155,16 +155,8 @@ namespace FileHatchery
                     Control tmp = new TmpLabel(item);
                     tmp.Size = new Size(400, 20);
                     tmp.Text = item.showName;
-                    tmp.MouseDown += new MouseEventHandler(tmp_MouseClick);
+                    tmp.MouseDown += new MouseEventHandler(tmp_MouseDown);
                     tmp.MouseDoubleClick += new MouseEventHandler(tmp_MouseDoubleClick);
-                    tmp.GiveFeedback += delegate(object sender, GiveFeedbackEventArgs e)
-                    {
-                        MessageBox.Show("test");
-                    };
-                    tmp.DragOver += delegate(object obj, DragEventArgs e)
-                    {
-                        MessageBox.Show("Shout");
-                    };
                     browserPanel.Controls.Add(tmp);
                 }
             }
@@ -180,7 +172,7 @@ namespace FileHatchery
             tmp.m_item.accept(new NormalExecutor());
         }
 
-        void tmp_MouseClick(object sender, MouseEventArgs e)
+        void tmp_MouseDown(object sender, MouseEventArgs e)
         {
             TmpLabel tmp = sender as TmpLabel;
             browser.SelectItem(tmp.m_item);
@@ -188,6 +180,11 @@ namespace FileHatchery
             {
                 Program.engine.ShowContextMenu(Cursor.Position);
             }
+            /*
+            DataObject data = new DataObject();
+            data.SetText("Hello World");
+            DoDragDrop(data, DragDropEffects.All);
+             * */
         }
 
         private void button4_Click(object sender, EventArgs e)
