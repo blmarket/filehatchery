@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.
 		{CF71E0D7-D887-4C9F-91BC-E70B8226378B} = {CF71E0D7-D887-4C9F-91BC-E70B8226378B}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "새로개발중", "새로개발중", "{2633B068-C04C-43EC-BF09-D34E401B538C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
