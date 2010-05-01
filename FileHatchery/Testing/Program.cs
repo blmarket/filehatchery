@@ -15,6 +15,7 @@ namespace Testing
         static void Test1()
         {
             DirectoryInfo info = new DirectoryInfo(@"D:\AV"); // or 뭔가 이상한 일본어+중국어 짬뽕 이름의 디렉토리가 필요함
+            if (info == null) return;
             foreach(DirectoryInfo dir in info.GetDirectories())
             {
                 try
@@ -53,12 +54,21 @@ namespace Testing
             }
         }
 
+        static void Test3()
+        {
+            Config.FileHatcheryConfig fh = Config.FileHatcheryConfigManager.FHConfig;
+            string bm = fh.Bookmark;
+            fh.Bookmark = "Asdf";
+            Config.FileHatcheryConfigManager.Config.Save(System.Configuration.ConfigurationSaveMode.Full);
+        }
+
         static void Main(string[] args)
         {
             try
             {
                 Test1();
                 Test2();
+                Test3();
                 Console.WriteLine("Test Successful");
             }
             catch(Exception e)
