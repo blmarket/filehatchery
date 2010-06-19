@@ -27,7 +27,7 @@ namespace ShellLib
 			ERROR_OUT_OF_MEMORY			= 0,	// The operating system is out of memory or resources.
 			ERROR_FILE_NOT_FOUND		= 2,	// The specified file was not found. 
 			ERROR_PATH_NOT_FOUND		= 3,	// The specified path was not found. 
-			ERROR_BAD_FORMAT			= 11,	// The .exe file is invalid (non-Microsoft Win32® .exe or error in .exe image). 
+			ERROR_BAD_FORMAT			= 11,	// The .exe file is invalid (non-Microsoft Win32 .exe or error in .exe image). 
 			SE_ERR_ACCESSDENIED			= 5,	// The operating system denied access to the specified file.  
 			SE_ERR_ASSOCINCOMPLETE		= 27,	// The file name association is incomplete or invalid. 
 			SE_ERR_DDEBUSY				= 30,	// The Dynamic Data Exchange (DDE) transaction could not be completed because other DDE transactions were being processed. 
