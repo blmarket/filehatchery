@@ -32,6 +32,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.selfLabel1 = new UISandBox.SelfLabel();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,6 +51,7 @@
             this.flowLayoutPanel1.Controls.Add(this.label1);
             this.flowLayoutPanel1.Controls.Add(this.label2);
             this.flowLayoutPanel1.Controls.Add(this.label3);
+            this.flowLayoutPanel1.Controls.Add(this.selfLabel1);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(107, 40);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 100);
@@ -75,6 +77,15 @@
             this.label3.Text = "label3";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
+            // selfLabel1
+            // 
+            this.selfLabel1.AutoSize = true;
+            this.selfLabel1.Location = new System.Drawing.Point(3, 12);
+            this.selfLabel1.Name = "selfLabel1";
+            this.selfLabel1.Size = new System.Drawing.Size(62, 12);
+            this.selfLabel1.TabIndex = 3;
+            this.selfLabel1.Text = "selfLabel1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -95,6 +106,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private SelfLabel selfLabel1;
     }
 }
 
