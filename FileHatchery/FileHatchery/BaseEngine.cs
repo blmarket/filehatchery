@@ -129,7 +129,7 @@ namespace FileHatchery
             {
                 List<IBrowserItem> items = Browser.Items;
                 Selection sel = Browser.Selection;
-                foreach(IBrowserItem item in items)
+                foreach (IBrowserItem item in items)
                 {
                     sel.addItem(item);
                 }
@@ -200,7 +200,8 @@ namespace FileHatchery
             string[] filearray = new string[files.Count];
             files.CopyTo(filearray, 0);
             fo.Operation = ShellLib.ShellFileOperation.FileOperations.FO_DELETE;
-            fo.OwnerWindow = Program.form.Handle;
+            if(Program.form != null)
+                fo.OwnerWindow = Program.form.Handle;
             fo.SourceFiles = filearray;
 
             fo.OperationFlags = ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NO_CONNECTED_ELEMENTS

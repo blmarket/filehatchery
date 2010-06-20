@@ -62,6 +62,14 @@ namespace Testing
             Config.FileHatcheryConfigManager.Config.Save(System.Configuration.ConfigurationSaveMode.Full);
         }
 
+        static void Test4()
+        {
+            FileHatchery.EngineQuery eng = new EngineQuery();
+            string filename = System.IO.Path.GetTempFileName();
+            eng.RunCommand("select " + filename);
+            eng.RunCommand("delete");
+        }
+
         static void Main(string[] args)
         {
             try
@@ -69,6 +77,7 @@ namespace Testing
                 Test1();
                 Test2();
                 Test3();
+                Test4();
                 Console.WriteLine("Test Successful");
             }
             catch(Exception e)

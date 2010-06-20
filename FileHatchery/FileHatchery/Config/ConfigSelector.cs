@@ -73,9 +73,13 @@ namespace FileHatchery.Config
                 {
                     Program.engine.RunCommand(console.Text);
                 }
-                catch (NotImplementedException EE)
+                catch (Exception EE)
                 {
                     MessageBox.Show(console.Text + " : " + EE.Message);
+                }
+                catch
+                {
+                    MessageBox.Show(console.Text + " : Unknown Error");
                 }
                 console.Hide();
                 e.Handled = true;
