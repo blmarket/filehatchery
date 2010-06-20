@@ -199,15 +199,19 @@ namespace FileHatchery
             switch (e.KeyCode)
             {
                 case Keys.OemSemicolon:
-                    if (e.Shift)
+                    if (console.Visible == false)
                     {
-                        if (console.Visible == false)
-                        {
-                            console.Text = "";
-                            console.Show();
-                            console.Focus();
-                        }
+                        console.Text = "";
+                        console.Show();
+                        console.Focus();
                     }
+                    break;
+                case Keys.Oemcomma:
+                    TextBox aa = new TextBox();
+                    aa.Text = "asdfnews";
+                    aa.Width = 200;
+                    aa.Visible = true;
+                    demoFlowPanel1.Controls.Add(aa);
                     break;
             }
         }
