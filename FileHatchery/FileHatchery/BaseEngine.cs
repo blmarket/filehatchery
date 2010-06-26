@@ -182,6 +182,10 @@ namespace FileHatchery
                 Browser.CurrentDir = Browser.CurrentDir.Root;
                 return;
             }
+            if (cmd == "test")
+            {
+                return;
+            }
             throw new NotImplementedException();
         }
 

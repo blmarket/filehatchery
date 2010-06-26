@@ -88,16 +88,6 @@ namespace FileHatchery
             browser.onChangeCursor += new EventHandler(browserPanel.onCursorChanged);
 
             browser.CurrentDir = new DirectoryInfo(Directory.GetCurrentDirectory());
-
-            Timer timer = new Timer();
-            timer.Interval = 1000;
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Start();
-        }
-
-        void timer_Tick(object sender, EventArgs e)
-        {
-//            browser.Refresh();
         }
 
         public class TmpLabel : Control
@@ -194,6 +184,15 @@ namespace FileHatchery
             demoFlowPanel1.Controls.Add(btn);
         }
 
+        public void UITest()
+        {
+            TextBox aa = new TextBox();
+            aa.Text = "asdfnews";
+            aa.Width = 200;
+            aa.Visible = true;
+            demoFlowPanel1.Controls.Add(aa);
+        }
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -205,13 +204,6 @@ namespace FileHatchery
                         console.Show();
                         console.Focus();
                     }
-                    break;
-                case Keys.Oemcomma:
-                    TextBox aa = new TextBox();
-                    aa.Text = "asdfnews";
-                    aa.Width = 200;
-                    aa.Visible = true;
-                    demoFlowPanel1.Controls.Add(aa);
                     break;
             }
         }

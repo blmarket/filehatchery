@@ -15,12 +15,12 @@ namespace UISandBox
         public Form1()
         {
             InitializeComponent();
+            tt.Tick += new EventHandler(tt_Tick);
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
             tt.Interval = 1000;
-            tt.Tick += new EventHandler(tt_Tick);
             tt.Enabled = true;
         }
 
@@ -31,6 +31,7 @@ namespace UISandBox
             tmp.Visible = true;
             tmp.Parent = flowLayoutPanel1;
             flowLayoutPanel1.Controls.Add(tmp);
+
             tt.Enabled = false;
         }
 
@@ -49,33 +50,37 @@ namespace UISandBox
     {
         private Timer hideTimer;
         private double opacity;
+        int elaspedTime;
 
         public SelfLabel()
         {
             hideTimer = new Timer();
             opacity = 0;
+            elaspedTime = 0;
             this.Click += new EventHandler(SelfLabel_Click);
         }
 
-        ~SelfLabel()
-        {
-            int a = 1;
-            a = a + 1;
-        }        
-
         void SelfLabel_Click(object sender, EventArgs e)
         {
+            SetStyle(ControlStyles.Opaque, false);
+            this.BackColor = Color.Red;
             hideTimer.Enabled = true;
+            hideTimer.Interval = 10;
             hideTimer.Tick += new EventHandler(hideTimer_Tick);
         }
 
         void hideTimer_Tick(object sender, EventArgs e)
         {
-            Dispose();
+            elaspedTime += 10;            
 
-            if(Parent != null)
-                Parent.Controls.Remove(this);
-            GC.Collect();
+            if (elaspedTime >= 500)
+            {
+                hideTimer.Dispose();
+                Dispose();
+
+                if (Parent != null)
+                    Parent.Controls.Remove(this);
+            }
         }
 
         private void InitializeComponent()
