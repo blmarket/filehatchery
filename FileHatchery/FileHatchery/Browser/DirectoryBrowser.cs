@@ -13,7 +13,7 @@ namespace FileHatchery
     /// <summary>
     /// FileHatchery 기본 Browser의 인터페이스 정의입니다.
     /// </summary>
-    public interface IBrowser
+    public interface IBrowser : IPagedLayoutInterface
     {
         /// <summary>
         /// 현재 Cursor 위치를 설정하거나 리턴합니다.
@@ -34,11 +34,17 @@ namespace FileHatchery
         /// 특정 IBrowserItem 객체를 커서로 지정한다.
         /// </summary>
         /// <param name="item">커서로 지정하고자 하는 객체</param>
-        void SelectItem(IBrowserItem item);    
-    };
+        void SelectItem(IBrowserItem item);
 
-    public interface IMarkBrowser : IBrowser
-    {
+        /// <summary>
+        /// 탐색하고 있는 디렉토리가 변경되었을 때 발생하는 이벤트
+        /// </summary>
+        event EventHandler onChangeDirectory;
+        /// <summary>
+        /// 커서 위치가 변경되었을 때 발생하는 이벤트
+        /// </summary>
+        event EventHandler onChangeCursor;
+
         /// <summary>
         /// 특정 객체의 Mark 상태를 변경합니다.
         /// </summary>
@@ -48,9 +54,19 @@ namespace FileHatchery
         /// 현재 선택되어 있는 아이템들의 나열자를 반환합니다.
         /// </summary>
         IEnumerable<IBrowserItem> CurSelItems { get; }
-    }
-    
-    public partial class DirectoryBrowser : IMarkBrowser, IKeyHandler, IPagedLayoutInterface
+
+        /// <summary>
+        /// 현재 '선택'을 반환합니다.
+        /// </summary>
+        Selection Selection { get; }
+
+        /// <summary>
+        /// 디렉토리 전체의 내용을 다시 읽는다.
+        /// </summary>
+        void Refresh();
+    };
+
+    public partial class DirectoryBrowser : IBrowser, IKeyHandler
     {
         DirectoryInfo m_CurrentDir;
         List<IBrowserItem> m_ItemList;

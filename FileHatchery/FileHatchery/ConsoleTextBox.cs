@@ -6,11 +6,6 @@ using System.Windows.Forms;
 using System.Windows.Forms.Layout;
 using FileHatchery;
 
-public interface IAutoCompletion
-{
-    List<string> Commands { get; }
-}
-
 public class ConsoleTextBox : TextBox
 {
     public ConsoleTextBox()

@@ -20,7 +20,7 @@ namespace FileHatchery
 
     public partial class Form1 : Form
     {
-        DirectoryBrowser browser;
+        IBrowser browser;
         TextBox console;
 
         public Form1()
@@ -259,7 +259,8 @@ namespace FileHatchery
 
         private void 숨겨진파일보기ToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            Program.engine.Browser.ShowHiddenFiles = this.숨겨진파일보기ToolStripMenuItem.Checked;
+            Program.engine.RunCommand("show hidden files");
+            //Program.engine.Browser.ShowHiddenFiles = this.숨겨진파일보기ToolStripMenuItem.Checked;
         }
     }
 }

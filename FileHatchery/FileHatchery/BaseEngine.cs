@@ -17,19 +17,27 @@ namespace FileHatchery
     public delegate void UINotifier(string command);
 
     /// <summary>
+    /// 자동완성 기능 구현 인터페이스
+    /// </summary>
+    public interface IAutoCompletion
+    {
+        List<string> Commands { get; }
+    }
+
+    /// <summary>
     /// 기본 엔진.
     /// </summary>
     public class EngineQuery : IAutoCompletion
     {
-        DirectoryBrowser m_browser;
+        IBrowser m_browser;
         Config.IConfig m_Config;
         UINotifier m_UINotify;
 
-        public DirectoryBrowser Browser
+        public IBrowser Browser
         {
             get
             {
-                if (m_browser == null) m_browser = new DirectoryBrowser();
+                if (m_browser == null) m_browser = (IBrowser)new DirectoryBrowser();
                 return m_browser;
             }
         }
