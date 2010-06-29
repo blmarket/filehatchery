@@ -10,10 +10,20 @@ using ShellApi;
 
 namespace FileHatchery
 {
+    /// <summary>
+    /// UI 쪽으로 notify를 해줄 것이 있을 때 쓰기로 했다.
+    /// </summary>
+    /// <param name="command">보내주고 싶은 명령어</param>
+    public delegate void UINotifier(string command);
+
+    /// <summary>
+    /// 기본 엔진.
+    /// </summary>
     public class EngineQuery : IAutoCompletion
     {
         DirectoryBrowser m_browser;
         Config.IConfig m_Config;
+        UINotifier m_UINotify;
 
         public DirectoryBrowser Browser
         {
@@ -30,6 +40,18 @@ namespace FileHatchery
             {
                 if (m_Config == null) m_Config = new Config.PortableConfig(this);
                 return m_Config;
+            }
+        }
+
+        public UINotifier UINotify
+        {
+            get
+            {
+                return m_UINotify;
+            }
+            set
+            {
+                m_UINotify = value;
             }
         }
 
@@ -184,6 +206,8 @@ namespace FileHatchery
             }
             if (cmd == "test")
             {
+                if (m_UINotify != null)
+                    m_UINotify("test");
                 return;
             }
             throw new NotImplementedException();

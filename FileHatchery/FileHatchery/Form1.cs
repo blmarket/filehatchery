@@ -88,6 +88,18 @@ namespace FileHatchery
             browser.onChangeCursor += new EventHandler(browserPanel.onCursorChanged);
 
             browser.CurrentDir = new DirectoryInfo(Directory.GetCurrentDirectory());
+
+            Program.engine.UINotify += new UINotifier(onUIUpdate);
+        }
+
+        void onUIUpdate(string cmd)
+        {
+            MessageBox.Show(cmd);
+            if (cmd == "test")
+            {
+                UITest();
+                return;
+            }
         }
 
         public class TmpLabel : Control
@@ -184,13 +196,24 @@ namespace FileHatchery
             demoFlowPanel1.Controls.Add(btn);
         }
 
+        Random testRandom = new Random();
         public void UITest()
         {
-            TextBox aa = new TextBox();
-            aa.Text = "asdfnews";
-            aa.Width = 200;
-            aa.Visible = true;
-            demoFlowPanel1.Controls.Add(aa);
+            Color[] colors = new Color[] { Color.AliceBlue, Color.Aqua, Color.Azure, Color.Red, Color.RoyalBlue };
+            Label tmp = new Label();
+            tmp.Text = "Asdfnews";
+            tmp.Width = demoFlowPanel1.Width;
+            Padding pad = tmp.Margin;
+            pad.All = 0;
+            tmp.Margin = pad;
+            tmp.Visible = true;
+            tmp.BackColor = colors[testRandom.Next(colors.Length)];
+            demoFlowPanel1.SizeChanged += delegate(object obj, EventArgs e)
+            {
+                tmp.Width = demoFlowPanel1.Width;
+            };
+
+            demoFlowPanel1.Controls.Add(tmp);
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
