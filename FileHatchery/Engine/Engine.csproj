@@ -38,15 +38,25 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrowserItem.cs" />
     <Compile Include="IBrowser.cs" />
+    <Compile Include="Legacy\ShellContextMenu.cs" />
+    <Compile Include="Legacy\Win32.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selection.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ShellBasics\ShellLib.csproj">
+      <Project>{B748E75E-AFF9-4FEA-8581-7F04AD5DA539}</Project>
+      <Name>ShellLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

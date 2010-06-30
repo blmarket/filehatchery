@@ -93,7 +93,6 @@
     <Compile Include="Algorithm\NameSearcher.cs" />
     <Compile Include="Algorithm\StupidSearcher.cs" />
     <Compile Include="BaseEngine.cs" />
-    <Compile Include="BrowserItem.cs" />
     <Compile Include="Browser\InterfaceImpl.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\DynamicConfig.cs" />
@@ -102,7 +101,6 @@
     <Compile Include="ConsoleTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Legacy\ShellContextMenu.cs" />
     <Compile Include="CustomDraw.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -113,7 +111,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Legacy\Win32.cs" />
     <Compile Include="PagedLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>

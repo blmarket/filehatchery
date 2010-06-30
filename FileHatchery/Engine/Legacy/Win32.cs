@@ -3,7 +3,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
 
 namespace ShellApi
 {
@@ -169,9 +168,9 @@ namespace ShellApi
             {
                 proc.Start();
             }
-            catch (Exception EE)
+            catch
             {
-                MessageBox.Show(EE.Message);
+                throw;
             }
         }
 
