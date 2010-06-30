@@ -95,7 +95,6 @@
     <Compile Include="BaseEngine.cs" />
     <Compile Include="BrowserItem.cs" />
     <Compile Include="Browser\InterfaceImpl.cs" />
-    <Compile Include="Browser\UnusedCodes.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\DynamicConfig.cs" />
     <Compile Include="Config\ConfigSelector.cs" />
@@ -151,12 +150,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Selection.cs" />
     <Compile Include="TestFlowLayout.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.csproj">
+      <Project>{7DAFEB86-31F1-45F8-A465-01E115A016DE}</Project>
+      <Name>Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ShellBasics\ShellLib.csproj">
       <Project>{B748E75E-AFF9-4FEA-8581-7F04AD5DA539}</Project>
       <Name>ShellLib</Name>

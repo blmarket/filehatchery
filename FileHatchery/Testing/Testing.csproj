@@ -82,6 +82,10 @@
       <Project>{474BAF92-F11B-40CA-A8CD-92CF2A243EB2}</Project>
       <Name>Config</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.csproj">
+      <Project>{7DAFEB86-31F1-45F8-A465-01E115A016DE}</Project>
+      <Name>Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FileHatchery\FileHatchery.csproj">
       <Project>{CF71E0D7-D887-4C9F-91BC-E70B8226378B}</Project>
       <Name>FileHatchery</Name>

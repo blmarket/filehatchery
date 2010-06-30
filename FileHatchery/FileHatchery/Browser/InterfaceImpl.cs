@@ -105,13 +105,21 @@ namespace FileHatchery
                     return true;
                 case Keys.Shift | Keys.Enter:
                     {
-                        Cursor.accept(new AdminExecutor());
+                        AdminExecutor adminexec = new AdminExecutor();
+                        if (Cursor is FileItem)
+                            adminexec.visit(Cursor as FileItem);
+                        else
+                            adminexec.visit(Cursor as DirectoryItem);
                     }
                     return true;
                 case Keys.Enter:                    
                     if (Cursor != null)
                     {
-                        Cursor.accept(new NormalExecutor());
+                        NormalExecutor adminexec = new NormalExecutor();
+                        if (Cursor is FileItem)
+                            adminexec.visit(Cursor as FileItem);
+                        else
+                            adminexec.visit(Cursor as DirectoryItem);
                     }
                     return true;
                 case Keys.Tab:

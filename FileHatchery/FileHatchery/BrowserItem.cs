@@ -11,70 +11,11 @@ using ShellApi;
 
 namespace FileHatchery
 {
-    /// <summary>
-    /// BrowserItem의 상태 값들을 bitmask 형태로 표현합니다.
-    /// </summary>
-    [Flags]
-    public enum BrowserItemState
-    {
-        /// <summary>
-        /// 현재 커서가 Item 위일 때 체크됩니다.
-        /// </summary>
-        Selected = 1,
-
-        /// <summary>
-        /// 현재 Item이 선택된 상태일 때 체크됩니다.
-        /// </summary>
-        Marked = 2,
-
-        /// <summary>
-        /// 현재 Item이 선택 불가능한 경우 체크합니다.
-        /// </summary>
-        UnMarkable = 4,
-    };
-
     public interface IBrowserItemVisitor
     {
         void visit(FileItem file);
         void visit(DirectoryItem directory);
     }
-
-    /// <summary>
-    /// IBrowser 클래스에서 Browse할 수 있는 Item의 interface를 나타냅니다.
-    /// </summary>
-    public interface IBrowserItem
-    {
-        /// <summary>
-        /// 이 Item의 표현명을 리턴합니다.
-        /// </summary>
-        string showName { get; }
-
-        /// <summary>
-        /// 이 파일/디렉토리의 경로를 리턴합니다.
-        /// </summary>
-        string FullPath { get; }
-
-        /// <summary>
-        /// 이 파일/디렉토리의 아이콘을 리턴합니다.
-        /// </summary>
-        System.Drawing.Icon Icon { get; }
-
-        /// <summary>
-        /// 이 Item의 현재 상태를 설정하거나 반환합니다.
-        /// </summary>
-        BrowserItemState State { get; set; }
-
-        /// <summary>
-        /// Visitor Pattern Implementation
-        /// </summary>
-        /// <param name="visitor">Specific Visitor</param>
-        void accept(IBrowserItemVisitor visitor);
-
-        /// <summary>
-        /// Item의 State가 변경되었을 때 발생하는 event입니다.
-        /// </summary>
-        event EventHandler onChanged;
-    };
 
     /// <summary>
     /// 파일 형식에 대한 IBrowserItem 구현입니다.

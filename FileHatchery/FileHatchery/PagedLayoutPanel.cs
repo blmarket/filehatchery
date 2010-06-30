@@ -10,12 +10,6 @@ using System.Windows.Forms.Layout;
 
 namespace FileHatchery
 {
-    public interface IPagedLayoutInterface
-    {
-        int CursorPos { get; }
-        void setRowSize(int rowSize);
-    }
-
     public class PagedLayoutPanel : Panel
     {
         private PagedLayoutEngine layoutEngine;
