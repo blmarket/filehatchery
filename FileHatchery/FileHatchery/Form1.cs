@@ -171,15 +171,7 @@ namespace FileHatchery
         void tmp_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             TmpLabel tmp = (TmpLabel)sender;
-            NormalExecutor nexec = new NormalExecutor();
-            if (tmp.m_item is FileItem)
-            {
-                nexec.visit(tmp.m_item as FileItem);
-            }
-            else
-            {
-                nexec.visit(tmp.m_item as DirectoryItem);
-            }
+            tmp.m_item.accept(new NormalExecutor());
         }
 
         void tmp_MouseDown(object sender, MouseEventArgs e)

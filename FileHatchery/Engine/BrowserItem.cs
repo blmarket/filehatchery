@@ -17,6 +17,44 @@ namespace FileHatchery
     }
 
     /// <summary>
+    /// IBrowser 클래스에서 Browse할 수 있는 Item의 interface를 나타냅니다.
+    /// </summary>
+    public interface IBrowserItem
+    {
+        /// <summary>
+        /// 이 Item의 표현명을 리턴합니다.
+        /// </summary>
+        string showName { get; }
+
+        /// <summary>
+        /// 이 파일/디렉토리의 경로를 리턴합니다.
+        /// </summary>
+        string FullPath { get; }
+
+        /// <summary>
+        /// 이 파일/디렉토리의 아이콘을 리턴합니다.
+        /// </summary>
+        System.Drawing.Icon Icon { get; }
+
+        /// <summary>
+        /// 이 Item의 현재 상태를 설정하거나 반환합니다.
+        /// </summary>
+        BrowserItemState State { get; set; }
+
+        /// <summary>
+        /// Item의 State가 변경되었을 때 발생하는 event입니다.
+        /// </summary>
+        event EventHandler onChanged;
+
+        /// <summary>
+        /// Visitor 패턴 구현. 임의의 Visitor별 구현을 실행합니다.
+        /// </summary>
+        /// <param name="visitor">사용하고 싶은 Visitor</param>
+        void accept(IBrowserItemVisitor visitor);
+    };
+
+
+    /// <summary>
     /// 파일 형식에 대한 IBrowserItem 구현입니다.
     /// </summary>
     public class FileItem : IBrowserItem
