@@ -13,14 +13,14 @@ namespace FileHatchery
         [STAThread]
         static void Main()
         {
-            engine = new EngineQuery();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             form = new Form1();
+            engine = new TestEngineQuery(new DirectoryBrowser(), form.Handle);
             Application.Run(form);
         }
 
-        public static EngineQuery engine;
+        public static TestEngineQuery engine;
         public static Form1 form;
     }
 }

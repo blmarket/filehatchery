@@ -21,7 +21,7 @@ namespace FileHatchery.Config
             }
         }
 
-        public PortableConfig(EngineQuery engine)
+        public PortableConfig(TestEngineQuery engine)
         {
             FileStream stream = File.Open(ConfigPath, FileMode.OpenOrCreate);
             XmlSerializer serializer = new XmlSerializer(typeof(Dictionary<string,string>));

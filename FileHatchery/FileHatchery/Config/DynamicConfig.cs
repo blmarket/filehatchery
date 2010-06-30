@@ -9,9 +9,9 @@ namespace FileHatchery.Config
     class DynamicConfig : IConfig
     {
         private Dictionary<int, string> Config;
-        private EngineQuery engine;
+        private TestEngineQuery engine;
 
-        public DynamicConfig(EngineQuery engine)
+        public DynamicConfig(TestEngineQuery engine)
         {
             Config = new Dictionary<int, string>();
             this.engine = engine;

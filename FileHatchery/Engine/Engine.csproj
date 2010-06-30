@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseEngine.cs" />
     <Compile Include="BrowserItem.cs" />
     <Compile Include="IBrowser.cs" />
     <Compile Include="Legacy\ShellContextMenu.cs" />

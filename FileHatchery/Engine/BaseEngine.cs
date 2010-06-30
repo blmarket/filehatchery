@@ -27,27 +27,32 @@ namespace FileHatchery
     /// <summary>
     /// 기본 엔진.
     /// </summary>
-    public class EngineQuery : IAutoCompletion
+    public class TestEngineQuery : IAutoCompletion
     {
         IBrowser m_browser;
-        Config.IConfig m_Config;
         UINotifier m_UINotify;
+        Dictionary<string, int> internal_commands { get; set; }
+        public System.Drawing.Font Font { get; set; }
+        IntPtr m_windowhandle = IntPtr.Zero;
+
+        public TestEngineQuery(IBrowser browser, IntPtr windowHandle)
+        {
+            m_browser = browser;
+            m_windowhandle = windowHandle;
+            internal_commands = new Dictionary<string, int>();
+            // for testing
+            internal_commands.Add("asdfnews", 1);
+            internal_commands.Add("google", 1);
+            internal_commands.Add("gosick", 1);
+            internal_commands.Add("gooooogle", 1);
+            internal_commands.Add("microsoft", 1);
+        }
 
         public IBrowser Browser
         {
             get
             {
-                if (m_browser == null) m_browser = (IBrowser)new DirectoryBrowser();
                 return m_browser;
-            }
-        }
-
-        public Config.IConfig DynamicConfig
-        {
-            get
-            {
-                if (m_Config == null) m_Config = new Config.PortableConfig(this);
-                return m_Config;
             }
         }
 
@@ -62,20 +67,6 @@ namespace FileHatchery
                 m_UINotify = value;
             }
         }
-
-        public EngineQuery()
-        {
-            internal_commands = new Dictionary<string, int>();
-            // for testing
-            internal_commands.Add("asdfnews", 1);
-            internal_commands.Add("google", 1);
-            internal_commands.Add("gosick", 1);
-            internal_commands.Add("gooooogle", 1);
-            internal_commands.Add("microsoft", 1);
-        }
-
-        Dictionary<string, int> internal_commands { get; set; }
-        public System.Drawing.Font Font { get; set; }
 
         #region IAutoCompletion 멤버
 
@@ -133,7 +124,7 @@ namespace FileHatchery
                 Win32.SHExecute(file, dir.FullName, false);
                 return;
             }
-            if (cmd == "save 1 here")
+/*            if (cmd == "save 1 here")
             {
                 object[] args = new object[3];
                 args[0] = "save";
@@ -149,7 +140,7 @@ namespace FileHatchery
                 args[1] = 1;
                 DynamicConfig.execute(args);
                 return;
-            }
+            }*/
             if (cmd == "select this")
             {
                 Browser.MarkItem(Browser.Cursor);
@@ -218,7 +209,7 @@ namespace FileHatchery
                     m_UINotify("test");
                 return;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("Operation " + cmd + " is not implemented");
         }
 
         private void DeleteFiles()
@@ -236,8 +227,7 @@ namespace FileHatchery
             string[] filearray = new string[files.Count];
             files.CopyTo(filearray, 0);
             fo.Operation = ShellLib.ShellFileOperation.FileOperations.FO_DELETE;
-            if(Program.form != null)
-                fo.OwnerWindow = Program.form.Handle;
+            fo.OwnerWindow = m_windowhandle;
             fo.SourceFiles = filearray;
 
             fo.OperationFlags = ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NO_CONNECTED_ELEMENTS
@@ -302,7 +292,7 @@ namespace FileHatchery
                 files.Add(file);
             }
 
-            scm.ShowContextMenu(Program.form.Handle, files.ToArray(), cursorPoint);
+            scm.ShowContextMenu(m_windowhandle, files.ToArray(), cursorPoint);
         }
 
         void Paste()
@@ -332,7 +322,7 @@ namespace FileHatchery
                 fo.Operation = ShellLib.ShellFileOperation.FileOperations.FO_COPY;
             }
 
-            fo.OwnerWindow = Program.form.Handle;
+            fo.OwnerWindow = m_windowhandle;
             fo.SourceFiles = filearray;
 /*            if (filearray.Length == 0)
             {
