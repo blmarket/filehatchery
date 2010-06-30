@@ -12,26 +12,11 @@ namespace ShellApi
     [StructLayout(LayoutKind.Sequential)]
     public struct SHFILEINFO
     {
-        /// <summary>
-        /// 에이 나도 모른단말이오
-        /// </summary>
         public IntPtr hIcon;
-        /// <summary>
-        /// 에이 나도 모른단말이오
-        /// </summary>
         public IntPtr iIcon;
-        /// <summary>
-        /// 에이 나도 모른단말이오
-        /// </summary>
         public uint dwAttributes;
-        /// <summary>
-        /// 에이 나도 모른단말이오
-        /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
         public string szDisplayName;
-        /// <summary>
-        /// 에이 나도 모른단말이오
-        /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
         public string szTypeName;
     };
@@ -39,80 +24,57 @@ namespace ShellApi
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct SHFILEOPSTRUCT
     {
-        public IntPtr hwnd;   // Window handle to the dialog box to display 
-
+        public IntPtr hwnd;   
+        // Window handle to the dialog box to display 
         // information about the status of the file 
-
         // operation. 
-        public UInt32 wFunc;   // Value that indicates which operation to 
 
+        public UInt32 wFunc;   
+        // Value that indicates which operation to 
         // perform.
-        public IntPtr pFrom;   // Address of a buffer to specify one or more 
 
+        public IntPtr pFrom;   
+        // Address of a buffer to specify one or more 
         // source file names. These names must be 
-
         // fully qualified paths. Standard MicrosoftÂ®   
-
         // MS-DOSÂ® wild cards, such as "*", are 
-
         // permitted in the file-name position. 
-
         // Although this member is declared as a 
-
         // null-terminated string, it is used as a 
-
         // buffer to hold multiple file names. Each 
         // file name must be terminated by a single 
-
         // NULL character. An additional NULL 
-
         // character must be appended to the end of 
-
         // the final name to indicate the end of pFrom. 
-        public IntPtr pTo;   // Address of a buffer to contain the name of 
 
+        public IntPtr pTo;   
+        // Address of a buffer to contain the name of 
         // the destination file or directory. This 
-
         // parameter must be set to NULL if it is not 
-
         // used. Like pFrom, the pTo member is also a 
-
         // double-null terminated string and is handled 
-
         // in much the same way. 
-        public UInt16 fFlags;   // Flags that control the file operation. 
 
+        public UInt16 fFlags;   
+        // Flags that control the file operation. 
 
         public Int32 fAnyOperationsAborted;
-
         // Value that receives TRUE if the user aborted 
-
         // any file operations before they were 
-
         // completed, or FALSE otherwise. 
 
-
         public IntPtr hNameMappings;
-
         // A handle to a name mapping object containing 
-
         // the old and new names of the renamed files. 
-
         // This member is used only if the 
         // fFlags member includes the 
-
         // FOF_WANTMAPPINGHANDLE flag.
-
 
         [MarshalAs(UnmanagedType.LPWStr)]
         public String lpszProgressTitle;
-
         // Address of a string to use as the title of 
-
         // a progress dialog box. This member is used 
-
         // only if fFlags includes the 
-
         // FOF_SIMPLEPROGRESS flag.
     }
 
