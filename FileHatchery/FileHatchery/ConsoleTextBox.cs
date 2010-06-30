@@ -16,7 +16,6 @@ public class ConsoleTextBox : TextBox
 
     public IAutoCompletion engine
     {
-        // get { return m_engine; } // 있어야 할 이유를 모르겠다.
         set
         {
             m_engine = value;

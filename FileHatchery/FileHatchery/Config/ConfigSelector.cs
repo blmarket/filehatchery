@@ -77,10 +77,6 @@ namespace FileHatchery.Config
                 {
                     MessageBox.Show(console.Text + " : " + EE.Message);
                 }
-                catch
-                {
-                    MessageBox.Show(console.Text + " : Unknown Error");
-                }
                 console.Hide();
                 e.Handled = true;
             }
