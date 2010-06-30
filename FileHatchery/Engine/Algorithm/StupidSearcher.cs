@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace FileHatchery.Algorithm
 {
-    class StupidSearcher
+    public class StupidSearcher
     {
         private string curString;
 

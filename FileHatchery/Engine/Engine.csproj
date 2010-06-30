@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\NameSearcher.cs" />
+    <Compile Include="Algorithm\StupidSearcher.cs" />
     <Compile Include="BaseEngine.cs" />
     <Compile Include="BrowserItem.cs" />
     <Compile Include="IBrowser.cs" />

@@ -90,8 +90,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithm\NameSearcher.cs" />
-    <Compile Include="Algorithm\StupidSearcher.cs" />
     <Compile Include="Browser\InterfaceImpl.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\DynamicConfig.cs" />

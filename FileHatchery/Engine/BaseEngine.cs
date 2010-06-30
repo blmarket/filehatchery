@@ -35,6 +35,11 @@ namespace FileHatchery
         public System.Drawing.Font Font { get; set; }
         IntPtr m_windowhandle = IntPtr.Zero;
 
+        /// <summary>
+        /// 엔진 생성자.
+        /// </summary>
+        /// <param name="browser">UI에 해당하는 Browser</param>
+        /// <param name="windowHandle">부모 윈도우 Form의 Handle. 없으면 IntPtr.Zero를 넘겨달라</param>
         public TestEngineQuery(IBrowser browser, IntPtr windowHandle)
         {
             m_browser = browser;

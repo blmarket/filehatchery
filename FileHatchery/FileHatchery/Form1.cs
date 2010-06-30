@@ -22,10 +22,19 @@ namespace FileHatchery
     {
         IBrowser browser;
         TextBox console;
+        Timer m_demoFlowPanelTimer;
 
         public Form1()
         {
             InitializeComponent();
+            m_demoFlowPanelTimer = new Timer();
+            m_demoFlowPanelTimer.Interval = 100;
+            m_demoFlowPanelTimer.Tick += new EventHandler(m_demoFlowPanelTimer_Tick);
+            m_demoFlowPanelTimer.Start();
+        }
+
+        void m_demoFlowPanelTimer_Tick(object sender, EventArgs e)
+        {
         }
 
         // 모든 키입력에 대해 먼저 처리하는 곳이라능.

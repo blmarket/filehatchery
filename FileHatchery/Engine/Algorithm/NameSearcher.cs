@@ -14,7 +14,7 @@ namespace FileHatchery.Algorithm
     /// ns.SetData(some Sorted Enumerable);
     /// newidx = ns.PutKey(some Keys);
     /// </example>
-    class NameSearcher
+    public class NameSearcher
     {
         private string curStr;
         private string[] sortedArray;
