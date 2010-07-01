@@ -96,13 +96,7 @@ namespace FileHatchery.Engine
             return false;
         }
 
-        /// <summary>
-        /// Run Console Command
-        /// </summary>
-        /// <param name="cmd">Command wanna be run</param>
-        /// <remarks>Command should be valid</remarks>
-        /// <exception cref="NotImplementedException">Command is not recognized nor implemented</exception>
-        public void RunCommand(string cmd)
+        private void _RunCommand(string cmd)
         {
             string vimpath = @"C:\Program Files (x86)\Vim\vim72\gvim.exe";
             string explorerpath = @"C:\Windows\explorer.exe";
@@ -129,23 +123,23 @@ namespace FileHatchery.Engine
                 Win32.SHExecute(file, dir.FullName, false);
                 return;
             }
-/*            if (cmd == "save 1 here")
-            {
-                object[] args = new object[3];
-                args[0] = "save";
-                args[1] = 1;
-                args[2] = Browser.CurrentDir;
-                DynamicConfig.execute(args);
-                return;
-            }
-            if (cmd == "load 1")
-            {
-                object[] args = new object[2];
-                args[0] = "load";
-                args[1] = 1;
-                DynamicConfig.execute(args);
-                return;
-            }*/
+            /*            if (cmd == "save 1 here")
+                        {
+                            object[] args = new object[3];
+                            args[0] = "save";
+                            args[1] = 1;
+                            args[2] = Browser.CurrentDir;
+                            DynamicConfig.execute(args);
+                            return;
+                        }
+                        if (cmd == "load 1")
+                        {
+                            object[] args = new object[2];
+                            args[0] = "load";
+                            args[1] = 1;
+                            DynamicConfig.execute(args);
+                            return;
+                        }*/
             if (cmd == "select this")
             {
                 Browser.MarkItem(Browser.Cursor);
@@ -183,7 +177,7 @@ namespace FileHatchery.Engine
                 Win32.SHExecute(file, "-mount 0," + item.FullPath, false);
                 return;
             }
-            if (cmd == "!cmd" || cmd == "!")
+            if (cmd == "!cmd" || cmd == "!" || cmd == "cmd")
             {
                 Win32.SHExecute("cmd", "", false);
                 return;
@@ -215,8 +209,26 @@ namespace FileHatchery.Engine
                 return;
             }
 
-            if (m_UINotify != null)
-                m_UINotify(new Notification.Notification("Operation " + cmd + " is not implemented"));
+            throw new NotImplementedException("Operation " + cmd + " is not implemented");
+        }
+
+        /// <summary>
+        /// Run Console Command
+        /// </summary>
+        /// <param name="cmd">Command wanna be run</param>
+        /// <remarks>Command should be valid</remarks>
+        /// <exception cref="NotImplementedException">Command is not recognized nor implemented</exception>
+        public void RunCommand(string cmd)
+        {
+            try
+            {
+                _RunCommand(cmd);
+            }
+            catch (Exception E)
+            {
+                if (m_UINotify != null)
+                    m_UINotify(new Notification.Notification(E.Message));
+            }
         }
 
         private void DeleteFiles()

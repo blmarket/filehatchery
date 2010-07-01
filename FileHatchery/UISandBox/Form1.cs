@@ -44,6 +44,17 @@ namespace UISandBox
         {
             label3.Hide();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Label tmp;
+            for (int i = 0; i < 200; i++)
+            {
+                tmp = new Label();
+                tmp.Dispose();
+            }
+            GC.Collect();
+        }
     }
 
     public class SelfLabel : Label
