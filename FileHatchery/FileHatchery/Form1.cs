@@ -112,7 +112,7 @@ namespace FileHatchery
 
             browser.CurrentDir = new DirectoryInfo(Directory.GetCurrentDirectory());
 
-            Program.engine.UINotify += new UINotifier(onUIUpdate);
+            Program.engine.UINotify += new UINotifier(onEngineNotification);
 
             m_demoFlowPanelTimer = new Timer();
             m_demoFlowPanelTimer.Interval = 100;
@@ -120,12 +120,8 @@ namespace FileHatchery
             m_demoFlowPanelTimer.Start();
         }
 
-        void onUIUpdate(Engine.Notification.INotification msg)
+        void onEngineNotification(Engine.Notification.INotification msg)
         {
-            UITest(msg.Message);
-            UITest(msg.Message);
-            UITest(msg.Message);
-            UITest(msg.Message);
             UITest(msg.Message);
         }
 
@@ -243,7 +239,7 @@ namespace FileHatchery
             demoFlowPanel1.SizeChanged += tmpHandler;
             demoFlowPanel1.Controls.Add(tmp);
 
-            m_ControlQueue.Enqueue(new KeyValuePair<int, KeyValuePair<Control, EventHandler>>(Environment.TickCount + 1500, new KeyValuePair<Control, EventHandler>(tmp, tmpHandler)));
+            m_ControlQueue.Enqueue(new KeyValuePair<int, KeyValuePair<Control, EventHandler>>(Environment.TickCount + 3000, new KeyValuePair<Control, EventHandler>(tmp, tmpHandler)));
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)

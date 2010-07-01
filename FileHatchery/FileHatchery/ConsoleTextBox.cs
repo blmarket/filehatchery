@@ -7,7 +7,7 @@ using System.Windows.Forms.Layout;
 using FileHatchery;
 using FileHatchery.Engine;
 
-public class ConsoleTextBox : TextBox
+class ConsoleTextBox : TextBox
 {
     public ConsoleTextBox()
     {

@@ -214,7 +214,9 @@ namespace FileHatchery.Engine
                     m_UINotify(new Notification.Notification("Asdfnews"));
                 return;
             }
-            throw new NotImplementedException("Operation " + cmd + " is not implemented");
+
+            if (m_UINotify != null)
+                m_UINotify(new Notification.Notification("Operation " + cmd + " is not implemented"));
         }
 
         private void DeleteFiles()
