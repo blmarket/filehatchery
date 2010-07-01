@@ -23,18 +23,31 @@ namespace FileHatchery
         IBrowser browser;
         TextBox console;
         Timer m_demoFlowPanelTimer;
+        Queue<KeyValuePair<int, KeyValuePair<Control, EventHandler>>> m_ControlQueue;
 
         public Form1()
         {
             InitializeComponent();
-            m_demoFlowPanelTimer = new Timer();
-            m_demoFlowPanelTimer.Interval = 100;
-            m_demoFlowPanelTimer.Tick += new EventHandler(m_demoFlowPanelTimer_Tick);
-            m_demoFlowPanelTimer.Start();
+            m_ControlQueue = new Queue<KeyValuePair<int, KeyValuePair<Control, EventHandler>>>();
         }
 
         void m_demoFlowPanelTimer_Tick(object sender, EventArgs e)
         {
+            while(m_ControlQueue.Count > 0)
+            {
+                var item = m_ControlQueue.Peek();
+                if (item.Key < Environment.TickCount)
+                {
+                    demoFlowPanel1.SizeChanged -= item.Value.Value;
+                    demoFlowPanel1.Controls.Remove(item.Value.Key);
+                    item.Value.Key.Dispose();
+                    m_ControlQueue.Dequeue();
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
 
         // 모든 키입력에 대해 먼저 처리하는 곳이라능.
@@ -99,6 +112,11 @@ namespace FileHatchery
             browser.CurrentDir = new DirectoryInfo(Directory.GetCurrentDirectory());
 
             Program.engine.UINotify += new UINotifier(onUIUpdate);
+
+            m_demoFlowPanelTimer = new Timer();
+            m_demoFlowPanelTimer.Interval = 100;
+            m_demoFlowPanelTimer.Tick += new EventHandler(m_demoFlowPanelTimer_Tick);
+            m_demoFlowPanelTimer.Start();
         }
 
         void onUIUpdate(string cmd)
@@ -217,12 +235,15 @@ namespace FileHatchery
             tmp.Margin = pad;
             tmp.Visible = true;
             tmp.BackColor = colors[testRandom.Next(colors.Length)];
-            demoFlowPanel1.SizeChanged += delegate(object obj, EventArgs e)
+            EventHandler tmpHandler = delegate(object obj, EventArgs e)
             {
                 tmp.Width = demoFlowPanel1.Width;
             };
 
+            demoFlowPanel1.SizeChanged += tmpHandler;
             demoFlowPanel1.Controls.Add(tmp);
+
+            m_ControlQueue.Enqueue(new KeyValuePair<int, KeyValuePair<Control, EventHandler>>(Environment.TickCount + 1500, new KeyValuePair<Control, EventHandler>(tmp, tmpHandler)));
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
