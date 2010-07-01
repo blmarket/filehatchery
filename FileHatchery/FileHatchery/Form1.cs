@@ -125,6 +125,10 @@ namespace FileHatchery
             if (cmd == "test")
             {
                 UITest();
+                UITest();
+                UITest();
+                UITest();
+                UITest();
                 return;
             }
         }
