@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
+using FileHatchery.Engine;
 
 namespace FileHatchery
 {
@@ -119,18 +120,13 @@ namespace FileHatchery
             m_demoFlowPanelTimer.Start();
         }
 
-        void onUIUpdate(string cmd)
+        void onUIUpdate(Engine.Notification.INotification msg)
         {
-            MessageBox.Show(cmd);
-            if (cmd == "test")
-            {
-                UITest();
-                UITest();
-                UITest();
-                UITest();
-                UITest();
-                return;
-            }
+            UITest(msg.Message);
+            UITest(msg.Message);
+            UITest(msg.Message);
+            UITest(msg.Message);
+            UITest(msg.Message);
         }
 
         public class TmpLabel : Control
@@ -228,11 +224,11 @@ namespace FileHatchery
         }
 
         Random testRandom = new Random();
-        public void UITest()
+        public void UITest(string msg)
         {
             Color[] colors = new Color[] { Color.AliceBlue, Color.Aqua, Color.Azure, Color.Red, Color.RoyalBlue };
             Label tmp = new Label();
-            tmp.Text = "Asdfnews";
+            tmp.Text = msg;
             tmp.Width = demoFlowPanel1.Width;
             Padding pad = tmp.Margin;
             pad.All = 0;

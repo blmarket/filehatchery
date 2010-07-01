@@ -8,7 +8,7 @@
     <ProjectGuid>{7DAFEB86-31F1-45F8-A465-01E115A016DE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Engine</RootNamespace>
+    <RootNamespace>FileHatchery.Engine</RootNamespace>
     <AssemblyName>Engine</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -53,6 +53,7 @@
     <Compile Include="IBrowser.cs" />
     <Compile Include="Legacy\ShellContextMenu.cs" />
     <Compile Include="Legacy\Win32.cs" />
+    <Compile Include="Notification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selection.cs" />
   </ItemGroup>

@@ -8,13 +8,13 @@ using System.IO;
 using System.Collections;
 using ShellApi;
 
-namespace FileHatchery
+namespace FileHatchery.Engine
 {
     /// <summary>
     /// UI 쪽으로 notify를 해줄 것이 있을 때 쓰기로 했다.
     /// </summary>
     /// <param name="command">보내주고 싶은 명령어</param>
-    public delegate void UINotifier(string command);
+    public delegate void UINotifier(Engine.Notification.INotification noti);
 
     /// <summary>
     /// 자동완성 기능 구현 인터페이스
@@ -211,7 +211,7 @@ namespace FileHatchery
             if (cmd == "test")
             {
                 if (m_UINotify != null)
-                    m_UINotify("test");
+                    m_UINotify(new Notification.Notification("Asdfnews"));
                 return;
             }
             throw new NotImplementedException("Operation " + cmd + " is not implemented");

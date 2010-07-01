@@ -64,7 +64,7 @@ namespace Testing
 
         static void Test4()
         {
-            FileHatchery.TestEngineQuery eng = new TestEngineQuery(new DirectoryBrowser(), IntPtr.Zero);
+            FileHatchery.Engine.TestEngineQuery eng = new FileHatchery.Engine.TestEngineQuery(new DirectoryBrowser(), IntPtr.Zero);
             string filename = System.IO.Path.GetTempFileName();
             eng.RunCommand("select " + filename);
             eng.RunCommand("delete");

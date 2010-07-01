@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using FileHatchery.Engine;
 
 namespace FileHatchery.Config
 {
