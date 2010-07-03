@@ -19,6 +19,7 @@ namespace FileHatchery
         int m_RowSize;
         Algorithm.StupidSearcher m_Searcher;
         bool m_ShowHiddenFiles = false;
+
         public bool ShowHiddenFiles 
         {
             get
@@ -183,10 +184,8 @@ namespace FileHatchery
             }
             set
             {
-                IBrowserItem prevItem = null, newItem = null;
+                IBrowserItem prevItem = Cursor, newItem = null;
 
-                if (m_CursorIndex >= 0 && m_CursorIndex < m_ItemList.Count)
-                    prevItem = m_ItemList[m_CursorIndex];
                 m_CursorIndex = value;
                 if (m_CursorIndex < 0) m_CursorIndex = 0;
                 if (m_CursorIndex >= m_ItemList.Count) m_CursorIndex = m_ItemList.Count - 1;
@@ -197,10 +196,13 @@ namespace FileHatchery
                 {
                     return;
                 }
+
                 if(prevItem != null)
                     prevItem.State = prevItem.State & (~BrowserItemState.Selected);
+
                 if(newItem != null)
                     newItem.State = newItem.State | BrowserItemState.Selected;
+
                 onChangeCursor(this, EventArgs.Empty);
             }
         }

@@ -28,9 +28,20 @@ namespace FileHatchery
         UnMarkable = 4,
     };
 
+    /// <summary>
+    /// UI에서 필요한 정보를 넘겨주는 Interface
+    /// </summary>
     public interface IPagedLayoutInterface
     {
+        /// <summary>
+        /// 현재 Cursor의 위치
+        /// </summary>
         int CursorPos { get; }
+
+        /// <summary>
+        /// 한 열에 몇개의 row가 들어가는 지 설정함.
+        /// </summary>
+        /// <param name="rowSize">들어가야 할 row의 갯수</param>
         void setRowSize(int rowSize);
     }
 
