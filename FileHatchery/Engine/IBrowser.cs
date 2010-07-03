@@ -64,6 +64,7 @@ namespace FileHatchery
         /// 탐색하고 있는 디렉토리가 변경되었을 때 발생하는 이벤트
         /// </summary>
         event EventHandler onChangeDirectory;
+
         /// <summary>
         /// 커서 위치가 변경되었을 때 발생하는 이벤트
         /// </summary>
@@ -74,6 +75,7 @@ namespace FileHatchery
         /// </summary>
         /// <param name="item">상태를 변경하고자 하는 객체 Item</param>
         void MarkItem(IBrowserItem item);
+
         /// <summary>
         /// 현재 선택되어 있는 아이템들의 나열자를 반환합니다.
         /// </summary>
