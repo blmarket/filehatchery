@@ -91,7 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Browser\InterfaceImpl.cs" />
+    <Compile Include="Browser\Executor.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\DynamicConfig.cs" />
     <Compile Include="Config\ConfigSelector.cs" />
