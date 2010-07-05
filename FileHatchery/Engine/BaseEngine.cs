@@ -161,6 +161,18 @@ namespace FileHatchery.Engine
                 }
                 return;
             }
+            if (cmd == "alt-u")
+            {
+                if (Browser.Selection.Count > 0)
+                {
+                    Browser.Selection.clear();
+                }
+                else
+                {
+                    RunCommand("select all");
+                }
+                return;
+            }
             if (cmd.StartsWith("open ", true, null))
             {
                 Browser.CurrentDir = new DirectoryInfo(cmd.Substring(5));

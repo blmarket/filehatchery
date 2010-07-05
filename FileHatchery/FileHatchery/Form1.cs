@@ -280,7 +280,7 @@ namespace FileHatchery
 
         private void 모두선택ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Program.engine.RunCommand("select all");
+            Program.engine.RunCommand("alt-u");
         }
 
         private void 숨겨진파일보기ToolStripMenuItem_CheckedChanged(object sender, EventArgs e)

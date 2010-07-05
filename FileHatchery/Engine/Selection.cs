@@ -23,7 +23,14 @@ namespace FileHatchery
         /// <summary>
         /// 선택된 item들을 clear한다.
         /// </summary>
-        public void clear() { m_Dict.Clear(); }
+        public void clear() 
+        {
+            foreach (var item in m_Dict)
+            {
+                item.State = item.State ^ BrowserItemState.Marked;
+            }
+            m_Dict.Clear();
+        }
 
         /// <summary>
         /// item이 선택되었는지 여부를 알려준다.
