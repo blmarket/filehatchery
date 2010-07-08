@@ -19,7 +19,7 @@ namespace FileHatchery
         void setFocus();
     }
 
-    public partial class Form1 : Form
+    partial class Form1 : Form
     {
         IBrowser browser;
         TextBox console;

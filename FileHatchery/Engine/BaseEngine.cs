@@ -227,8 +227,16 @@ namespace FileHatchery.Engine
                 return;
             }
 
+            string errmsg = "Operation " + cmd + " is not implemented";
+
             if (m_UINotify != null)
-                m_UINotify(new Notification.Notification("Operation " + cmd + " is not implemented"));
+            {
+                m_UINotify(new Notification.Notification(errmsg));
+            }
+            else
+            {
+                throw new NotImplementedException(errmsg);
+            }
         }
 
         private void DeleteFiles()

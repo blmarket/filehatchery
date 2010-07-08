@@ -201,14 +201,16 @@ namespace FileHatchery
                     prevItem.State = prevItem.State & (~BrowserItemState.Selected);
                 if(newItem != null)
                     newItem.State = newItem.State | BrowserItemState.Selected;
-                onChangeCursor(this, EventArgs.Empty);
+
+                if(onChangeCursor != null)
+                    onChangeCursor(this, EventArgs.Empty);
             }
         }
 
         private void SetNewDirectory(DirectoryInfo dir)
         {
             DirectoryInfo prev = m_CurrentDir;
-            m_CurrentDir = (DirectoryInfo)dir;
+            m_CurrentDir = dir;
             try
             {
                 ReadDirectoryContents();
@@ -247,6 +249,7 @@ namespace FileHatchery
 
         private void ReadDirectoryContents()
         {
+            if (m_CurrentDir == null) return;
             m_ItemList = new List<IBrowserItem>();
             if (m_CurrentDir.Parent != null)
             {
