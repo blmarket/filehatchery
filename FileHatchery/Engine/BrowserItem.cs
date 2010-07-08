@@ -92,7 +92,9 @@ namespace FileHatchery
             set
             {
                 m_state = value;
-                if (onChanged != null) onChanged(this, EventArgs.Empty);
+                EventHandler temp = onChanged;
+                if (temp != null)
+                    temp(this, EventArgs.Empty);
             }
         }
 
@@ -161,8 +163,9 @@ namespace FileHatchery
             set
             {
                 m_state = value;
-                if (onChanged != null)
-                    onChanged(this, EventArgs.Empty);
+                EventHandler temp = onChanged;
+                if (temp != null)
+                    temp(this, EventArgs.Empty);
             }
         }
 

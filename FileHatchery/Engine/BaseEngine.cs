@@ -155,9 +155,36 @@ namespace FileHatchery.Engine
                 }
                 return;
             }
+            if (cmd == "alt-u")
+            {
+                if (Browser.Selection.Count > 0)
+                {
+                    Browser.Selection.clear();
+                }
+                else
+                {
+                    RunCommand("select all");
+                }
+                return;
+            }
             if (cmd.StartsWith("open ", true, null))
             {
                 Browser.CurrentDir = new DirectoryInfo(cmd.Substring(5));
+                return;
+            }
+            if (cmd.StartsWith("select ", true, null))
+            {
+                string tmp = cmd.Substring(7);
+                IBrowserItem selItem;
+                selItem = Browser.Items.Find(delegate (IBrowserItem item)
+                {
+                    return (item.showName == tmp);
+                });
+                if (selItem == null)
+                {
+                    throw new FileNotFoundException();
+                }
+                Browser.Selection.addItem(selItem);
                 return;
             }
             if (cmd == "refresh")
@@ -165,9 +192,14 @@ namespace FileHatchery.Engine
                 Browser.Refresh();
                 return;
             }
+            if (cmd == "delete silent")
+            {
+                DeleteFiles(true);
+                return;
+            }
             if (cmd == "delete")
             {
-                DeleteFiles();
+                DeleteFiles(false);
                 return;
             }
             if (cmd == "mount this")
@@ -230,10 +262,11 @@ namespace FileHatchery.Engine
                     m_UINotify(new Notification.Notification(E.Message));
                 else
                     throw;
+                throw new NotImplementedException(errmsg);
             }
         }
 
-        private void DeleteFiles()
+        private void DeleteFiles(bool silent)
         {
             System.Collections.Specialized.StringCollection files = new System.Collections.Specialized.StringCollection();
             IEnumerable<IBrowserItem> itemset = Browser.CurSelItems;
@@ -253,6 +286,9 @@ namespace FileHatchery.Engine
 
             fo.OperationFlags = ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NO_CONNECTED_ELEMENTS
                 | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_WANTNUKEWARNING;
+
+            if(silent)
+                fo.OperationFlags = fo.OperationFlags | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NOCONFIRMATION;
 
             bool retVal = fo.DoOperation();
 

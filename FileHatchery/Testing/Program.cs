@@ -64,10 +64,11 @@ namespace Testing
 
         static void Test4()
         {
+            FileInfo tmpfile = new FileInfo(System.IO.Path.GetTempFileName());
             FileHatchery.Engine.TestEngineQuery eng = new FileHatchery.Engine.TestEngineQuery(new DirectoryBrowser(), IntPtr.Zero);
-            string filename = System.IO.Path.GetTempFileName();
-            eng.RunCommand("select " + filename);
-            eng.RunCommand("delete");
+            eng.RunCommand("open " + tmpfile.Directory);
+            eng.RunCommand("select " + tmpfile.Name);
+            eng.RunCommand("delete silent");
         }
 
         static void Test5()

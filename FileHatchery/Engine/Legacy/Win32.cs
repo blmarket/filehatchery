@@ -95,15 +95,18 @@ namespace ShellApi
         public static extern Int32 SHFileOperation(
             ref SHFILEOPSTRUCT lpFileOp);       // Address of an SHFILEOPSTRUCT 
 
+        [DllImport("User32.dll", CharSet = CharSet.Unicode)]
+        public static extern int DestroyIcon(IntPtr hIcon);
+
         public static System.Drawing.Icon getIcon(string fullPath)
         {
             SHFILEINFO shInfo = new SHFILEINFO();
             Win32.SHGetFileInfo(fullPath, 0, ref shInfo, (uint)Marshal.SizeOf(shInfo), Win32.SHGFI_ICON | Win32.SHGFI_SMALLICON);
-            if (shInfo.hIcon != (IntPtr)0)
-            {
-                return Icon.FromHandle(shInfo.hIcon);
-            }
-            return null;
+            if (shInfo.hIcon == (IntPtr)0)
+                return null;
+            Icon ret = (Icon)Icon.FromHandle(shInfo.hIcon).Clone();
+            Win32.DestroyIcon(shInfo.hIcon);
+            return ret;
         }
 
         public static void SHExecute(FileInfo file, string argument, bool asAdmin)
