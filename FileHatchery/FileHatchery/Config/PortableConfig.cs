@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using FileHatchery.Engine;
 
 namespace FileHatchery.Config
 {
-    class PortableConfig : IConfig
+    public class PortableConfig : IConfig, ICollection
     {
         Dictionary<string, string> m_Config;
 
@@ -22,7 +22,7 @@ namespace FileHatchery.Config
             }
         }
 
-        public PortableConfig(TestEngineQuery engine)
+        public PortableConfig()
         {
             FileStream stream = File.Open(ConfigPath, FileMode.OpenOrCreate);
             XmlSerializer serializer = new XmlSerializer(typeof(Dictionary<string,string>));
@@ -38,13 +38,39 @@ namespace FileHatchery.Config
             stream.Close();
         }
 
-        #region IConfig 멤버
+        string IConfig.getConfig(string name)
+        {
+            return m_Config[name];
+        }
 
-        public void execute(object[] args)
+        void IConfig.setConfig(string name, string value)
+        {
+            m_Config[name] = value;
+        }
+
+        void ICollection.CopyTo(Array array, int index)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
+        int ICollection.Count
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        bool ICollection.IsSynchronized
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        object ICollection.SyncRoot
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -70,14 +70,23 @@ namespace Testing
             eng.RunCommand("delete");
         }
 
+        static void Test5()
+        {
+            FileHatchery.Config.IConfig cfg = new FileHatchery.Config.PortableConfig();
+            cfg.setConfig("asdf", "news");
+        }
+
         static void Main(string[] args)
         {
             try
             {
-                Test4();
+                SerializationTest.Test.SerializationTest();
+                return;
+                Test5();
                 Test1();
                 Test2();
                 Test3();
+//                Test4();
                 Console.WriteLine("Test Successful");
             }
             catch(Exception e)
@@ -85,6 +94,8 @@ namespace Testing
                 Console.WriteLine("Test Failed");
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
+
+                Console.WriteLine(e.InnerException);
             }
         }
     }

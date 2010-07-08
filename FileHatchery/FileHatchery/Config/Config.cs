@@ -8,6 +8,7 @@ namespace FileHatchery.Config
 {
     public interface IConfig
     {
-        void execute(object[] args);
+        string getConfig(string name);
+        void setConfig(string name, string value);
     }
 }

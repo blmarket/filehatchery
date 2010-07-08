@@ -228,6 +228,8 @@ namespace FileHatchery.Engine
             {
                 if (m_UINotify != null)
                     m_UINotify(new Notification.Notification(E.Message));
+                else
+                    throw;
             }
         }
 
