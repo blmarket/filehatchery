@@ -133,7 +133,9 @@ namespace FileHatchery
         {
             string fullPath = Cursor.FullPath;
             ReadDirectoryContents();
-            onChangeDirectory(this, EventArgs.Empty);
+            EventHandler temp = onChangeDirectory;
+            if(temp != null)
+                temp(this, EventArgs.Empty);
             SelectItem(fullPath);
         }
 
@@ -202,8 +204,9 @@ namespace FileHatchery
                 if(newItem != null)
                     newItem.State = newItem.State | BrowserItemState.Selected;
 
-                if(onChangeCursor != null)
-                    onChangeCursor(this, EventArgs.Empty);
+                EventHandler temp = onChangeCursor;
+                if (temp != null)
+                    temp(this, EventArgs.Empty);
             }
         }
 
@@ -214,7 +217,8 @@ namespace FileHatchery
             try
             {
                 ReadDirectoryContents();
-                onChangeDirectory(this, EventArgs.Empty);
+                EventHandler temp = onChangeDirectory;
+                if(temp != null) temp(this, EventArgs.Empty);
                 Directory.SetCurrentDirectory(dir.FullName);
             }
             catch (Exception EE)
