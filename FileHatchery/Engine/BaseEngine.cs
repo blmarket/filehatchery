@@ -14,7 +14,7 @@ namespace FileHatchery.Engine
     /// UI 쪽으로 notify를 해줄 것이 있을 때 쓰기로 했다.
     /// </summary>
     /// <param name="command">보내주고 싶은 명령어</param>
-    public delegate void UINotifier(Engine.Notification.INotification noti);
+    public delegate void UINotifier(Engine.Notification.NotifyArgs noti);
 
     /// <summary>
     /// 자동완성 기능 구현 인터페이스
@@ -237,7 +237,7 @@ namespace FileHatchery.Engine
             if (cmd == "test")
             {
                 if (m_UINotify != null)
-                    m_UINotify(new Notification.Notification("Asdfnews"));
+                    m_UINotify(new Notification.NotifyArgs("Asdfnews"));
                 return;
             }
 
@@ -258,11 +258,11 @@ namespace FileHatchery.Engine
             }
             catch (Exception E)
             {
-                if (m_UINotify != null)
-                    m_UINotify(new Notification.Notification(E.Message));
+                var tmp = m_UINotify;
+                if (tmp != null)
+                    tmp(new Notification.NotifyArgs(E.Message));
                 else
                     throw;
-                throw new NotImplementedException(errmsg);
             }
         }
 

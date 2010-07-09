@@ -120,7 +120,7 @@ namespace FileHatchery
             m_demoFlowPanelTimer.Start();
         }
 
-        void onEngineNotification(Engine.Notification.INotification msg)
+        void onEngineNotification(Engine.Notification.NotifyArgs msg)
         {
             UITest(msg.Message);
         }
