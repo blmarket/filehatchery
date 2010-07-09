@@ -112,7 +112,7 @@ namespace FileHatchery
 
             browser.CurrentDir = new DirectoryInfo(Directory.GetCurrentDirectory());
 
-            Program.engine.UINotify += new UINotifier(onEngineNotification);
+            Program.engine.UINotify += new EventHandler<Engine.Notification.NotifyArgs>(onEngineNotification);
 
             m_demoFlowPanelTimer = new Timer();
             m_demoFlowPanelTimer.Interval = 100;
@@ -120,7 +120,7 @@ namespace FileHatchery
             m_demoFlowPanelTimer.Start();
         }
 
-        void onEngineNotification(Engine.Notification.NotifyArgs msg)
+        void onEngineNotification(object obj, Engine.Notification.NotifyArgs msg)
         {
             UITest(msg.Message);
         }

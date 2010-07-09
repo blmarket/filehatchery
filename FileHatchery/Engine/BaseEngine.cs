@@ -11,12 +11,6 @@ using ShellApi;
 namespace FileHatchery.Engine
 {
     /// <summary>
-    /// UI 쪽으로 notify를 해줄 것이 있을 때 쓰기로 했다.
-    /// </summary>
-    /// <param name="command">보내주고 싶은 명령어</param>
-    public delegate void UINotifier(Engine.Notification.NotifyArgs noti);
-
-    /// <summary>
     /// 자동완성 기능 구현 인터페이스
     /// </summary>
     public interface IAutoCompletion
@@ -30,7 +24,7 @@ namespace FileHatchery.Engine
     public class TestEngineQuery : IAutoCompletion
     {
         IBrowser m_browser;
-        UINotifier m_UINotify;
+        public event EventHandler<Notification.NotifyArgs> UINotify;
         Dictionary<string, int> internal_commands { get; set; }
         public System.Drawing.Font Font { get; set; }
         IntPtr m_windowhandle = IntPtr.Zero;
@@ -58,18 +52,6 @@ namespace FileHatchery.Engine
             get
             {
                 return m_browser;
-            }
-        }
-
-        public UINotifier UINotify
-        {
-            get
-            {
-                return m_UINotify;
-            }
-            set
-            {
-                m_UINotify = value;
             }
         }
 
@@ -236,8 +218,9 @@ namespace FileHatchery.Engine
             }
             if (cmd == "test")
             {
-                if (m_UINotify != null)
-                    m_UINotify(new Notification.NotifyArgs("Asdfnews"));
+                var temp = UINotify;
+                if (temp != null)
+                    temp(this, new Notification.NotifyArgs("Asdfnews"));
                 return;
             }
 
@@ -258,9 +241,9 @@ namespace FileHatchery.Engine
             }
             catch (Exception E)
             {
-                var tmp = m_UINotify;
+                var tmp = UINotify;
                 if (tmp != null)
-                    tmp(new Notification.NotifyArgs(E.Message));
+                    tmp(this, new Notification.NotifyArgs(E.Message));
                 else
                     throw;
             }
