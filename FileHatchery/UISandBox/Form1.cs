@@ -60,13 +60,11 @@ namespace UISandBox
     public class SelfLabel : Label
     {
         private Timer hideTimer;
-        private double opacity;
         int elaspedTime;
 
         public SelfLabel()
         {
             hideTimer = new Timer();
-            opacity = 0;
             elaspedTime = 0;
             this.Click += new EventHandler(SelfLabel_Click);
         }
