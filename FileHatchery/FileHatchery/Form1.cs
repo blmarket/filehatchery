@@ -125,49 +125,6 @@ namespace FileHatchery
             UITest(msg.Message);
         }
 
-        public class TmpLabel : Control
-        {
-            public IBrowserItem m_item;
-
-            public TmpLabel(IBrowserItem item) 
-            { 
-                m_item = item;
-                m_item.onChanged += delegate(object obj, EventArgs e)
-                {
-                    Refresh();
-                };
-                InitializeComponent();
-            }
-
-            private void TmpLabel_Paint(object sender, PaintEventArgs e)
-            {
-                Brush background = Brushes.White, foreground = Brushes.Black;
-                if ((m_item.State & BrowserItemState.Selected) == BrowserItemState.Selected)
-                {
-                    background = Brushes.Black;
-                    foreground = Brushes.White;
-                }
-
-                if ((m_item.State & BrowserItemState.Marked) == BrowserItemState.Marked)
-                {
-                    foreground = Brushes.Green;
-                }
-
-                Graphics g = e.Graphics;
-                g.FillRectangle(background, ClientRectangle);
-                if(m_item.Icon != null)
-                    g.DrawIcon(m_item.Icon, 0, 0);
-                g.DrawString(this.Text, Font, foreground, 32, 0);
-            }
-
-            private void InitializeComponent() {
-                this.SuspendLayout();
-                this.Paint += new System.Windows.Forms.PaintEventHandler(this.TmpLabel_Paint);
-                this.Font = Program.engine.Font;
-                this.ResumeLayout(false);
-            }
-        }
-
         void browser_onChangeDirectory(object senderobj, EventArgs ee)
         {
             browserPanel.Controls.Clear();
@@ -177,7 +134,7 @@ namespace FileHatchery
 
                 foreach (IBrowserItem item in items)
                 {
-                    Control tmp = new TmpLabel(item);
+                    var tmp = new MyLabel(item);
                     tmp.Size = new Size(400, 20);
                     tmp.Text = item.showName;
                     tmp.MouseDown += new MouseEventHandler(tmp_MouseDown);
@@ -193,14 +150,18 @@ namespace FileHatchery
 
         void tmp_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            TmpLabel tmp = (TmpLabel)sender;
-            tmp.m_item.accept(new NormalExecutor());
+            MyLabel tmp = sender as MyLabel;
+            if (tmp == null)
+                throw new InvalidDataException("object can't be casted into MyLabel");
+            tmp.Item.accept(new NormalExecutor());
         }
 
         void tmp_MouseDown(object sender, MouseEventArgs e)
         {
-            TmpLabel tmp = sender as TmpLabel;
-            browser.SelectItem(tmp.m_item);
+            MyLabel tmp = sender as MyLabel;
+            if (tmp == null)
+                throw new InvalidDataException("object can't be casted into MyLabel");
+            browser.SelectItem(tmp.Item);
             if ((e.Button & MouseButtons.Right) == MouseButtons.Right)
             {
                 Program.engine.ShowContextMenu(Cursor.Position);
