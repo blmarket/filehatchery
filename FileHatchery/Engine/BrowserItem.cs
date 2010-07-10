@@ -6,6 +6,7 @@ using System.IO;
 using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using ShellApi;
 
 namespace FileHatchery
@@ -34,7 +35,7 @@ namespace FileHatchery
         /// <summary>
         /// 이 파일/디렉토리의 아이콘을 리턴합니다.
         /// </summary>
-        System.Drawing.Icon Icon { get; }
+        System.Drawing.Icon Icon { get; set; }
 
         /// <summary>
         /// 이 Item의 현재 상태를 설정하거나 반환합니다.
@@ -53,7 +54,77 @@ namespace FileHatchery
         void accept(IBrowserItemVisitor visitor);
     };
 
+    public interface IIconProducer
+    {
+        void EnqueueTask(IBrowserItem item);
+    }
 
+    public class IconProducer
+    {
+        // FIXME: 이래놓으면 해제를 안하잖아 -_-; 나중에 고치자
+        public static IIconProducer s_inst = new SimpleProducer(); // new ProducerConsumerQueue();
+    }
+
+    class SimpleProducer : IIconProducer
+    {
+        public void EnqueueTask(IBrowserItem item)
+        {
+            Icon icon = Win32.getIcon(item.FullPath);
+            item.Icon = icon;
+        }
+    }
+
+    /// <summary>
+    /// Thread 관련 문제가 있어서 일단 안쓰도록 해 놨다.
+    /// </summary>
+    class ProducerConsumerQueue : IDisposable, IIconProducer
+    {
+        EventWaitHandle wh = new AutoResetEvent(false);
+        Thread worker;
+        object locker = new object();
+        Queue<IBrowserItem> tasks = new Queue<IBrowserItem>();
+
+        public ProducerConsumerQueue()
+        {
+            worker = new Thread(Work);
+            worker.Start();
+        }
+
+        public void EnqueueTask(IBrowserItem task)
+        {
+            lock (locker) tasks.Enqueue(task);
+            wh.Set();
+        }
+
+        public void Dispose()
+        {
+            EnqueueTask(null);     // Signal the consumer to exit.
+            worker.Join();          // Wait for the consumer's thread to finish.
+            wh.Close();             // Release any OS resources.
+        }
+
+        void Work()
+        {
+            while (true)
+            {
+                IBrowserItem task = null;
+                lock (locker)
+                    if (tasks.Count > 0)
+                    {
+                        task = tasks.Dequeue();
+                        if (task == null) return;
+                    }
+                if (task != null)
+                {
+                    Thread.Sleep(1000);
+                    Icon icon = Win32.getIcon(task.FullPath);
+                    task.Icon = icon;
+                }
+                else
+                    wh.WaitOne();         // No more tasks - wait for a signal
+            }
+        }
+    }
     /// <summary>
     /// 파일 형식에 대한 IBrowserItem 구현입니다.
     /// </summary>
@@ -68,7 +139,7 @@ namespace FileHatchery
         {
             m_file = file;
             m_browser = browser;
-            m_Icon = Win32.getIcon(file.FullName);
+            IconProducer.s_inst.EnqueueTask(this);
         }
 
         #region IBrowserItem 멤버
@@ -80,7 +151,16 @@ namespace FileHatchery
 
         public Icon Icon
         {
-            get { return m_Icon; }
+            get 
+            { 
+                return m_Icon; 
+            }
+            set 
+            {
+                m_Icon = value;
+                var temp = onChanged;
+                if (temp != null) temp(this, EventArgs.Empty);
+            }
         }
 
         public BrowserItemState State
@@ -127,7 +207,7 @@ namespace FileHatchery
             m_info = info;
             m_name = name;
             m_browser = browser;
-            m_icon = Win32.getIcon(m_info.FullName);
+            IconProducer.s_inst.EnqueueTask(this);
         }
 
         public string showName
@@ -151,6 +231,12 @@ namespace FileHatchery
             get
             {
                 return m_icon;
+            }
+            set 
+            { 
+                m_icon = value;
+                var temp = onChanged;
+                if (temp != null) temp(this, EventArgs.Empty);
             }
         }
 
