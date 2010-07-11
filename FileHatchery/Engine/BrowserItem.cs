@@ -54,15 +54,20 @@ namespace FileHatchery
         void accept(IBrowserItemVisitor visitor);
     };
 
-    public interface IIconProducer
+    public interface IIconProducer : IDisposable
     {
         void EnqueueTask(IBrowserItem item);
     }
 
     public class IconProducer
     {
-        // FIXME: 이래놓으면 해제를 안하잖아 -_-; 나중에 고치자
-        public static IIconProducer s_inst = new SimpleProducer(); // new ProducerConsumerQueue();
+        public static IIconProducer s_inst;
+
+        public static IIconProducer CreateInstance()
+        {
+            s_inst = new ProducerConsumerQueue();
+            return s_inst;
+        }
     }
 
     class SimpleProducer : IIconProducer
@@ -72,12 +77,16 @@ namespace FileHatchery
             Icon icon = Win32.getIcon(item.FullPath);
             item.Icon = icon;
         }
+
+        public void Dispose()
+        {
+        }
     }
 
     /// <summary>
     /// Thread 관련 문제가 있어서 일단 안쓰도록 해 놨다.
     /// </summary>
-    class ProducerConsumerQueue : IDisposable, IIconProducer
+    class ProducerConsumerQueue : IIconProducer
     {
         EventWaitHandle wh = new AutoResetEvent(false);
         Thread worker;
@@ -94,6 +103,14 @@ namespace FileHatchery
         {
             lock (locker) tasks.Enqueue(task);
             wh.Set();
+        }
+
+        public void ClearQueue()
+        {
+            lock (locker)
+            {
+                tasks.Clear();
+            }
         }
 
         public void Dispose()
@@ -138,7 +155,8 @@ namespace FileHatchery
         public FileItem(FileInfo file, IBrowser browser)
         {
             m_file = file;
-            m_browser = browser;
+            m_browser = browser;            
+
             IconProducer.s_inst.EnqueueTask(this);
         }
 
@@ -236,7 +254,10 @@ namespace FileHatchery
             { 
                 m_icon = value;
                 var temp = onChanged;
-                if (temp != null) temp(this, EventArgs.Empty);
+                if (temp != null)
+                {
+                    temp(this, EventArgs.Empty);
+                }
             }
         }
 

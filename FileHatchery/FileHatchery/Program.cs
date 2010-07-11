@@ -21,9 +21,11 @@ namespace FileHatchery
                 form = new Form1();
                 engine = new TestEngineQuery(new DirectoryBrowser(), form.Handle);
                 Application.Run(form);
+                engine.Dispose();
             }
-            catch
+            catch(Exception E)
             {
+                MessageBox.Show(E.Message);
                 throw;
             }
         }

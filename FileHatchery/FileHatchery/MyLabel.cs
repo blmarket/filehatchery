@@ -15,13 +15,24 @@ namespace FileHatchery
 
         public IBrowserItem Item { get { return m_item; } }
 
+        public void onItemChanged(object obj, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler(onItemChanged));
+            }
+            else
+            {
+                Refresh();
+            }
+        }
+
         public MyLabel(IBrowserItem label)
         {
             m_item = label;
-            m_item.onChanged += delegate(object obj, EventArgs e)
-            {
-                Refresh();
-            };
+
+            m_item.onChanged += new EventHandler(onItemChanged);
+
             InitializeComponent();
             Font = Program.engine.Font;
         }

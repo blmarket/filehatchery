@@ -21,13 +21,15 @@ namespace FileHatchery.Engine
     /// <summary>
     /// 기본 엔진.
     /// </summary>
-    public class TestEngineQuery : IAutoCompletion
+    public class TestEngineQuery : IAutoCompletion, IDisposable
     {
         IBrowser m_browser;
         public event EventHandler<Notification.NotifyArgs> UINotify;
         Dictionary<string, int> internal_commands { get; set; }
         public System.Drawing.Font Font { get; set; }
         IntPtr m_windowhandle = IntPtr.Zero;
+
+        Dictionary<System.Type, IDisposable> Components;
 
         /// <summary>
         /// 엔진 생성자.
@@ -45,6 +47,18 @@ namespace FileHatchery.Engine
             internal_commands.Add("gosick", 1);
             internal_commands.Add("gooooogle", 1);
             internal_commands.Add("microsoft", 1);
+
+            Components = new Dictionary<Type, IDisposable>();
+            Components.Add(typeof(IIconProducer), IconProducer.CreateInstance());
+        }
+
+        public void Dispose()
+        {
+            foreach (var a in Components)
+            {
+                a.Value.Dispose();
+            }
+            Components = null;
         }
 
         public IBrowser Browser
