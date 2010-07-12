@@ -81,13 +81,12 @@ namespace Testing
         {
             try
             {
-                SerializationTest.Test.SerializationTest();
-                return;
-                Test5();
                 Test1();
                 Test2();
                 Test3();
-//                Test4();
+                Test4();
+                //Test5();
+                SerializationTest.Test.SerializationTest();
                 Console.WriteLine("Test Successful");
             }
             catch(Exception e)
