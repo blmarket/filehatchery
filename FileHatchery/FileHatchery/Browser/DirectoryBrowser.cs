@@ -86,14 +86,6 @@ namespace FileHatchery
                 {
                     m_curSelection.clear();
                 };
-                onChangeDirectory += delegate(object obj, EventArgs e)
-                {
-                    List<string> list = new List<string>();
-                    foreach(IBrowserItem item in m_ItemList)
-                    {
-                        list.Add(item.showName);
-                    }
-                };
             }
             catch (Exception EE)
             {
@@ -219,7 +211,8 @@ namespace FileHatchery
             {
                 ReadDirectoryContents();
                 EventHandler temp = onChangeDirectory;
-                if(temp != null) temp(this, EventArgs.Empty);
+                if(temp != null) 
+                    temp(this, EventArgs.Empty);
                 Directory.SetCurrentDirectory(dir.FullName);
             }
             catch (Exception EE)

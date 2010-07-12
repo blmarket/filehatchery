@@ -65,8 +65,22 @@ namespace FileHatchery
 
         public static IIconProducer CreateInstance()
         {
-            s_inst = new ProducerConsumerQueue();
+            // s_inst = new ...; //FIXME
+            s_inst = new NullProducer();
             return s_inst;
+        }
+    }
+
+    class NullProducer : IIconProducer
+    {
+        public void EnqueueTask(IBrowserItem item)
+        {
+            // do nothing
+        }
+
+        public void Dispose()
+        {
+            // do nothing
         }
     }
 
@@ -101,8 +115,11 @@ namespace FileHatchery
 
         public void EnqueueTask(IBrowserItem task)
         {
-            lock (locker) tasks.Enqueue(task);
-            wh.Set();
+            lock (locker)
+            {
+                tasks.Enqueue(task);
+                wh.Set();
+            }
         }
 
         public void ClearQueue()
@@ -134,7 +151,6 @@ namespace FileHatchery
                     }
                 if (task != null)
                 {
-                    Thread.Sleep(1000);
                     Icon icon = Win32.getIcon(task.FullPath);
                     task.Icon = icon;
                 }
