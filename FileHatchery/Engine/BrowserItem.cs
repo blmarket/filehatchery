@@ -115,6 +115,7 @@ namespace FileHatchery
 
         public void Dispose()
         {
+            ClearQueue();
             EnqueueTask(null);     // Signal the consumer to exit.
             worker.Join();          // Wait for the consumer's thread to finish.
             wh.Close();             // Release any OS resources.
