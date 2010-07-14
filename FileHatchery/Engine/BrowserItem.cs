@@ -54,8 +54,20 @@ namespace FileHatchery
         void accept(IBrowserItemVisitor visitor);
     };
 
+    /// <summary>
+    /// 파일 정보를 읽어들여 Icon을 생성한 다음에 넘겨주는 작업을 하는 Class
+    /// </summary>
     public interface IIconProducer : IDisposable
     {
+        /// <summary>
+        /// 작업 목록을 날린다. 디렉토리 변경 따위를 할 때 유용함.
+        /// </summary>
+        void ClearQueue();
+
+        /// <summary>
+        /// 새로운 작업을 추가한다.
+        /// </summary>
+        /// <param name="item">원하는 파일/디렉토리</param>
         void EnqueueTask(IBrowserItem item);
     }
 
@@ -65,8 +77,7 @@ namespace FileHatchery
 
         public static IIconProducer CreateInstance()
         {
-            // s_inst = new ...; //FIXME
-            s_inst = new NullProducer();
+            s_inst = new ProducerConsumerQueue();
             return s_inst;
         }
     }
@@ -79,6 +90,11 @@ namespace FileHatchery
         }
 
         public void Dispose()
+        {
+            // do nothing
+        }
+
+        public void ClearQueue()
         {
             // do nothing
         }
@@ -95,6 +111,11 @@ namespace FileHatchery
         public void Dispose()
         {
         }
+
+        public void ClearQueue()
+        {
+            // do nothing
+        }
     }
 
     /// <summary>
@@ -104,18 +125,18 @@ namespace FileHatchery
     {
         EventWaitHandle wh = new AutoResetEvent(false);
         Thread worker;
-        object locker = new object();
         Queue<IBrowserItem> tasks = new Queue<IBrowserItem>();
 
         public ProducerConsumerQueue()
         {
             worker = new Thread(Work);
+            worker.Priority = ThreadPriority.BelowNormal;
             worker.Start();
         }
 
         public void EnqueueTask(IBrowserItem task)
         {
-            lock (locker)
+            lock (this)
             {
                 tasks.Enqueue(task);
                 wh.Set();
@@ -124,7 +145,7 @@ namespace FileHatchery
 
         public void ClearQueue()
         {
-            lock (locker)
+            lock (this)
             {
                 tasks.Clear();
             }
@@ -143,7 +164,7 @@ namespace FileHatchery
             while (true)
             {
                 IBrowserItem task = null;
-                lock (locker)
+                lock (this)
                     if (tasks.Count > 0)
                     {
                         task = tasks.Dequeue();
@@ -151,6 +172,7 @@ namespace FileHatchery
                     }
                 if (task != null)
                 {
+                    Thread.Sleep(15);
                     Icon icon = Win32.getIcon(task.FullPath);
                     task.Icon = icon;
                 }

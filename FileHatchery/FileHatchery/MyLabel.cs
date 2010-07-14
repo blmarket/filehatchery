@@ -17,9 +17,17 @@ namespace FileHatchery
 
         public void onItemChanged(object obj, EventArgs e)
         {
+            if (IsDisposed) return;
             if (InvokeRequired)
             {
-                Invoke(new EventHandler(onItemChanged));
+                try
+                {
+                    Invoke(new EventHandler(onItemChanged));
+                }
+                catch (InvalidOperationException)
+                {
+                    // do nothing... but is it safe?
+                }
             }
             else
             {

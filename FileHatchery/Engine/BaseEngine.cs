@@ -29,7 +29,7 @@ namespace FileHatchery.Engine
         public System.Drawing.Font Font { get; set; }
         IntPtr m_windowhandle = IntPtr.Zero;
 
-        Dictionary<System.Type, IDisposable> Components;
+        public Dictionary<System.Type, IDisposable> Components;
 
         /// <summary>
         /// 엔진 생성자.

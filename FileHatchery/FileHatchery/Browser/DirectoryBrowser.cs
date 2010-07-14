@@ -247,6 +247,11 @@ namespace FileHatchery
 
         private void ReadDirectoryContents()
         {
+            IDisposable iconproducer = null;
+            if (Program.engine.Components.TryGetValue(typeof(IIconProducer), out iconproducer))
+            {
+                (iconproducer as IIconProducer).ClearQueue();
+            }
             if (m_CurrentDir == null) return;
             m_ItemList = new List<IBrowserItem>();
             if (m_CurrentDir.Parent != null)

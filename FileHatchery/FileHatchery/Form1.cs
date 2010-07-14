@@ -74,6 +74,12 @@ namespace FileHatchery
                     return true;
                 }
 
+                if (keyData == Keys.F6)
+                {
+                    Program.engine.RunCommand("open c:\\windows\\system32");
+                    return true;
+                }
+
                 if (keyData == Keys.Delete)
                 {
                     Program.engine.RunCommand("delete");
