@@ -77,7 +77,7 @@ namespace FileHatchery
 
         public static IIconProducer CreateInstance()
         {
-            s_inst = new ProducerConsumerQueue();
+            s_inst = new NullProducer();
             return s_inst;
         }
     }
@@ -181,6 +181,7 @@ namespace FileHatchery
             }
         }
     }
+
     /// <summary>
     /// 파일 형식에 대한 IBrowserItem 구현입니다.
     /// </summary>
