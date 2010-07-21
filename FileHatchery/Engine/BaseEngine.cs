@@ -49,7 +49,6 @@ namespace FileHatchery.Engine
             internal_commands.Add("microsoft", 1);
 
             Components = new Dictionary<Type, IDisposable>();
-            Components.Add(typeof(IIconProducer), IconProducer.CreateInstance());
         }
 
         public void Dispose()
