@@ -112,9 +112,9 @@ namespace FileHatchery
             //            consoleTextBox1.engine = Program.engine;
 
             browser = Program.engine.Browser;
-            browser.onChangeDirectory += new EventHandler(browser_onChangeDirectory);
+            browser.DirectoryChanged += new EventHandler(browser_onChangeDirectory);
             browserPanel.PageService = browser;
-            browser.onChangeCursor += new EventHandler(browserPanel.onCursorChanged);
+            browser.CursorChanged += new EventHandler(browserPanel.onCursorChanged);
 
             browser.CurrentDir = new DirectoryInfo(Directory.GetCurrentDirectory());
 

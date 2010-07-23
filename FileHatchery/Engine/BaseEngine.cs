@@ -21,15 +21,14 @@ namespace FileHatchery.Engine
     /// <summary>
     /// 기본 엔진.
     /// </summary>
-    public class TestEngineQuery : IAutoCompletion, IDisposable
+    public class TestEngineQuery : ComponentContainer, IAutoCompletion, IDisposable
     {
+        public static TestEngineQuery s_inst;
         IBrowser m_browser;
         public event EventHandler<Notification.NotifyArgs> UINotify;
         Dictionary<string, int> internal_commands { get; set; }
         public System.Drawing.Font Font { get; set; }
         IntPtr m_windowhandle = IntPtr.Zero;
-
-        public Dictionary<System.Type, IDisposable> Components;
 
         /// <summary>
         /// 엔진 생성자.
@@ -38,6 +37,7 @@ namespace FileHatchery.Engine
         /// <param name="windowHandle">부모 윈도우 Form의 Handle. 없으면 IntPtr.Zero를 넘겨달라</param>
         public TestEngineQuery(IBrowser browser, IntPtr windowHandle)
         {
+            s_inst = this;
             m_browser = browser;
             m_windowhandle = windowHandle;
             internal_commands = new Dictionary<string, int>();
@@ -48,17 +48,11 @@ namespace FileHatchery.Engine
             internal_commands.Add("gooooogle", 1);
             internal_commands.Add("microsoft", 1);
 
-            Components = new Dictionary<Type, IDisposable>();
-            Components.Add(typeof(IIconProducer), IconProducer.CreateInstance());
+            addComponent(typeof(IIconProducer), new NullProducer());
         }
 
         public void Dispose()
         {
-            foreach (var a in Components)
-            {
-                a.Value.Dispose();
-            }
-            Components = null;
         }
 
         public IBrowser Browser

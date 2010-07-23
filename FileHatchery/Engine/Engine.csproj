@@ -58,6 +58,7 @@
     <Compile Include="Algorithm\StupidSearcher.cs" />
     <Compile Include="BaseEngine.cs" />
     <Compile Include="BrowserItem.cs" />
+    <Compile Include="Core.cs" />
     <Compile Include="IBrowser.cs" />
     <Compile Include="Legacy\ShellContextMenu.cs" />
     <Compile Include="Legacy\Win32.cs" />

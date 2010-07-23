@@ -72,14 +72,19 @@ namespace FileHatchery
         void SelectItem(IBrowserItem item);
 
         /// <summary>
+        /// 탐색하고 있는 디렉토리가 변경되려고 할 때 발생하는 이벤트
+        /// </summary>
+        event EventHandler DirectoryChanging;
+
+        /// <summary>
         /// 탐색하고 있는 디렉토리가 변경되었을 때 발생하는 이벤트
         /// </summary>
-        event EventHandler onChangeDirectory;
+        event EventHandler DirectoryChanged;
 
         /// <summary>
         /// 커서 위치가 변경되었을 때 발생하는 이벤트
         /// </summary>
-        event EventHandler onChangeCursor;
+        event EventHandler CursorChanged;
 
         /// <summary>
         /// 특정 객체의 Mark 상태를 변경합니다.

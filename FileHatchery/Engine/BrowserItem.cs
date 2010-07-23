@@ -71,17 +71,6 @@ namespace FileHatchery
         void EnqueueTask(IBrowserItem item);
     }
 
-    public class IconProducer
-    {
-        public static IIconProducer s_inst;
-
-        public static IIconProducer CreateInstance()
-        {
-            s_inst = new NullProducer();
-            return s_inst;
-        }
-    }
-
     class NullProducer : IIconProducer
     {
         public void EnqueueTask(IBrowserItem item)
@@ -195,9 +184,11 @@ namespace FileHatchery
         public FileItem(FileInfo file, IBrowser browser)
         {
             m_file = file;
-            m_browser = browser;            
+            m_browser = browser;
 
-            IconProducer.s_inst.EnqueueTask(this);
+            IIconProducer temp = (IIconProducer)Core.getComponent(Engine.TestEngineQuery.s_inst, typeof(IIconProducer));
+            if(temp != null)
+                temp.EnqueueTask(this);
         }
 
         #region IBrowserItem 멤버
@@ -265,7 +256,10 @@ namespace FileHatchery
             m_info = info;
             m_name = name;
             m_browser = browser;
-            IconProducer.s_inst.EnqueueTask(this);
+
+            IIconProducer temp = (IIconProducer)Core.getComponent(Engine.TestEngineQuery.s_inst, typeof(IIconProducer));
+            if (temp != null)
+                temp.EnqueueTask(this);
         }
 
         public string showName

@@ -19,6 +19,9 @@ namespace FileHatchery
         int m_RowSize;
         Algorithm.StupidSearcher m_Searcher;
         bool m_ShowHiddenFiles = false;
+        public event EventHandler DirectoryChanged;
+        public event EventHandler CursorChanged;
+        public event EventHandler DirectoryChanging;
 
         public bool ShowHiddenFiles 
         {
@@ -35,15 +38,6 @@ namespace FileHatchery
                 }
             }
         }
-
-        /// <summary>
-        /// 탐색하고 있는 디렉토리가 변경되었을 때 발생하는 이벤트
-        /// </summary>
-        public event EventHandler onChangeDirectory;
-        /// <summary>
-        /// 커서 위치가 변경되었을 때 발생하는 이벤트
-        /// </summary>
-        public event EventHandler onChangeCursor;
 
         public void MarkItem(IBrowserItem item)
         {
@@ -82,7 +76,7 @@ namespace FileHatchery
                 m_CurrentDir = null;
                 m_curSelection = new Selection();
                 m_Searcher = new FileHatchery.Algorithm.StupidSearcher();
-                onChangeDirectory += delegate(object obj, EventArgs e)
+                DirectoryChanged += delegate(object obj, EventArgs e)
                 {
                     m_curSelection.clear();
                 };
@@ -124,11 +118,18 @@ namespace FileHatchery
         /// </summary>
         public void Refresh()
         {
+            {
+                var temp = DirectoryChanging;
+                if (temp != null)
+                    temp(this, EventArgs.Empty);
+            }
             string fullPath = Cursor.FullPath;
             ReadDirectoryContents();
-            EventHandler temp = onChangeDirectory;
-            if(temp != null)
-                temp(this, EventArgs.Empty);
+            {
+                EventHandler temp = DirectoryChanged;
+                if (temp != null)
+                    temp(this, EventArgs.Empty);
+            }
             SelectItem(fullPath);
         }
 
@@ -197,7 +198,7 @@ namespace FileHatchery
                 if(newItem != null)
                     newItem.State = newItem.State | BrowserItemState.Selected;
 
-                EventHandler temp = onChangeCursor;
+                EventHandler temp = CursorChanged;
                 if (temp != null)
                     temp(this, EventArgs.Empty);
             }
@@ -209,10 +210,13 @@ namespace FileHatchery
             m_CurrentDir = dir;
             try
             {
+                var tmp1 = DirectoryChanging;
+                if(tmp1 != null)
+                    tmp1(this, EventArgs.Empty);
                 ReadDirectoryContents();
-                EventHandler temp = onChangeDirectory;
-                if(temp != null) 
-                    temp(this, EventArgs.Empty);
+                var tmp2 = DirectoryChanged;
+                if (tmp2 != null)
+                    tmp2(this, EventArgs.Empty);
                 Directory.SetCurrentDirectory(dir.FullName);
             }
             catch (Exception EE)
@@ -247,11 +251,6 @@ namespace FileHatchery
 
         private void ReadDirectoryContents()
         {
-            IDisposable iconproducer = null;
-            if (Program.engine.Components.TryGetValue(typeof(IIconProducer), out iconproducer))
-            {
-                (iconproducer as IIconProducer).ClearQueue();
-            }
             if (m_CurrentDir == null) return;
             m_ItemList = new List<IBrowserItem>();
             if (m_CurrentDir.Parent != null)
