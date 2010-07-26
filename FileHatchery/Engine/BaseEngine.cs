@@ -231,6 +231,12 @@ namespace FileHatchery.Engine
                     temp(this, new Notification.NotifyArgs("Asdfnews"));
                 return;
             }
+            if (cmd == "gc")
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+            }
 
             throw new NotImplementedException("Operation " + cmd + " is not implemented");
         }
