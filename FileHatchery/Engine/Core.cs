@@ -8,7 +8,7 @@ namespace FileHatchery
     public interface IComponentContainer
     {
         object getComponent(Type type);
-        void addComponent(Type type, object obj);
+        void setComponent(Type type, object obj);
         void delComponent(Type type);
     }
 
@@ -24,7 +24,7 @@ namespace FileHatchery
             return null;
         }
 
-        public void addComponent(Type type, object obj)
+        public void setComponent(Type type, object obj)
         {
             m_dict[type] = obj;
         }

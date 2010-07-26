@@ -23,7 +23,7 @@ namespace FileHatchery
     {
         IBrowser browser;
         TextBox console;
-        Timer m_demoFlowPanelTimer;
+        System.Windows.Forms.Timer m_demoFlowPanelTimer;
         Queue<KeyValuePair<int, KeyValuePair<Control, EventHandler>>> m_ControlQueue;
 
         public Form1()
@@ -100,6 +100,9 @@ namespace FileHatchery
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Program.engine.setComponent(typeof(IIconProducer), new IconQueue());
+            IconGetter.RunWorkerAsync();
+
             console = Config.ConfigSelector.Console;
             console.Hide();
 
@@ -255,5 +258,77 @@ namespace FileHatchery
             Program.engine.RunCommand("show hidden files");
             //Program.engine.Browser.ShowHiddenFiles = this.숨겨진파일보기ToolStripMenuItem.Checked;
         }
+
+        private void IconGetter_DoWork(object sender, DoWorkEventArgs e)
+        {
+            object obj = Program.engine.getComponent(typeof(IIconProducer));
+            if (obj == null) return;
+            IconQueue queue = obj as IconQueue;
+            if (queue == null) return;
+            queue.Work(IconGetter);              
+        }
+
+        private void IconGetter_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            IBrowserItem item = e.UserState as IBrowserItem;
+            if (item != null)
+            {
+                var temp = item.onChanged;
+                if (temp != null)
+                    temp(item, EventArgs.Empty);
+            }
+        }
     }
+
+    class IconQueue : IIconProducer
+    {
+        System.Threading.EventWaitHandle wh = new System.Threading.AutoResetEvent(false);
+        Queue<IBrowserItem> tasks = new Queue<IBrowserItem>();
+
+        public void EnqueueTask(IBrowserItem task)
+        {
+            lock (tasks)
+            {
+                tasks.Enqueue(task);
+                wh.Set();
+            }
+        }
+
+        public void ClearQueue()
+        {
+            lock (tasks)
+            {
+                tasks.Clear();
+            }
+        }
+
+        public void Dispose()
+        {
+            ClearQueue();
+        }
+
+        public void Work(BackgroundWorker report)
+        {
+            while (true)
+            {
+                IBrowserItem task = null;
+                lock (tasks)
+                    if (tasks.Count > 0)
+                    {
+                        task = tasks.Dequeue();
+                        if (task == null) return;
+                    }
+                if (task != null)
+                {
+                    System.Threading.Thread.Sleep(15);
+                    Icon icon = ShellApi.Win32.getIcon(task.FullPath);
+                    task.Icon = icon;
+                    report.ReportProgress(0, task);
+                }
+                else
+                    wh.WaitOne();         // No more tasks - wait for a signal
+            }
+        }
+    }
+
 }

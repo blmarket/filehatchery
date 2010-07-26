@@ -64,6 +64,7 @@
             this.정보ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.browserPanel = new FileHatchery.PagedLayoutPanel();
             this.demoFlowPanel1 = new FileHatchery.DemoFlowPanel();
+            this.IconGetter = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -355,6 +356,12 @@
             this.demoFlowPanel1.Size = new System.Drawing.Size(589, 0);
             this.demoFlowPanel1.TabIndex = 2;
             // 
+            // IconGetter
+            // 
+            this.IconGetter.WorkerReportsProgress = true;
+            this.IconGetter.DoWork += new System.ComponentModel.DoWorkEventHandler(this.IconGetter_DoWork);
+            this.IconGetter.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.IconGetter_ProgressChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -413,6 +420,7 @@
         private System.Windows.Forms.ToolStripMenuItem 정보ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 보기VToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 숨겨진파일보기ToolStripMenuItem;
+        private System.ComponentModel.BackgroundWorker IconGetter;
 
     }
 }

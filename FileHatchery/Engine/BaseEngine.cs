@@ -48,7 +48,7 @@ namespace FileHatchery.Engine
             internal_commands.Add("gooooogle", 1);
             internal_commands.Add("microsoft", 1);
 
-            addComponent(typeof(IIconProducer), new NullProducer());
+            setComponent(typeof(IIconProducer), new NullProducer());
         }
 
         public void Dispose()

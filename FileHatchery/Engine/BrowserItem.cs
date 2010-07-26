@@ -45,7 +45,7 @@ namespace FileHatchery
         /// <summary>
         /// Item의 State가 변경되었을 때 발생하는 event입니다.
         /// </summary>
-        event EventHandler onChanged;
+        EventHandler onChanged { get; set; }
 
         /// <summary>
         /// Visitor 패턴 구현. 임의의 Visitor별 구현을 실행합니다.
@@ -207,8 +207,6 @@ namespace FileHatchery
             set 
             {
                 m_Icon = value;
-                var temp = onChanged;
-                if (temp != null) temp(this, EventArgs.Empty);
             }
         }
 
@@ -227,7 +225,7 @@ namespace FileHatchery
             }
         }
 
-        public event EventHandler onChanged;
+        public EventHandler onChanged { get; set; }
 
         public string FullPath
         {
@@ -287,11 +285,6 @@ namespace FileHatchery
             set 
             { 
                 m_icon = value;
-                var temp = onChanged;
-                if (temp != null)
-                {
-                    temp(this, EventArgs.Empty);
-                }
             }
         }
 
@@ -310,7 +303,7 @@ namespace FileHatchery
             }
         }
 
-        public event EventHandler onChanged;
+        public EventHandler onChanged { get; set; }
 
         #region IBrowserItem 멤버
 
