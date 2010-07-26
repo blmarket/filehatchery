@@ -236,6 +236,7 @@ namespace FileHatchery.Engine
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
+                return;
             }
 
             throw new NotImplementedException("Operation " + cmd + " is not implemented");
