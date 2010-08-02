@@ -140,6 +140,8 @@ namespace FileHatchery
             try
             {
                 List<IBrowserItem> items = browser.Items;
+                var labels = new MyLabel[items.Count];
+                int cnt = 0;
 
                 foreach (IBrowserItem item in items)
                 {
@@ -148,8 +150,11 @@ namespace FileHatchery
                     tmp.Text = item.showName;
                     tmp.MouseDown += new MouseEventHandler(tmp_MouseDown);
                     tmp.MouseDoubleClick += new MouseEventHandler(tmp_MouseDoubleClick);
-                    browserPanel.Controls.Add(tmp);
+                    labels[cnt] = tmp;
+                    cnt = cnt + 1;
                 }
+
+                browserPanel.Controls.AddRange(labels);
             }
             catch (Exception EE)
             {
