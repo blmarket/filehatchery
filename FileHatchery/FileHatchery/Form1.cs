@@ -266,8 +266,8 @@ namespace FileHatchery
 
         private void IconGetter_DoWork(object sender, DoWorkEventArgs e)
         {
-            object obj = Program.engine.getComponent(typeof(IIconProducer));
-            if (obj == null) return;
+            var obj = Program.engine.getComponent<IIconProducer>();
+            if (obj == null) throw new Exception("IIconProducer expected to exists");
             IconQueue queue = obj as IconQueue;
             if (queue == null) return;
             queue.Work(IconGetter);              

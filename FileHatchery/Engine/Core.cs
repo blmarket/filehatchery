@@ -7,7 +7,7 @@ namespace FileHatchery
 {
     public interface IComponentContainer
     {
-        object getComponent(Type type);
+        T getComponent<T>();
         void setComponent(Type type, object obj);
         void delComponent(Type type);
     }
@@ -16,12 +16,12 @@ namespace FileHatchery
     {
         private Dictionary<Type, object> m_dict = new Dictionary<Type,object>();
 
-        public object getComponent(Type type)
+        public T getComponent<T>()
         {
             object ret = null;
-            if (m_dict.TryGetValue(type, out ret)) 
-                return ret;
-            return null;
+            if (m_dict.TryGetValue(typeof(T), out ret)) 
+                return (T)ret;
+            return default(T);
         }
 
         public void setComponent(Type type, object obj)
@@ -37,9 +37,9 @@ namespace FileHatchery
 
     public class Core
     {
-        public static object getComponent(IComponentContainer container, Type type)
+        public static T getComponent<T>(IComponentContainer container)
         {
-            return container.getComponent(type);
+            return container.getComponent<T>();
         }
     }
 }

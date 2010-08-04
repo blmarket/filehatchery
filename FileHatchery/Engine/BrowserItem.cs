@@ -186,7 +186,7 @@ namespace FileHatchery
             m_file = file;
             m_browser = browser;
 
-            IIconProducer temp = (IIconProducer)Core.getComponent(Engine.TestEngineQuery.s_inst, typeof(IIconProducer));
+            IIconProducer temp = Core.getComponent<IIconProducer>(Engine.TestEngineQuery.s_inst);
             if(temp != null)
                 temp.EnqueueTask(this);
         }
@@ -255,7 +255,7 @@ namespace FileHatchery
             m_name = name;
             m_browser = browser;
 
-            IIconProducer temp = (IIconProducer)Core.getComponent(Engine.TestEngineQuery.s_inst, typeof(IIconProducer));
+            IIconProducer temp = Core.getComponent<IIconProducer>(Engine.TestEngineQuery.s_inst);
             if (temp != null)
                 temp.EnqueueTask(this);
         }
