@@ -255,7 +255,7 @@ namespace FileHatchery
             m_name = name;
             m_browser = browser;
 
-            IIconProducer temp = Core.getComponent<IIconProducer>(Engine.TestEngineQuery.s_inst);
+            var temp = Engine.TestEngineQuery.s_inst.getComponent<IIconProducer>();
             if (temp != null)
                 temp.EnqueueTask(this);
         }
