@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 using ShellApi;
 using System.IO;
 using System.Drawing;
@@ -77,15 +79,48 @@ namespace Testing
             cfg.setConfig("asdf", "news");
         }
 
+        static void Test6()
+        {
+            System.Reflection.Assembly ass = System.Reflection.Assembly.GetExecutingAssembly();
+            Console.WriteLine(ass.Location);
+            string dirpath = Path.GetDirectoryName(ass.Location);
+            Console.WriteLine(dirpath);
+            string filepath = dirpath + "\\test.dat";
+            Console.WriteLine(filepath);
+
+            XmlSerializer seri = new XmlSerializer(typeof(Config.SerializableDictionary<string, string>));
+            Config.SerializableDictionary<string, string> vv;
+
+            try
+            {
+                FileStream str = File.Open(filepath, FileMode.Open);
+                object des = seri.Deserialize(str);
+                vv = des as Config.SerializableDictionary<string, string>;
+                str.Close();
+                str.Dispose();
+            }
+            catch (Exception)
+            {
+                vv = new Config.SerializableDictionary<string, string>();
+            }
+
+            vv["asdf"] = "news";
+
+            seri.Serialize(File.Open(filepath, FileMode.Truncate), vv);
+        }
+
         static void Main(string[] args)
         {
             try
             {
+                /*
                 Test1();
                 Test2();
                 Test3();
                 Test4();
+                 */
                 //Test5();
+                Test6();
                 SerializationTest.Test.SerializationTest();
                 Console.WriteLine("Test Successful");
             }
