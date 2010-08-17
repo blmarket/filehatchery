@@ -56,16 +56,6 @@ namespace Testing
             }
         }
 
-        static void Test3()
-        {
-            Config.FileHatcheryConfig fh = Config.FileHatcheryConfigManager.FHConfig;
-            string bm = fh.Bookmark;
-            Random rr = new Random();
-
-            fh.Bookmark = "Asdf";
-            Config.FileHatcheryConfigManager.Config.Save(System.Configuration.ConfigurationSaveMode.Modified);
-        }
-
         static void Test4()
         {
             FileInfo tmpfile = new FileInfo(System.IO.Path.GetTempFileName());
