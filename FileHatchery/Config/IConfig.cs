@@ -8,6 +8,8 @@ namespace Config
 {
     interface IConfig
     {
+        string this[string key] { get; set; }
+        void Save();
     }
 
     public class Util
