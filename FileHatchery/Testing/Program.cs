@@ -93,6 +93,13 @@ namespace Testing
             seri.Serialize(File.Open(filepath, FileMode.Truncate), vv);
         }
 
+        static void Test3()
+        {
+            Config.IConfig pp = new Config.PortableConfig();
+            pp["news"] = "asdf";
+            pp.Save();
+        }
+
         static void Main(string[] args)
         {
             try
@@ -103,6 +110,7 @@ namespace Testing
                 Test4();
                  */
                 Test6();
+                Test3();
                 SerializationTest.Test.SerializationTest();
                 Console.WriteLine("Test Successful");
             }
