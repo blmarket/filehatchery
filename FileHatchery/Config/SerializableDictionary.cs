@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-// Code below are copy-pasted from dnGREP, which is licensed : GPLv3
+// Code below are copy-pasted from dnGREP, License : GPLv3
 namespace Config
 {
     /// <summary>
