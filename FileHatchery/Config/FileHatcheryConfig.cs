@@ -22,6 +22,20 @@ namespace Config
                 this["bookmark"] = value;
             }
         }
+
+        [ConfigurationProperty("Test1", DefaultValue = "")]
+        [StringValidator()]
+        public string Test1
+        {
+            get
+            {
+                return (string)this["Test1"];
+            }
+            set
+            {
+                this["Test1"] = value;
+            }
+        }
     }
 
     public class FileHatcheryConfigManager
@@ -34,7 +48,7 @@ namespace Config
             get
             {
                 if (mainConfig == null)
-                    mainConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                    mainConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
                 return mainConfig;
             }
         }

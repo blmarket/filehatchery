@@ -60,8 +60,10 @@ namespace Testing
         {
             Config.FileHatcheryConfig fh = Config.FileHatcheryConfigManager.FHConfig;
             string bm = fh.Bookmark;
+            Random rr = new Random();
+
             fh.Bookmark = "Asdf";
-            Config.FileHatcheryConfigManager.Config.Save(System.Configuration.ConfigurationSaveMode.Full);
+            Config.FileHatcheryConfigManager.Config.Save(System.Configuration.ConfigurationSaveMode.Modified);
         }
 
         static void Test4()
