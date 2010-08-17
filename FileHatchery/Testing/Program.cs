@@ -73,9 +73,7 @@ namespace Testing
 
         static void Test6()
         {
-            System.Reflection.Assembly ass = System.Reflection.Assembly.GetExecutingAssembly();
-            Console.WriteLine(ass.Location);
-            string dirpath = Path.GetDirectoryName(ass.Location);
+            string dirpath = Config.Util.getExecutablePath();
             Console.WriteLine(dirpath);
             string filepath = dirpath + "\\test.dat";
             Console.WriteLine(filepath);
