@@ -100,9 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Browser\Executor.cs" />
-    <Compile Include="Config\Config.cs" />
-    <Compile Include="Config\ConfigSelector.cs" />
-    <Compile Include="Config\PortableConfig.cs" />
+    <Compile Include="ConfigSelector.cs" />
     <Compile Include="ConsoleTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -193,6 +191,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Config\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

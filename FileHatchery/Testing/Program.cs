@@ -65,12 +65,6 @@ namespace Testing
             eng.RunCommand("delete silent");
         }
 
-        static void Test5()
-        {
-            FileHatchery.Config.IConfig cfg = new FileHatchery.Config.PortableConfig();
-            cfg.setConfig("asdf", "news");
-        }
-
         static void Test6()
         {
             string dirpath = Config.Util.getExecutablePath();
@@ -108,7 +102,6 @@ namespace Testing
                 Test2();
                 Test4();
                  */
-                //Test5();
                 Test6();
                 SerializationTest.Test.SerializationTest();
                 Console.WriteLine("Test Successful");
