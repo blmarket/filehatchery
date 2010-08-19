@@ -49,6 +49,7 @@ namespace FileHatchery.Engine
             internal_commands.Add("microsoft", 1);
 
             setComponent(typeof(IIconProducer), new NullProducer());
+            setComponent(typeof(Config.IConfig), new Config.PortableConfig());
         }
 
         public void Dispose()
@@ -236,6 +237,11 @@ namespace FileHatchery.Engine
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
+                return;
+            }
+            if (cmd == "set")
+            {
+                ((Config.IConfig)getComponent(typeof(Config.IConfig)))["Font"] = "FixedSys, 12pt";
                 return;
             }
 

@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace FileHatchery.Config
+namespace FileHatchery
 {
     class ConfigSelector
     {
@@ -15,12 +15,10 @@ namespace FileHatchery.Config
             {
                 try
                 {
-                    /* 
-                    FontDialog fontDialog1 = new FontDialog();
-                    fontDialog1.ShowDialog();
-                    */
+                    Config.IConfig cfg = (Config.IConfig)Program.engine.getComponent(typeof(Config.IConfig));
+
                     FontConverter fc = new FontConverter();
-                    Font tmpFont = (Font)fc.ConvertFromString("FixedSys, 12pt");
+                    Font tmpFont = (Font)fc.ConvertFromString(cfg["Font"]);
                     return tmpFont;
                 }
                 catch (Exception EE)

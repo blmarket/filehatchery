@@ -24,7 +24,7 @@ namespace Config
 
     public class PortableConfig : IConfig
     {
-        private SerializableDictionary<string, string> Dict = new SerializableDictionary<string, string>();
+        private SerializableDictionary<string, string> Dict;
         private FileStream stream;
         private string filepath;
 
@@ -37,7 +37,7 @@ namespace Config
                 try
                 {
                     stream = File.Open(filepath, FileMode.Open);
-                    ser.Deserialize(stream);
+                    Dict = ser.Deserialize(stream) as SerializableDictionary<string, string>;
                 }
                 catch
                 {
@@ -47,6 +47,8 @@ namespace Config
             {
                 stream = File.Open(filepath, FileMode.CreateNew);
             }
+            if (Dict == null)
+                Dict = new SerializableDictionary<string, string>();
 
             ser = null;
             stream.Flush();
@@ -59,7 +61,12 @@ namespace Config
         {
             get
             {
-                return Dict[key];
+                if (Dict.ContainsKey(key))
+                    return Dict[key];
+                else
+                {
+                    return "";
+                }
             }
             set
             {
