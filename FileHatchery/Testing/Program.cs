@@ -75,13 +75,12 @@ namespace Testing
             XmlSerializer seri = new XmlSerializer(typeof(Config.SerializableDictionary<string, string>));
             Config.SerializableDictionary<string, string> vv;
 
+            FileStream str = File.Open(filepath, FileMode.OpenOrCreate);
+
             try
             {
-                FileStream str = File.Open(filepath, FileMode.OpenOrCreate);
                 object des = seri.Deserialize(str);
                 vv = des as Config.SerializableDictionary<string, string>;
-                str.Close();
-                str.Dispose();
             }
             catch (Exception)
             {
@@ -90,7 +89,8 @@ namespace Testing
 
             vv["asdf"] = "news";
 
-            seri.Serialize(File.Open(filepath, FileMode.Truncate), vv);
+            str.Seek(0, SeekOrigin.Begin);
+            seri.Serialize(str, vv);
         }
 
         static void Test3()
