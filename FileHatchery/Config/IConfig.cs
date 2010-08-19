@@ -25,6 +25,7 @@ namespace Config
     public class PortableConfig : IConfig
     {
         private SerializableDictionary<string, string> Dict = new SerializableDictionary<string, string>();
+        private FileStream stream;
         private string filepath;
 
         public PortableConfig(string filename = "filehatchery.ini")
@@ -35,15 +36,23 @@ namespace Config
             {
                 try
                 {
-                    FileStream str = File.OpenRead(filepath);
-                    ser.Deserialize(str);
-                    str.Close();
-                    str.Dispose();
+                    stream = File.Open(filepath, FileMode.Open);
+                    ser.Deserialize(stream);
                 }
                 catch
                 {
                 }
             }
+            else
+            {
+                stream = File.Open(filepath, FileMode.CreateNew);
+            }
+
+            ser = null;
+            stream.Flush();
+            stream.Close();
+            stream.Dispose();
+            stream = null;
         }
 
         string IConfig.this[string key]
@@ -60,8 +69,14 @@ namespace Config
 
         void IConfig.Save()
         {
+            if (stream == null)
+            {
+                stream = File.Open(filepath, FileMode.Create);
+            }
+
+            stream.Seek(0, SeekOrigin.Begin);
             XmlSerializer ser = new XmlSerializer(typeof(SerializableDictionary<string, string>));
-            ser.Serialize(File.Open(filepath, FileMode.Create), Dict);
+            ser.Serialize(stream, Dict);
         }
     }
 }
