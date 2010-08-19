@@ -77,7 +77,7 @@ namespace Testing
 
             try
             {
-                FileStream str = File.Open(filepath, FileMode.Open);
+                FileStream str = File.Open(filepath, FileMode.OpenOrCreate);
                 object des = seri.Deserialize(str);
                 vv = des as Config.SerializableDictionary<string, string>;
                 str.Close();
