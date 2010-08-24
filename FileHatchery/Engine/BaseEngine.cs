@@ -244,6 +244,16 @@ namespace FileHatchery.Engine
                 ((Config.IConfig)getComponent(typeof(Config.IConfig)))["Font"] = "FixedSys, 12pt";
                 return;
             }
+            if (cmd == "save")
+            {
+                ((Config.IConfig)getComponent(typeof(Config.IConfig)))["Bookmark"] = Browser.CurrentDir.FullName;
+                return;
+            }
+            if (cmd == "load")
+            {
+                Browser.CurrentDir = new DirectoryInfo(((Config.IConfig)getComponent(typeof(Config.IConfig)))["Bookmark"]);
+                return;
+            }
 
             throw new NotImplementedException("Operation " + cmd + " is not implemented");
         }
