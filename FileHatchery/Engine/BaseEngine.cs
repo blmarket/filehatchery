@@ -239,7 +239,7 @@ namespace FileHatchery.Engine
                 GC.Collect();
                 return;
             }
-            if (cmd == "set")
+            if (cmd == "set") // FIXME: temporary
             {
                 ((Config.IConfig)getComponent(typeof(Config.IConfig)))["Font"] = "FixedSys, 12pt";
                 return;
