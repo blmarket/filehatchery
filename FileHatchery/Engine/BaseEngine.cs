@@ -244,14 +244,16 @@ namespace FileHatchery.Engine
                 ((Config.IConfig)getComponent(typeof(Config.IConfig)))["Font"] = "FixedSys, 12pt";
                 return;
             }
-            if (cmd == "save")
+            if (cmd.StartsWith("save"))
             {
-                ((Config.IConfig)getComponent(typeof(Config.IConfig)))["Bookmark"] = Browser.CurrentDir.FullName;
+                string vv = cmd.Substring(4);
+                ((Config.IConfig)getComponent(typeof(Config.IConfig)))["Bookmark" + vv] = Browser.CurrentDir.FullName;
                 return;
             }
-            if (cmd == "load")
+            if (cmd.StartsWith("load"))
             {
-                Browser.CurrentDir = new DirectoryInfo(((Config.IConfig)getComponent(typeof(Config.IConfig)))["Bookmark"]);
+                string vv = cmd.Substring(4);
+                Browser.CurrentDir = new DirectoryInfo(((Config.IConfig)getComponent(typeof(Config.IConfig)))["Bookmark" + vv]);
                 return;
             }
 
