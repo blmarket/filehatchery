@@ -256,6 +256,13 @@ namespace FileHatchery.Engine
                 Browser.CurrentDir = new DirectoryInfo(((Config.IConfig)getComponent(typeof(Config.IConfig)))["Bookmark" + vv]);
                 return;
             }
+            if (cmd.StartsWith("new "))
+            {
+                string vv = cmd.Substring(4);
+                File.Create(Browser.CurrentDir.FullName + "\\" + vv).Close();
+                Browser.Refresh();
+                return;
+            }
 
             throw new NotImplementedException("Operation " + cmd + " is not implemented");
         }
