@@ -18,6 +18,7 @@ namespace WooriLogReader
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string htmldoc = "";
             {
                 var stream = new System.IO.StreamReader("asdf.xls", Encoding.Default);
                 string tmpx;
@@ -26,21 +27,29 @@ namespace WooriLogReader
                     tmpx = stream.ReadLine();
                     if (tmpx.Contains("메모"))
                     {
+                        htmldoc = "<table>" + stream.ReadToEnd();
+                        break;
                     }
-                    System.Diagnostics.Debug.WriteLine(tmpx);
-                } while (stream.EndOfStream == false);                
-                
+                } while (stream.EndOfStream == false);                                
                 stream.Close();
             }
 
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            doc.Load("asdf.xls", true);
+            doc.LoadHtml(htmldoc);
             HtmlAgilityPack.HtmlNode node = doc.DocumentNode;
-            var tmp = node.SelectNodes("//tr[@class='output_title']");
-            var par = tmp[0].ParentNode;
-            foreach (var iter in par.ChildNodes)
+            var par = node.SelectNodes("//table")[0];
+            foreach (var iter in par.SelectNodes("//tr"))
             {
-                System.Diagnostics.Debug.WriteLine(iter);
+                //거래일자	적요	  기재내용	찾으신금액	맡기신금액	거래후잔액	취급점	메모
+                List<string> list = new List<string>();
+                foreach (var jter in iter.Elements("td"))
+                {
+                    list.Add(jter.InnerText);
+                }
+                string cost = list[3].InnerText;
+                int result;
+                result = Int32.Parse(cost, System.Globalization.NumberStyles.Number);
+                System.Diagnostics.Debug.WriteLine(result);
             }
             System.Diagnostics.Debug.WriteLine("I am using dot net debugging");
         }
