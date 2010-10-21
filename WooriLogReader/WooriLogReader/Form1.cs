@@ -46,7 +46,9 @@ namespace WooriLogReader
                 {
                     list.Add(jter.InnerText);
                 }
+
                 DateTime date = DateTime.Parse(list[0]);
+
                 string cost = list[3];
                 int result;
                 result = Int32.Parse(cost, System.Globalization.NumberStyles.Number);
