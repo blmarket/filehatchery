@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 using ShellApi;
 using System.IO;
 using System.Drawing;
@@ -54,14 +56,6 @@ namespace Testing
             }
         }
 
-        static void Test3()
-        {
-            Config.FileHatcheryConfig fh = Config.FileHatcheryConfigManager.FHConfig;
-            string bm = fh.Bookmark;
-            fh.Bookmark = "Asdf";
-            Config.FileHatcheryConfigManager.Config.Save(System.Configuration.ConfigurationSaveMode.Full);
-        }
-
         static void Test4()
         {
             FileInfo tmpfile = new FileInfo(System.IO.Path.GetTempFileName());
@@ -71,21 +65,52 @@ namespace Testing
             eng.RunCommand("delete silent");
         }
 
-        static void Test5()
+        static void Test6()
         {
-            FileHatchery.Config.IConfig cfg = new FileHatchery.Config.PortableConfig();
-            cfg.setConfig("asdf", "news");
+            string dirpath = Config.Util.getExecutablePath();
+            Console.WriteLine(dirpath);
+            string filepath = dirpath + "\\test.dat";
+            Console.WriteLine(filepath);
+
+            XmlSerializer seri = new XmlSerializer(typeof(Config.SerializableDictionary<string, string>));
+            Config.SerializableDictionary<string, string> vv;
+
+            FileStream str = File.Open(filepath, FileMode.OpenOrCreate);
+
+            try
+            {
+                object des = seri.Deserialize(str);
+                vv = des as Config.SerializableDictionary<string, string>;
+            }
+            catch (Exception)
+            {
+                vv = new Config.SerializableDictionary<string, string>();
+            }
+
+            vv["asdf"] = "news";
+
+            str.Seek(0, SeekOrigin.Begin);
+            seri.Serialize(str, vv);
+        }
+
+        static void Test3()
+        {
+            Config.IConfig pp = new Config.PortableConfig();
+            pp["news"] = "asdf";
+            pp.Save();
         }
 
         static void Main(string[] args)
         {
             try
             {
+                /*
                 Test1();
                 Test2();
-                Test3();
                 Test4();
-                //Test5();
+                 */
+                Test6();
+                Test3();
                 SerializationTest.Test.SerializationTest();
                 Console.WriteLine("Test Successful");
             }

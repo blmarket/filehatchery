@@ -103,10 +103,10 @@ namespace FileHatchery
             Program.engine.setComponent(typeof(IIconProducer), new IconQueue());
             IconGetter.RunWorkerAsync();
 
-            console = Config.ConfigSelector.Console;
+            console = ConfigSelector.Console;
             console.Hide();
 
-            Font font = Config.ConfigSelector.Font;
+            Font font = ConfigSelector.Font;
             if (font != null)
                 Program.engine.Font = font;
 
@@ -282,6 +282,13 @@ namespace FileHatchery
                 if (temp != null)
                     temp(item, EventArgs.Empty);
             }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // FIXME: 일관되지 않은 느낌이다...
+            Config.IConfig cfg = (Config.IConfig)Program.engine.getComponent(typeof(Config.IConfig));
+            cfg.Save();
         }
     }
 

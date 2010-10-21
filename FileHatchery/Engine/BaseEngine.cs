@@ -49,6 +49,7 @@ namespace FileHatchery.Engine
             internal_commands.Add("microsoft", 1);
 
             setComponent(typeof(IIconProducer), new NullProducer());
+            setComponent(typeof(Config.IConfig), new Config.PortableConfig());
         }
 
         public void Dispose()
@@ -236,6 +237,30 @@ namespace FileHatchery.Engine
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
+                return;
+            }
+            if (cmd == "set") // FIXME: temporary
+            {
+                ((Config.IConfig)getComponent(typeof(Config.IConfig)))["Font"] = "FixedSys, 12pt";
+                return;
+            }
+            if (cmd.StartsWith("save"))
+            {
+                string vv = cmd.Substring(4);
+                ((Config.IConfig)getComponent(typeof(Config.IConfig)))["Bookmark" + vv] = Browser.CurrentDir.FullName;
+                return;
+            }
+            if (cmd.StartsWith("load"))
+            {
+                string vv = cmd.Substring(4);
+                Browser.CurrentDir = new DirectoryInfo(((Config.IConfig)getComponent(typeof(Config.IConfig)))["Bookmark" + vv]);
+                return;
+            }
+            if (cmd.StartsWith("new "))
+            {
+                string vv = cmd.Substring(4);
+                File.Create(Browser.CurrentDir.FullName + "\\" + vv).Close();
+                Browser.Refresh();
                 return;
             }
 
