@@ -34,6 +34,10 @@ namespace WooriLogReader
                 stream.Close();
             }
 
+            DateTime minDate = DateTime.MaxValue, maxDate = DateTime.MinValue;
+
+            System.Collections.Generic.Dictionary<DateTime, List<Tuple<string, string, long, long, long, string, string>>> dict = new Dictionary<DateTime,List<Tuple<string,string,long,long,long,string,string>>>();
+
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
             doc.LoadHtml(htmldoc);
             HtmlAgilityPack.HtmlNode node = doc.DocumentNode;
@@ -49,12 +53,27 @@ namespace WooriLogReader
 
                 DateTime date = DateTime.Parse(list[0]);
 
-                string cost = list[3];
-                int result;
-                result = Int32.Parse(cost, System.Globalization.NumberStyles.Number);
-                System.Diagnostics.Debug.WriteLine(result);
+                if (minDate == null || minDate > date) minDate = date;
+                if (maxDate == null || maxDate < date) maxDate = date;
+
+                long expense = Int64.Parse(list[3], System.Globalization.NumberStyles.Number);
+                long income = Int64.Parse(list[4], System.Globalization.NumberStyles.Number);
+                long cash = Int64.Parse(list[5], System.Globalization.NumberStyles.Number);
+
+                if (dict.ContainsKey(date) == false)
+                    dict.Add(date, new List<Tuple<string, string, long, long, long, string, string>>());
+
+                dict[date].Add(new Tuple<string,string,long,long,long,string,string>(list[1], list[2], expense, income, cash, list[6], list[7]));
             }
-            System.Diagnostics.Debug.WriteLine("I am using dot net debugging");
+            System.Diagnostics.Debug.WriteLine(minDate + " " + maxDate);
+            minDate = minDate.Add(new TimeSpan(1, 0, 0, 0));
+//            maxDate = maxDate.Subtract(new TimeSpan(1, 0, 0, 0));
+            System.Diagnostics.Debug.WriteLine(minDate + " " + maxDate);
+
+            for (DateTime date = minDate; date != maxDate; date = date.Add(new TimeSpan(1, 0, 0, 0)))
+            {
+                System.Diagnostics.Debug.WriteLine(date);
+            }
         }
     }
 }
