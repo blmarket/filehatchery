@@ -46,7 +46,7 @@ namespace WooriLogReader
                 {
                     list.Add(jter.InnerText);
                 }
-                string cost = list[3].InnerText;
+                string cost = list[3];
                 int result;
                 result = Int32.Parse(cost, System.Globalization.NumberStyles.Number);
                 System.Diagnostics.Debug.WriteLine(result);
