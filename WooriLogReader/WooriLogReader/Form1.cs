@@ -73,6 +73,16 @@ namespace WooriLogReader
             for (DateTime date = minDate; date != maxDate; date = date.Add(new TimeSpan(1, 0, 0, 0)))
             {
                 System.Diagnostics.Debug.WriteLine(date);
+
+                if (dict.ContainsKey(date) == false)
+                    dict.Add(date, new List<Tuple<string, string, long, long, long, string, string>>());
+
+                var data = dict[date];
+
+                foreach (var item in data)
+                {
+                    System.Diagnostics.Debug.WriteLine(item);
+                }
             }
         }
     }
