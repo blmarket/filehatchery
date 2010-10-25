@@ -80,7 +80,6 @@ namespace WooriLogReader
                 conn = new SqlCeConnection(connString);
                 conn.Open();
 
-                SqlCeCommand cmd = conn.CreateCommand();
                 for (DateTime date = minDate; date != maxDate; date = date.Add(new TimeSpan(1, 0, 0, 0)))
                 {
                     System.Diagnostics.Debug.WriteLine(date);
@@ -89,17 +88,15 @@ namespace WooriLogReader
 
                     foreach(var item in dict[date])
                     {
-                        string cmdtxt = 
-                            String.Format("INSERT INTO banklogs (date, category, name, expense, income, bank, memo) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}');",
-                            ToSQLDateTime(date),
-                            item.Item1,
-                            item.Item2,
-                            item.Item3,
-                            item.Item4,
-                            item.Item6,
-                            item.Item7
-                            );
-                        cmd.CommandText = cmdtxt;
+                        SqlCeCommand cmd = conn.CreateCommand();
+                        cmd.CommandText = "INSERT INTO banklogs (date, category, name, expense, income, bank, memo) VALUES (@date, @category, @name, @expense, @income, @bank, @memo);";
+                        cmd.Parameters.AddWithValue("@date", date);
+                        cmd.Parameters.AddWithValue("@category", item.Item1);
+                        cmd.Parameters.AddWithValue("@name", item.Item2);
+                        cmd.Parameters.AddWithValue("@expense", item.Item3);
+                        cmd.Parameters.AddWithValue("@income", item.Item4);
+                        cmd.Parameters.AddWithValue("@bank", item.Item6);
+                        cmd.Parameters.AddWithValue("@memo", item.Item7);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -132,14 +129,14 @@ namespace WooriLogReader
 
                 SqlCeCommand cmd = conn.CreateCommand();
                 cmd.CommandText = @"CREATE TABLE banklogs ( 
-idx INT NOT NULL PRIMARY KEY ,
+idx INT IDENTITY NOT NULL PRIMARY KEY ,
 date DATETIME NOT NULL ,
-category NVARCHAR( 10 ) NOT NULL ,
-name NVARCHAR( 10 ) NOT NULL ,
+category NVARCHAR( 20 ) NOT NULL ,
+name NVARCHAR( 20 ) NOT NULL ,
 expense INT NOT NULL ,
 income INT NOT NULL ,
-bank NVARCHAR( 10 ) NOT NULL ,
-memo NVARCHAR( 10 ) NOT NULL
+bank NVARCHAR( 20 ) NOT NULL ,
+memo NVARCHAR( 100 ) NOT NULL
 );";
                 cmd.ExecuteNonQuery();
 
