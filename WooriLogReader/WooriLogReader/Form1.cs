@@ -6,6 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
+
+using System.Data.SqlServerCe;
 
 namespace WooriLogReader
 {
@@ -74,6 +77,14 @@ namespace WooriLogReader
             {
                 System.Diagnostics.Debug.WriteLine(date);
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            File.Delete("Test.sdf");
+            string connString = "Data Source='Test.sdf'; LCID=1033; Password=asdf; Encrypt = TRUE;";
+            SqlCeEngine engine = new SqlCeEngine(connString);
+            engine.CreateDatabase();
         }
     }
 }
