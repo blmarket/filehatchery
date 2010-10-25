@@ -73,9 +73,45 @@ namespace WooriLogReader
 //            maxDate = maxDate.Subtract(new TimeSpan(1, 0, 0, 0));
             System.Diagnostics.Debug.WriteLine(minDate + " " + maxDate);
 
-            for (DateTime date = minDate; date != maxDate; date = date.Add(new TimeSpan(1, 0, 0, 0)))
+            SqlCeConnection conn = null;
+            try
             {
-                System.Diagnostics.Debug.WriteLine(date);
+                string connString = "Data Source='Test.sdf'; LCID=1033; Password=asdf; Encrypt = TRUE;";
+                conn = new SqlCeConnection(connString);
+                conn.Open();
+
+                SqlCeCommand cmd = conn.CreateCommand();
+                for (DateTime date = minDate; date != maxDate; date = date.Add(new TimeSpan(1, 0, 0, 0)))
+                {
+                    System.Diagnostics.Debug.WriteLine(date);
+                    if (dict.ContainsKey(date) == false)
+                        dict.Add(date, new List<Tuple<string, string, long, long, long, string, string>>());
+
+                    foreach(var item in dict[date])
+                    {
+                        string cmdtxt = 
+                            String.Format("INSERT INTO banklogs (date, category, name, expense, income, bank, memo) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}');",
+                            ToSQLDateTime(date),
+                            item.Item1,
+                            item.Item2,
+                            item.Item3,
+                            item.Item4,
+                            item.Item6,
+                            item.Item7
+                            );
+                        cmd.CommandText = cmdtxt;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
             }
         }
 
@@ -85,6 +121,43 @@ namespace WooriLogReader
             string connString = "Data Source='Test.sdf'; LCID=1033; Password=asdf; Encrypt = TRUE;";
             SqlCeEngine engine = new SqlCeEngine(connString);
             engine.CreateDatabase();
+            engine.Dispose();
+
+            SqlCeConnection conn = null;
+
+            try
+            {
+                conn = new SqlCeConnection(connString);
+                conn.Open();
+
+                SqlCeCommand cmd = conn.CreateCommand();
+                cmd.CommandText = @"CREATE TABLE banklogs ( 
+idx INT NOT NULL PRIMARY KEY ,
+date DATETIME NOT NULL ,
+category NVARCHAR( 10 ) NOT NULL ,
+name NVARCHAR( 10 ) NOT NULL ,
+expense INT NOT NULL ,
+income INT NOT NULL ,
+bank NVARCHAR( 10 ) NOT NULL ,
+memo NVARCHAR( 10 ) NOT NULL
+);";
+                cmd.ExecuteNonQuery();
+
+//                cmd.CommandText = @"INSERT INTO banklogs (date,category,name,expense) values ('2010-10-25');";
+//                cmd.ExecuteNonQuery();                    
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+            }
+            finally {
+                conn.Close();
+            }
+        }
+
+        private string ToSQLDateTime(DateTime date)
+        {
+            return date.ToShortDateString();
         }
     }
 }
