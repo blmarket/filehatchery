@@ -24,7 +24,14 @@ namespace FileHatchery
         /// <param name="file">관리자 권한으로 실행하고자 하는 File</param>
         public void visit(FileItem file)
         {
-            Win32.SHExecute(file.FullPath, "", true);
+            try
+            {
+                Win32.SHExecute(file.FullPath, "", true);
+            }
+            catch (Exception E)
+            {
+                Program.engine.HandleException(E);
+            }
         }
 
         /// <summary>
@@ -52,7 +59,14 @@ namespace FileHatchery
         /// <param name="file">실행하고자 하는 File</param>
         public void visit(FileItem file)
         {
-            Win32.SHExecute(file.FullPath, "", false);
+            try
+            {
+                Win32.SHExecute(file.FullPath, "", false);
+            }
+            catch (Exception E)
+            {
+                Program.engine.HandleException(E);
+            }
         }
 
         /// <summary>

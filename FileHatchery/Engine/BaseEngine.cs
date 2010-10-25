@@ -241,19 +241,19 @@ namespace FileHatchery.Engine
             }
             if (cmd == "set") // FIXME: temporary
             {
-                ((Config.IConfig)getComponent(typeof(Config.IConfig)))["Font"] = "FixedSys, 12pt";
+                getComponent<Config.IConfig>()["Font"] = "FixedSys, 12pt";
                 return;
             }
             if (cmd.StartsWith("save"))
             {
                 string vv = cmd.Substring(4);
-                ((Config.IConfig)getComponent(typeof(Config.IConfig)))["Bookmark" + vv] = Browser.CurrentDir.FullName;
+                getComponent<Config.IConfig>()["Bookmark" + vv] = Browser.CurrentDir.FullName;
                 return;
             }
             if (cmd.StartsWith("load"))
             {
                 string vv = cmd.Substring(4);
-                Browser.CurrentDir = new DirectoryInfo(((Config.IConfig)getComponent(typeof(Config.IConfig)))["Bookmark" + vv]);
+                Browser.CurrentDir = new DirectoryInfo(getComponent<Config.IConfig>()["Bookmark" + vv]);
                 return;
             }
             if (cmd.StartsWith("new "))
@@ -281,12 +281,17 @@ namespace FileHatchery.Engine
             }
             catch (Exception E)
             {
-                var tmp = UINotify;
-                if (tmp != null)
-                    tmp(this, new Notification.NotifyArgs(E.Message));
-                else
-                    throw;
+                HandleException(E);
             }
+        }
+
+        public void HandleException(Exception E)
+        {
+            var tmp = UINotify;
+            if (tmp != null)
+                tmp(this, new Notification.NotifyArgs(E.Message));
+            else
+                throw E;
         }
 
         private void DeleteFiles(bool silent)
