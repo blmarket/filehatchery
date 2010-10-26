@@ -185,5 +185,16 @@ memo NVARCHAR( 100 ) NOT NULL
                 conn.Dispose();
             }
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text == "") return;
+            string txt = textBox1.Text;
+
+            Button btn = new Button();
+            btn.Width = flowLayoutPanel1.Width;
+            btn.Text = txt;
+            flowLayoutPanel1.Controls.Add(btn);
+        }
     }
 }
