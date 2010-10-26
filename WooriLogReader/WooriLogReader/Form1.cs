@@ -192,8 +192,25 @@ memo NVARCHAR( 100 ) NOT NULL
             string txt = textBox1.Text;
 
             Button btn = new Button();
-            btn.Width = flowLayoutPanel1.Width;
+//            btn.Width = flowLayoutPanel1.DisplayRectangle.Width - 20;
+            btn.Width = flowLayoutPanel1.Width - 20;
+            btn.Height = btn.Height + 10;
             btn.Text = txt;
+
+            Padding pad = btn.Margin;
+            pad.All = 0;
+            btn.Margin = pad;
+            btn.Visible = true;
+
+/*
+            EventHandler tmpHandler = delegate(object obj, EventArgs ee)
+            {
+                int width = flowLayoutPanel1.DisplayRectangle.Width - 20;
+                btn.Width = width;
+            };
+            flowLayoutPanel1.SizeChanged += tmpHandler;
+ */
+
             flowLayoutPanel1.Controls.Add(btn);
         }
     }
