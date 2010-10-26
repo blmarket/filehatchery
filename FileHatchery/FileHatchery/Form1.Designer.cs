@@ -63,7 +63,7 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.정보ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.browserPanel = new FileHatchery.PagedLayoutPanel();
-            this.demoFlowPanel1 = new FileHatchery.DemoFlowPanel();
+            this.demoFlowPanel1 = new blmarket.DemoFlowPanel();
             this.IconGetter = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -386,7 +386,7 @@
 
         #endregion
 
-        private DemoFlowPanel demoFlowPanel1;
+        private blmarket.DemoFlowPanel demoFlowPanel1;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private PagedLayoutPanel browserPanel;

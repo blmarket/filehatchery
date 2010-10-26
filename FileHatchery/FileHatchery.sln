@@ -14,7 +14,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UISandBox", "UISandBox\UISa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{7DAFEB86-31F1-45F8-A465-01E115A016DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoFlowLayout", "..\DemoFlowLayout\DemoFlowLayout.csproj", "{79827DD3-7D27-43B4-B761-C497E73CBE1B}"
+EndProject
 Global
+	GlobalSection(MercurialSourceControlSolutionProperties) = preSolution
+		SolutionIsControlled = True
+		SolutionBindings = <Solution Location In Database>
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -62,12 +68,14 @@ Global
 		{7DAFEB86-31F1-45F8-A465-01E115A016DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7DAFEB86-31F1-45F8-A465-01E115A016DE}.Release|x86.ActiveCfg = Release|x86
 		{7DAFEB86-31F1-45F8-A465-01E115A016DE}.Release|x86.Build.0 = Release|x86
+		{79827DD3-7D27-43B4-B761-C497E73CBE1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79827DD3-7D27-43B4-B761-C497E73CBE1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79827DD3-7D27-43B4-B761-C497E73CBE1B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{79827DD3-7D27-43B4-B761-C497E73CBE1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79827DD3-7D27-43B4-B761-C497E73CBE1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79827DD3-7D27-43B4-B761-C497E73CBE1B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(MercurialSourceControlSolutionProperties) = preSolution
-		SolutionIsControlled = True
-		SolutionBindings = <Solution Location In Database>
 	EndGlobalSection
 EndGlobal
