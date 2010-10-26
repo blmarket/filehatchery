@@ -14,6 +14,8 @@ namespace WooriLogReader
 {
     public partial class Form1 : Form
     {
+        private string connString = "Data Source='Test.sdf'; LCID=1033; Password=asdf; Encrypt = TRUE;";
+
         public Form1()
         {
             InitializeComponent();
@@ -76,7 +78,6 @@ namespace WooriLogReader
             SqlCeConnection conn = null;
             try
             {
-                string connString = "Data Source='Test.sdf'; LCID=1033; Password=asdf; Encrypt = TRUE;";
                 conn = new SqlCeConnection(connString);
                 conn.Open();
 
@@ -115,7 +116,6 @@ namespace WooriLogReader
         private void button2_Click(object sender, EventArgs e)
         {
             File.Delete("Test.sdf");
-            string connString = "Data Source='Test.sdf'; LCID=1033; Password=asdf; Encrypt = TRUE;";
             SqlCeEngine engine = new SqlCeEngine(connString);
             engine.CreateDatabase();
             engine.Dispose();
@@ -155,6 +155,35 @@ memo NVARCHAR( 100 ) NOT NULL
         private string ToSQLDateTime(DateTime date)
         {
             return date.ToShortDateString();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SqlCeConnection conn = null;
+            conn = new SqlCeConnection(connString);
+            try
+            {
+                conn.Open();
+
+                SqlCeCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT * FROM banklogs";
+                var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    System.Diagnostics.Debug.WriteLine(String.Format("{0} {1} {2} {3} {4} {5} {6} {7}",
+                        reader[0],reader[1],reader[2],reader[3],reader[4],reader[5],reader[6],reader[7]));
+                }
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
         }
     }
 }
