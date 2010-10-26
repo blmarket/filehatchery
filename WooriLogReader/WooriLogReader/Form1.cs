@@ -213,5 +213,10 @@ memo NVARCHAR( 100 ) NOT NULL
 
             flowLayoutPanel1.Controls.Add(btn);
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
