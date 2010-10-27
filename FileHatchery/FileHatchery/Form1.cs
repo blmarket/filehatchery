@@ -24,12 +24,12 @@ namespace FileHatchery
         IBrowser browser;
         TextBox console;
         System.Windows.Forms.Timer m_demoFlowPanelTimer;
-        Queue<KeyValuePair<int, KeyValuePair<Control, EventHandler>>> m_ControlQueue;
+        Queue<KeyValuePair<int, Control>> m_ControlQueue;
 
         public Form1()
         {
             InitializeComponent();
-            m_ControlQueue = new Queue<KeyValuePair<int, KeyValuePair<Control, EventHandler>>>();
+            m_ControlQueue = new Queue<KeyValuePair<int, Control>>();
         }
 
         void m_demoFlowPanelTimer_Tick(object sender, EventArgs e)
@@ -39,9 +39,8 @@ namespace FileHatchery
                 var item = m_ControlQueue.Peek();
                 if (item.Key < Environment.TickCount)
                 {
-                    demoFlowPanel1.SizeChanged -= item.Value.Value;
-                    demoFlowPanel1.Controls.Remove(item.Value.Key);
-                    item.Value.Key.Dispose();
+                    demoFlowPanel1.Controls.Remove(item.Value);
+                    item.Value.Dispose();
                     m_ControlQueue.Dequeue();
                 }
                 else
@@ -200,21 +199,15 @@ namespace FileHatchery
             Color[] colors = new Color[] { Color.AliceBlue, Color.Aqua, Color.Azure, Color.Red, Color.RoyalBlue };
             Label tmp = new Label();
             tmp.Text = msg;
-            tmp.Width = demoFlowPanel1.Width;
             Padding pad = tmp.Margin;
             pad.All = 0;
             tmp.Margin = pad;
             tmp.Visible = true;
             tmp.BackColor = colors[testRandom.Next(colors.Length)];
-            EventHandler tmpHandler = delegate(object obj, EventArgs e)
-            {
-                tmp.Width = demoFlowPanel1.Width;
-            };
 
-            demoFlowPanel1.SizeChanged += tmpHandler;
             demoFlowPanel1.Controls.Add(tmp);
 
-            m_ControlQueue.Enqueue(new KeyValuePair<int, KeyValuePair<Control, EventHandler>>(Environment.TickCount + 3000, new KeyValuePair<Control, EventHandler>(tmp, tmpHandler)));
+            m_ControlQueue.Enqueue(new KeyValuePair<int, Control>(Environment.TickCount + 3000, tmp));
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
