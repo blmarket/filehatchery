@@ -27,7 +27,8 @@ namespace WooriLogReader
         {
             string htmldoc = "";
             {
-                var stream = new System.IO.StreamReader("asdf.xls", Encoding.Default);
+                openFileDialog1.ShowDialog();
+                var stream = new System.IO.StreamReader(openFileDialog1.OpenFile(), Encoding.Default);
                 string tmpx;
                 do
                 {
@@ -87,10 +88,18 @@ namespace WooriLogReader
 
                 for (DateTime date = minDate; date != maxDate; date = date.Add(new TimeSpan(1, 0, 0, 0)))
                 {
-                    System.Diagnostics.Debug.WriteLine(date);
-
                     if (dict.ContainsKey(date) == false)
-                        dict.Add(date, new List<Tuple<string, string, long, long, long, string, string>>());
+                        continue;
+
+                    SqlCeCommand cmd1 = conn.CreateCommand();
+                    cmd1.CommandText = "SELECT * FROM banklogs WHERE date=@date";
+                    cmd1.Parameters.AddWithValue("@date", date);
+                    var ret = cmd1.ExecuteScalar();
+
+                    if (ret != null)
+                        continue;
+
+                    System.Diagnostics.Debug.WriteLine(date);
 
                     foreach(var item in dict[date])
                     {
@@ -151,11 +160,6 @@ cat INT
                 conn.Dispose();
                 conn = null;
             }
-        }
-
-        private string ToSQLDateTime(DateTime date)
-        {
-            return date.ToShortDateString();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -219,6 +223,7 @@ cat INT
                 cmd.CommandText = "SELECT * FROM banklogs WHERE cat IS NULL AND idx>@index;";
                 cmd.Parameters.AddWithValue("@index", current_reader != null ? (int)current_reader[0] : 0);
                 SqlCeDataReader reader = cmd.ExecuteReader();
+
                 if (reader.Read())
                 {
                     current_reader = reader;
@@ -229,6 +234,17 @@ cat INT
                     textBox5.Text = current_reader[4].ToString();
                     textBox6.Text = current_reader[5].ToString();
                     textBox7.Text = current_reader[7].ToString();
+                }
+                else
+                {
+                    current_reader = null;
+                    dateTimePicker1.ResetText();
+                    textBox2.ResetText();
+                    textBox3.ResetText();
+                    textBox4.ResetText();
+                    textBox5.ResetText();
+                    textBox6.ResetText();
+                    textBox7.ResetText();
                 }
             }
             catch (Exception E)
