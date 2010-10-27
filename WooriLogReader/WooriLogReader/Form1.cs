@@ -15,6 +15,8 @@ namespace WooriLogReader
     public partial class Form1 : Form
     {
         private string connString = "Data Source='Test.sdf'; LCID=1033; Password=asdf; Encrypt = TRUE;";
+        private SqlCeDataReader current_reader;
+        private SqlCeConnection conn;
 
         public Form1()
         {
@@ -75,11 +77,13 @@ namespace WooriLogReader
 //            maxDate = maxDate.Subtract(new TimeSpan(1, 0, 0, 0));
             System.Diagnostics.Debug.WriteLine(minDate + " " + maxDate);
 
-            SqlCeConnection conn = null;
             try
             {
-                conn = new SqlCeConnection(connString);
-                conn.Open();
+                if (conn == null)
+                {
+                    conn = new SqlCeConnection(connString);
+                    conn.Open();
+                }
 
                 for (DateTime date = minDate; date != maxDate; date = date.Add(new TimeSpan(1, 0, 0, 0)))
                 {
@@ -106,11 +110,8 @@ namespace WooriLogReader
             catch (Exception E)
             {
                 MessageBox.Show(E.Message);
-            }
-            finally
-            {
                 conn.Close();
-                conn.Dispose();
+                conn = null;
             }
         }
 
@@ -121,12 +122,13 @@ namespace WooriLogReader
             engine.CreateDatabase();
             engine.Dispose();
 
-            SqlCeConnection conn = null;
-
             try
             {
-                conn = new SqlCeConnection(connString);
-                conn.Open();
+                if (conn == null)
+                {
+                    conn = new SqlCeConnection(connString);
+                    conn.Open();
+                }
 
                 SqlCeCommand cmd = conn.CreateCommand();
                 cmd.CommandText = @"CREATE TABLE banklogs ( 
@@ -137,19 +139,17 @@ name NVARCHAR( 20 ) NOT NULL ,
 expense INT NOT NULL ,
 income INT NOT NULL ,
 bank NVARCHAR( 20 ) NOT NULL ,
-memo NVARCHAR( 100 ) NOT NULL
+memo NVARCHAR( 100 ) NOT NULL ,
+cat INT
 );";
                 cmd.ExecuteNonQuery();
-
-//                cmd.CommandText = @"INSERT INTO banklogs (date,category,name,expense) values ('2010-10-25');";
-//                cmd.ExecuteNonQuery();                    
             }
             catch (Exception E)
             {
                 MessageBox.Show(E.Message);
-            }
-            finally {
                 conn.Close();
+                conn.Dispose();
+                conn = null;
             }
         }
 
@@ -160,11 +160,13 @@ memo NVARCHAR( 100 ) NOT NULL
 
         private void button3_Click(object sender, EventArgs e)
         {
-            SqlCeConnection conn = null;
-            conn = new SqlCeConnection(connString);
             try
             {
-                conn.Open();
+                if (conn == null)
+                {
+                    conn = new SqlCeConnection(connString);
+                    conn.Open();
+                }
 
                 SqlCeCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT * FROM banklogs";
@@ -179,11 +181,8 @@ memo NVARCHAR( 100 ) NOT NULL
             catch (Exception E)
             {
                 MessageBox.Show(E.Message);
-            }
-            finally
-            {
                 conn.Close();
-                conn.Dispose();
+                conn = null;
             }
         }
 
@@ -194,7 +193,7 @@ memo NVARCHAR( 100 ) NOT NULL
 
             Button btn = new Button();
 //            btn.Width = flowLayoutPanel1.DisplayRectangle.Width - 20;
-            btn.Width = flowLayoutPanel1.Width - 20;
+//            btn.Width = flowLayoutPanel1.Width - 20;
             btn.Height = btn.Height + 10;
             btn.Text = txt;
 
@@ -203,21 +202,100 @@ memo NVARCHAR( 100 ) NOT NULL
             btn.Margin = pad;
             btn.Visible = true;
 
-/*
-            EventHandler tmpHandler = delegate(object obj, EventArgs ee)
-            {
-                int width = flowLayoutPanel1.DisplayRectangle.Width - 20;
-                btn.Width = width;
-            };
-            flowLayoutPanel1.SizeChanged += tmpHandler;
- */
-
             flowLayoutPanel1.Controls.Add(btn);
+        }
+
+        private void ReadNextItem()
+        {
+            try
+            {
+                if (conn == null)
+                {
+                    conn = new SqlCeConnection(connString);
+                    conn.Open();
+                }
+
+                SqlCeCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT * FROM banklogs WHERE cat IS NULL AND idx>@index;";
+                cmd.Parameters.AddWithValue("@index", current_reader != null ? (int)current_reader[0] : 0);
+                SqlCeDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    current_reader = reader;
+                    dateTimePicker1.Value = (DateTime)current_reader[1];
+                    textBox2.Text = current_reader[2].ToString();
+                    textBox3.Text = current_reader[3].ToString();
+                    textBox4.Text = current_reader[6].ToString();
+                    textBox5.Text = current_reader[4].ToString();
+                    textBox6.Text = current_reader[5].ToString();
+                    textBox7.Text = current_reader[7].ToString();
+                }
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+
+                if (current_reader != null)
+                {
+                    current_reader.Dispose();
+                    current_reader = null;
+                }
+                conn.Close();
+                conn = null;
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
+            ReadNextItem();
+        }
 
+        private bool SetCatCurrent(int val)
+        {
+            if (current_reader == null) return false;
+            try
+            {
+                int index = (int)current_reader[0];
+
+                SqlCeCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "UPDATE banklogs SET cat=@cat WHERE idx=@index";
+                cmd.Parameters.AddWithValue("@index", index);
+                cmd.Parameters.AddWithValue("@cat", val);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+                conn.Close();
+                conn.Dispose();
+                conn = null;
+                current_reader = null;
+                return false;
+            }
+
+            current_reader = null;
+            return true;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (current_reader == null) return;
+            if (SetCatCurrent(0))
+                ReadNextItem();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (current_reader == null) return;
+            if (SetCatCurrent(1))
+                ReadNextItem();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (current_reader == null) return;
+            if (SetCatCurrent(2))
+                ReadNextItem();
         }
     }
 }
