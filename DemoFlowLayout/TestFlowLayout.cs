@@ -16,6 +16,36 @@ namespace blmarket
 
         public DemoFlowPanel()
         {
+            this.ClientSizeChanged += new EventHandler(DemoFlowPanel_ClientSizeChanged);
+            this.ControlAdded += new ControlEventHandler(DemoFlowPanel_ControlAdded);
+        }
+
+        private int RealWidth 
+        { 
+            get 
+            { 
+                return Width - (VScroll ? System.Windows.Forms.SystemInformation.VerticalScrollBarWidth : 0); 
+            } 
+        }
+
+        void DemoFlowPanel_ControlAdded(object sender, ControlEventArgs e)
+        {
+            if (AutoFitChilds)
+            {
+                e.Control.Width = RealWidth;
+            }
+        }
+
+        void DemoFlowPanel_ClientSizeChanged(object sender, EventArgs e)
+        {
+            int setwidth = RealWidth;
+            if (AutoFitChilds)
+            {
+                foreach (var item in Controls)
+                {
+                    ((Control)item).Width = setwidth;
+                }
+            }
         }
 
         public override LayoutEngine LayoutEngine
@@ -56,8 +86,9 @@ namespace blmarket
         {
             this.SuspendLayout();
             this.ResumeLayout(false);
-
         }
+
+        public bool AutoFitChilds { get; set; }
     }
 
     // This class demonstrates a simple custom layout engine.
