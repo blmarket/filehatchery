@@ -1,1 +1,10 @@
 *.cache
+*.swp
+DemoFlowLayout/bin/
+DemoFlowLayout/obj/
+FileHatchery/Engine/bin/
+FileHatchery/Engine/obj/
+FileHatchery/FileHatchery/bin/
+FileHatchery/FileHatchery/obj/
+FileHatchery/ShellBasics/bin/
+FileHatchery/ShellBasics/obj/
