@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.파일ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.새로만들기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,16 +66,6 @@
             this.IconGetter = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // treeView1
-            // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.treeView1.Location = new System.Drawing.Point(0, 24);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(212, 386);
-            this.treeView1.TabIndex = 4;
-            this.treeView1.TabStop = false;
-            this.treeView1.Tag = "dsaf";
             // 
             // menuStrip1
             // 
@@ -339,10 +328,10 @@
             // browserPanel
             // 
             this.browserPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.browserPanel.Location = new System.Drawing.Point(212, 24);
+            this.browserPanel.Location = new System.Drawing.Point(0, 24);
             this.browserPanel.Name = "browserPanel";
             this.browserPanel.PageService = null;
-            this.browserPanel.Size = new System.Drawing.Size(475, 386);
+            this.browserPanel.Size = new System.Drawing.Size(687, 386);
             this.browserPanel.TabIndex = 7;
             // 
             // demoFlowPanel1
@@ -368,7 +357,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(687, 410);
             this.Controls.Add(this.browserPanel);
-            this.Controls.Add(this.treeView1);
             this.Controls.Add(this.demoFlowPanel1);
             this.Controls.Add(this.menuStrip1);
             this.KeyPreview = true;
@@ -387,7 +375,6 @@
         #endregion
 
         private blmarket.DemoFlowPanel demoFlowPanel1;
-        private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private PagedLayoutPanel browserPanel;
         private System.Windows.Forms.ToolStripMenuItem 파일ToolStripMenuItem;
