@@ -1,5 +1,6 @@
 *.cache
 *.swp
+*.suo
 DemoFlowLayout/bin/
 DemoFlowLayout/obj/
 FileHatchery/Engine/bin/
