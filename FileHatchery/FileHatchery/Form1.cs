@@ -186,13 +186,6 @@ namespace FileHatchery
              * */
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            Button btn = new Button();
-            btn.Text = "KKKK";
-            demoFlowPanel1.Controls.Add(btn);
-        }
-
         Random testRandom = new Random();
         public void UITest(string msg)
         {
