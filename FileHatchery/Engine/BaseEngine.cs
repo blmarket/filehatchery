@@ -89,7 +89,7 @@ namespace FileHatchery.Engine
 
         private void _RunCommand(string cmd)
         {
-            string vimpath = @"C:\Program Files (x86)\Vim\vim72\gvim.exe";
+            string vimpath = @"C:\Program Files (x86)\Vim\vim73\gvim.exe";
             string explorerpath = @"C:\Windows\explorer.exe";
             string daemonpath = @"C:\Program Files (x86)\DAEMON Tools Lite\DTLite.exe";
             if (cmd == "edit this")
