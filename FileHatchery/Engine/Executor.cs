@@ -97,14 +97,37 @@ namespace FileHatchery
 
     public class RenameVisitor : IBrowserItemVisitor
     {
+        ComponentContainer m_engine;
+        string m_newName;
+
+        public RenameVisitor(ComponentContainer engine, string newFilename)
+        {
+            m_engine = engine;
+            m_newName = newFilename;
+        }
+
         public void visit(FileItem file)
         {
-            throw new NotImplementedException();
+            try
+            {
+                file.File.MoveTo(m_newName);
+            }
+            catch (Exception e)
+            {
+                m_engine.getComponent<IExceptionHandler>().handleException(e);
+            }
         }
 
         public void visit(DirectoryItem directory)
         {
-            throw new NotImplementedException();
+            try
+            {
+                directory.DirInfo.MoveTo(m_newName);
+            }
+            catch (Exception e)
+            {
+                m_engine.getComponent<IExceptionHandler>().handleException(e);
+            }
         }
     }
 }
