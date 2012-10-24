@@ -49,6 +49,7 @@ namespace FileHatchery.Engine
             setComponent(typeof(IIconProducer), new NullProducer());
             setComponent(typeof(Config.IConfig), new Config.PortableConfig());
             setComponent(typeof(IBrowser), browser);
+            setComponent(typeof(IExceptionHandler), this);
         }
 
         public void Dispose()
