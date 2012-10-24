@@ -14,7 +14,7 @@ namespace FileHatchery
     /// <summary>
     /// 관리자 권한으로 Item을 실행하는 Visitor 패턴 구현
     /// </summary>
-    class AdminExecutor : IBrowserItemVisitor
+    public class AdminExecutor : IBrowserItemVisitor
     {
         #region IBrowserItemVisitor 멤버
 
@@ -49,7 +49,7 @@ namespace FileHatchery
     /// <summary>
     /// Item을 실행하는 Visitor
     /// </summary>
-    class NormalExecutor : IBrowserItemVisitor
+    public class NormalExecutor : IBrowserItemVisitor
     {
         #region IBrowserItemVisitor 멤버
 
@@ -79,5 +79,18 @@ namespace FileHatchery
         }
 
         #endregion
+    }
+
+    public class RenameVisitor : IBrowserItemVisitor
+    {
+        public void visit(FileItem file)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void visit(DirectoryItem directory)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
