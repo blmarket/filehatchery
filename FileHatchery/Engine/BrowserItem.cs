@@ -176,14 +176,14 @@ namespace FileHatchery
     /// </summary>
     public class FileItem : IBrowserItem
     {
-        FileInfo m_file;
+        public FileInfo File { get; set; }
         IBrowser m_browser;
         Icon m_Icon;
         BrowserItemState m_state;
 
         public FileItem(FileInfo file, IBrowser browser)
         {
-            m_file = file;
+            File = file;
             m_browser = browser;
 
             IIconProducer temp = Core.getComponent<IIconProducer>(Engine.TestEngineQuery.s_inst);
@@ -195,7 +195,7 @@ namespace FileHatchery
 
         public string showName
         {
-            get { return m_file.Name; }
+            get { return File.Name; }
         }
 
         public Icon Icon
@@ -229,7 +229,7 @@ namespace FileHatchery
 
         public string FullPath
         {
-            get { return m_file.FullName; }
+            get { return File.FullName; }
         }
 
         public void accept(IBrowserItemVisitor visitor)
@@ -242,7 +242,7 @@ namespace FileHatchery
 
     public class DirectoryItem : IBrowserItem
     {
-        DirectoryInfo m_info;
+        public DirectoryInfo DirInfo { get; set; }
         IBrowser m_browser;
         string m_name;
         Icon m_icon;
@@ -251,7 +251,7 @@ namespace FileHatchery
         public DirectoryItem(DirectoryInfo info, string name, IBrowser browser)
         {
             if (info == null) throw new NullReferenceException("DirectoryItem 클래스의 생성자가 잘못되었습니다");
-            m_info = info;
+            DirInfo = info;
             m_name = name;
             m_browser = browser;
 
@@ -265,14 +265,6 @@ namespace FileHatchery
             get
             {
                 return m_name;
-            }
-        }
-
-        public DirectoryInfo DirInfo
-        {
-            get
-            {
-                return m_info;
             }
         }
 
@@ -309,7 +301,7 @@ namespace FileHatchery
 
         public string FullPath
         {
-            get { return m_info.FullName; }
+            get { return DirInfo.FullName; }
         }
 
         public void accept(IBrowserItemVisitor visitor)
