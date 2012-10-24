@@ -327,13 +327,13 @@ namespace FileHatchery
                     return true;
                 case Keys.Shift | Keys.Enter:
                     {
-                        Cursor.accept(new AdminExecutor());
+                        Cursor.accept(new AdminExecutor(Program.engine));
                     }
                     return true;
                 case Keys.Enter:
                     if (Cursor != null)
                     {
-                        Cursor.accept(new NormalExecutor());
+                        Cursor.accept(new NormalExecutor(Program.engine));
                     }
                     return true;
                 case Keys.Tab:

@@ -166,7 +166,7 @@ namespace FileHatchery
             MyLabel tmp = sender as MyLabel;
             if (tmp == null)
                 throw new InvalidDataException("object can't be casted into MyLabel");
-            tmp.Item.accept(new NormalExecutor());
+            tmp.Item.accept(new NormalExecutor(Program.engine));
         }
 
         void tmp_MouseDown(object sender, MouseEventArgs e)

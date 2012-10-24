@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using ShellApi;
+using FileHatchery.Engine;
 
 namespace FileHatchery
 {
@@ -16,6 +17,13 @@ namespace FileHatchery
     /// </summary>
     public class AdminExecutor : IBrowserItemVisitor
     {
+        ComponentContainer m_engine;
+
+        public AdminExecutor(ComponentContainer engine)
+        {
+            m_engine = engine;
+        }
+
         #region IBrowserItemVisitor 멤버
 
         /// <summary>
@@ -28,9 +36,9 @@ namespace FileHatchery
             {
                 Win32.SHExecute(file.FullPath, "", true);
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                Program.engine.HandleException(E);
+                m_engine.getComponent<IExceptionHandler>().handleException(e);
             }
         }
 
@@ -40,7 +48,7 @@ namespace FileHatchery
         /// <param name="directory">이동하고자 하는 디렉토리</param>
         public void visit(DirectoryItem directory)
         {
-            Program.engine.getComponent<IBrowser>().CurrentDir = directory.DirInfo;
+            m_engine.getComponent<IBrowser>().CurrentDir = directory.DirInfo;
         }
 
         #endregion
@@ -51,8 +59,14 @@ namespace FileHatchery
     /// </summary>
     public class NormalExecutor : IBrowserItemVisitor
     {
-        #region IBrowserItemVisitor 멤버
+        ComponentContainer m_engine;
 
+        public NormalExecutor(ComponentContainer engine)
+        {
+            m_engine = engine;
+        }
+
+        #region IBrowserItemVisitor 멤버
         /// <summary>
         /// File을 실행한다.
         /// </summary>
@@ -63,9 +77,9 @@ namespace FileHatchery
             {
                 Win32.SHExecute(file.FullPath, "", false);
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                Program.engine.HandleException(E);
+                m_engine.getComponent<IExceptionHandler>().handleException(e);
             }
         }
 
@@ -75,7 +89,7 @@ namespace FileHatchery
         /// <param name="directory">이동하고자 하는 Directory</param>
         public void visit(DirectoryItem directory)
         {
-            Program.engine.getComponent<IBrowser>().CurrentDir = directory.DirInfo;
+            m_engine.getComponent<IBrowser>().CurrentDir = directory.DirInfo;
         }
 
         #endregion

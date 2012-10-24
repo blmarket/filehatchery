@@ -103,7 +103,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Browser\Executor.cs" />
     <Compile Include="ConfigSelector.cs" />
     <Compile Include="ConsoleTextBox.cs">
       <SubType>Component</SubType>

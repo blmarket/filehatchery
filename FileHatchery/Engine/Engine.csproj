@@ -61,7 +61,9 @@
     <Compile Include="Config\IConfig.cs" />
     <Compile Include="Config\SerializableDictionary.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="Executor.cs" />
     <Compile Include="IBrowser.cs" />
+    <Compile Include="IExceptionHandler.cs" />
     <Compile Include="Legacy\ShellContextMenu.cs" />
     <Compile Include="Legacy\Win32.cs" />
     <Compile Include="Notification.cs" />
