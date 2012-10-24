@@ -21,7 +21,7 @@ namespace FileHatchery.Engine
     /// <summary>
     /// 기본 엔진.
     /// </summary>
-    public class TestEngineQuery : ComponentContainer, IAutoCompletion, IDisposable
+    public class TestEngineQuery : ComponentContainer, IAutoCompletion, IDisposable, IExceptionHandler
     {
         public static TestEngineQuery s_inst;
         public event EventHandler<Notification.NotifyArgs> UINotify;
@@ -282,11 +282,11 @@ namespace FileHatchery.Engine
             }
             catch (Exception E)
             {
-                HandleException(E);
+                handleException(E);
             }
         }
 
-        public void HandleException(Exception E)
+        public void handleException(Exception E)
         {
             var tmp = UINotify;
             if (tmp != null)
