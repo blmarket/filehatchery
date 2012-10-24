@@ -113,7 +113,7 @@ namespace FileHatchery
 
             //            consoleTextBox1.engine = Program.engine;
 
-            browser = Program.engine.Browser;
+            browser = Program.engine.getComponent<IBrowser>();
             browser.DirectoryChanged += new EventHandler(browser_onChangeDirectory);
             browserPanel.PageService = browser;
             browser.CursorChanged += new EventHandler(browserPanel.onCursorChanged);

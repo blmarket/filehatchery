@@ -40,7 +40,7 @@ namespace FileHatchery
         /// <param name="directory">이동하고자 하는 디렉토리</param>
         public void visit(DirectoryItem directory)
         {
-            Program.engine.Browser.CurrentDir = directory.DirInfo;
+            Program.engine.getComponent<IBrowser>().CurrentDir = directory.DirInfo;
         }
 
         #endregion
@@ -75,7 +75,7 @@ namespace FileHatchery
         /// <param name="directory">이동하고자 하는 Directory</param>
         public void visit(DirectoryItem directory)
         {
-            Program.engine.Browser.CurrentDir = directory.DirInfo;
+            Program.engine.getComponent<IBrowser>().CurrentDir = directory.DirInfo;
         }
 
         #endregion

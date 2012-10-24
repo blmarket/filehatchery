@@ -24,7 +24,6 @@ namespace FileHatchery.Engine
     public class TestEngineQuery : ComponentContainer, IAutoCompletion, IDisposable
     {
         public static TestEngineQuery s_inst;
-        IBrowser m_browser;
         public event EventHandler<Notification.NotifyArgs> UINotify;
         Dictionary<string, int> internal_commands { get; set; }
         public System.Drawing.Font Font { get; set; }
@@ -38,7 +37,6 @@ namespace FileHatchery.Engine
         public TestEngineQuery(IBrowser browser, IntPtr windowHandle)
         {
             s_inst = this;
-            m_browser = browser;
             m_windowhandle = windowHandle;
             internal_commands = new Dictionary<string, int>();
             // for testing
@@ -50,18 +48,11 @@ namespace FileHatchery.Engine
 
             setComponent(typeof(IIconProducer), new NullProducer());
             setComponent(typeof(Config.IConfig), new Config.PortableConfig());
+            setComponent(typeof(IBrowser), browser);
         }
 
         public void Dispose()
         {
-        }
-
-        public IBrowser Browser
-        {
-            get
-            {
-                return m_browser;
-            }
         }
 
         #region IAutoCompletion 멤버
@@ -95,21 +86,21 @@ namespace FileHatchery.Engine
             if (cmd == "edit this")
             {
                 FileInfo file = new FileInfo(vimpath);
-                IBrowserItem item = Browser.Cursor;
+                IBrowserItem item = getComponent<IBrowser>().Cursor;
                 Win32.SHExecute(file, "\"" + item.FullPath + "\"", false);
                 return;
             }
             if (cmd == "sudo edit this")
             {
                 FileInfo file = new FileInfo(vimpath);
-                IBrowserItem item = Browser.Cursor;
+                IBrowserItem item = getComponent<IBrowser>().Cursor;
                 Win32.SHExecute(file, "\"" + item.FullPath + "\"", true);
                 return;
             }
             if (cmd == "explore here")
             {
                 FileInfo file = new FileInfo(explorerpath);
-                DirectoryInfo dir = Browser.CurrentDir;
+                DirectoryInfo dir = getComponent<IBrowser>().CurrentDir;
 
                 Win32.SHExecute(file, dir.FullName, false);
                 return;
@@ -133,13 +124,15 @@ namespace FileHatchery.Engine
                         }*/
             if (cmd == "select this")
             {
-                Browser.MarkItem(Browser.Cursor);
+                IBrowser browser = getComponent<IBrowser>();
+                browser.MarkItem(browser.Cursor);
                 return;
             }
             if (cmd == "select all")
             {
-                List<IBrowserItem> items = Browser.Items;
-                Selection sel = Browser.Selection;
+                IBrowser browser = getComponent<IBrowser>();
+                List<IBrowserItem> items = browser.Items;
+                Selection sel = browser.Selection;
                 foreach (IBrowserItem item in items)
                 {
                     sel.addItem(item);
@@ -148,9 +141,10 @@ namespace FileHatchery.Engine
             }
             if (cmd == "alt-u")
             {
-                if (Browser.Selection.Count > 0)
+                IBrowser browser = getComponent<IBrowser>();
+                if (browser.Selection.Count > 0)
                 {
-                    Browser.Selection.clear();
+                    browser.Selection.clear();
                 }
                 else
                 {
@@ -160,14 +154,15 @@ namespace FileHatchery.Engine
             }
             if (cmd.StartsWith("open ", true, null))
             {
-                Browser.CurrentDir = new DirectoryInfo(cmd.Substring(5));
+                getComponent<IBrowser>().CurrentDir = new DirectoryInfo(cmd.Substring(5));
                 return;
             }
             if (cmd.StartsWith("select ", true, null))
             {
+                IBrowser browser = getComponent<IBrowser>();
                 string tmp = cmd.Substring(7);
                 IBrowserItem selItem;
-                selItem = Browser.Items.Find(delegate (IBrowserItem item)
+                selItem = browser.Items.Find(delegate(IBrowserItem item)
                 {
                     return (item.showName == tmp);
                 });
@@ -175,12 +170,12 @@ namespace FileHatchery.Engine
                 {
                     throw new FileNotFoundException();
                 }
-                Browser.Selection.addItem(selItem);
+                browser.Selection.addItem(selItem);
                 return;
             }
             if (cmd == "refresh")
             {
-                Browser.Refresh();
+                getComponent<IBrowser>().Refresh();
                 return;
             }
             if (cmd == "delete silent")
@@ -196,7 +191,7 @@ namespace FileHatchery.Engine
             if (cmd == "mount this")
             {
                 FileInfo file = new FileInfo(daemonpath);
-                IBrowserItem item = Browser.Cursor;
+                IBrowserItem item = getComponent<IBrowser>().Cursor;
                 Win32.SHExecute(file, "-mount 0," + item.FullPath, false);
                 return;
             }
@@ -222,7 +217,7 @@ namespace FileHatchery.Engine
             }
             if (cmd == "goroot")
             {
-                Browser.CurrentDir = Browser.CurrentDir.Root;
+                getComponent<IBrowser>().CurrentDir = getComponent<IBrowser>().CurrentDir.Root;
                 return;
             }
             if (cmd == "test")
@@ -247,20 +242,20 @@ namespace FileHatchery.Engine
             if (cmd.StartsWith("save"))
             {
                 string vv = cmd.Substring(4);
-                getComponent<Config.IConfig>()["Bookmark" + vv] = Browser.CurrentDir.FullName;
+                getComponent<Config.IConfig>()["Bookmark" + vv] = getComponent<IBrowser>().CurrentDir.FullName;
                 return;
             }
             if (cmd.StartsWith("load"))
             {
                 string vv = cmd.Substring(4);
-                Browser.CurrentDir = new DirectoryInfo(getComponent<Config.IConfig>()["Bookmark" + vv]);
+                getComponent<IBrowser>().CurrentDir = new DirectoryInfo(getComponent<Config.IConfig>()["Bookmark" + vv]);
                 return;
             }
             if (cmd.StartsWith("new "))
             {
                 string vv = cmd.Substring(4);
-                File.Create(Browser.CurrentDir.FullName + "\\" + vv).Close();
-                Browser.Refresh();
+                File.Create(getComponent<IBrowser>().CurrentDir.FullName + "\\" + vv).Close();
+                getComponent<IBrowser>().Refresh();
                 return;
             }
 
@@ -297,7 +292,7 @@ namespace FileHatchery.Engine
         private void DeleteFiles(bool silent)
         {
             System.Collections.Specialized.StringCollection files = new System.Collections.Specialized.StringCollection();
-            IEnumerable<IBrowserItem> itemset = Browser.CurSelItems;
+            IEnumerable<IBrowserItem> itemset = getComponent<IBrowser>().CurSelItems;
 
             foreach (IBrowserItem item in itemset)
             {
@@ -320,7 +315,7 @@ namespace FileHatchery.Engine
 
             bool retVal = fo.DoOperation();
 
-            Browser.Refresh();
+            getComponent<IBrowser>().Refresh();
 
             if (retVal == false)
             {
@@ -334,7 +329,7 @@ namespace FileHatchery.Engine
             {
                 System.Collections.Specialized.StringCollection files = new System.Collections.Specialized.StringCollection();
 
-                IEnumerable<IBrowserItem> itemset = Browser.CurSelItems;
+                IEnumerable<IBrowserItem> itemset = getComponent<IBrowser>().CurSelItems;
 
                 foreach (IBrowserItem item in itemset)
                 {
@@ -371,7 +366,7 @@ namespace FileHatchery.Engine
             AndreasJohansson.Win32.Shell.ShellContextMenu scm = new AndreasJohansson.Win32.Shell.ShellContextMenu();
             List<FileInfo> files = new List<FileInfo>();
 
-            foreach (IBrowserItem item in Browser.CurSelItems)
+            foreach (IBrowserItem item in getComponent<IBrowser>().CurSelItems)
             {
                 FileInfo file = new FileInfo(item.FullPath);
                 files.Add(file);
@@ -426,7 +421,7 @@ namespace FileHatchery.Engine
                     | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NO_CONNECTED_ELEMENTS                    
                     | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_WANTNUKEWARNING;
 
-                fo.DestFiles = new string[] { Browser.CurrentDir.FullName };
+                fo.DestFiles = new string[] { getComponent<IBrowser>().CurrentDir.FullName };
             }
 
             try
