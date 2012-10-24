@@ -177,7 +177,9 @@ namespace FileHatchery.Engine
             if (cmd.StartsWith("rename ", true, null))
             {
                 string newFilename = cmd.Substring(7);
-                getComponent<IBrowser>().Cursor.accept(new RenameVisitor(this, newFilename));
+                IBrowser browser = getComponent<IBrowser>();
+                browser.Cursor.accept(new RenameVisitor(this, newFilename));
+                browser.Refresh();
                 return;
             }
             if (cmd == "refresh")
