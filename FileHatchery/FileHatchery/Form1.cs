@@ -67,6 +67,13 @@ namespace FileHatchery
                     Program.engine.RunShortcut(keyData);
                 }
 
+                if (keyData == Keys.F2)
+                {
+                    string newName = Microsoft.VisualBasic.Interaction.InputBox("새 파일명을 입력해주세요");
+                    Program.engine.RunCommand("rename " + newName);
+                    return true;
+                }
+
                 if (keyData == Keys.F5)
                 {
                     Program.engine.RunCommand("refresh");
