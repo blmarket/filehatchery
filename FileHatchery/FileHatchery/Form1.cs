@@ -135,7 +135,7 @@ namespace FileHatchery
 
         void browser_onChangeDirectory(object senderobj, EventArgs ee)
         {
-            browserPanel.Controls.Clear();
+            browserPanel.Controls.Clear(); // FIXME: remove all eventhandlers.
             try
             {
                 List<IBrowserItem> items = browser.Items;
