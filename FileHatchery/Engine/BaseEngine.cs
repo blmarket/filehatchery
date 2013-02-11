@@ -47,7 +47,7 @@ namespace FileHatchery.Engine
             internal_commands.Add("microsoft", 1);
 
             setComponent(typeof(IIconProducer), new NullProducer());
-            setComponent(typeof(Config.IConfig), new Config.PortableConfig());
+            setComponent(typeof(Components.Config.IConfig), new Components.Config.PortableConfig());
             setComponent(typeof(IBrowser), browser);
             setComponent(typeof(IExceptionHandler), this);
         }
@@ -204,7 +204,7 @@ namespace FileHatchery.Engine
                     }
                 case "set": // FIXME: temporary
                     {
-                        getComponent<Config.IConfig>()["Font"] = "FixedSys, 12pt";
+                        getComponent<Components.Config.IConfig>()["Font"] = "FixedSys, 12pt";
                         return;
                     }
                 default:
@@ -241,13 +241,13 @@ namespace FileHatchery.Engine
                         if (cmd.StartsWith("save"))
                         {
                             string vv = cmd.Substring(4);
-                            getComponent<Config.IConfig>()["Bookmark" + vv] = getComponent<IBrowser>().CurrentDir.FullName;
+                            getComponent<Components.Config.IConfig>()["Bookmark" + vv] = getComponent<IBrowser>().CurrentDir.FullName;
                             return;
                         }
                         if (cmd.StartsWith("load"))
                         {
                             string vv = cmd.Substring(4);
-                            getComponent<IBrowser>().CurrentDir = new DirectoryInfo(getComponent<Config.IConfig>()["Bookmark" + vv]);
+                            getComponent<IBrowser>().CurrentDir = new DirectoryInfo(getComponent<Components.Config.IConfig>()["Bookmark" + vv]);
                             return;
                         }
                         if (cmd.StartsWith("new "))

@@ -15,7 +15,7 @@ namespace FileHatchery
             {
                 try
                 {
-                    Config.IConfig cfg = Program.engine.getComponent<Config.IConfig>();
+                    FileHatchery.Components.Config.IConfig cfg = Program.engine.getComponent<FileHatchery.Components.Config.IConfig>();
 
                     FontConverter fc = new FontConverter();
                     Font tmpFont = (Font)fc.ConvertFromString(cfg["Font"]);

@@ -280,7 +280,7 @@ namespace FileHatchery
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             // FIXME: 일관되지 않은 느낌이다...
-            Config.IConfig cfg = Program.engine.getComponent<Config.IConfig>();
+            FileHatchery.Components.Config.IConfig cfg = Program.engine.getComponent<FileHatchery.Components.Config.IConfig>();
             cfg.Save();
         }
     }
