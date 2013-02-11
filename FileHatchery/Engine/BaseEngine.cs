@@ -84,191 +84,182 @@ namespace FileHatchery.Engine
             string vimpath = @"C:\Program Files (x86)\Vim\vim73\gvim.exe";
             string explorerpath = @"C:\Windows\explorer.exe";
             string daemonpath = @"C:\Program Files (x86)\DAEMON Tools Lite\DTLite.exe";
-            if (cmd == "edit this")
-            {
-                FileInfo file = new FileInfo(vimpath);
-                IBrowserItem item = getComponent<IBrowser>().Cursor;
-                Win32.SHExecute(file, "\"" + item.FullPath + "\"", false);
-                return;
-            }
-            if (cmd == "sudo edit this")
-            {
-                FileInfo file = new FileInfo(vimpath);
-                IBrowserItem item = getComponent<IBrowser>().Cursor;
-                Win32.SHExecute(file, "\"" + item.FullPath + "\"", true);
-                return;
-            }
-            if (cmd == "explore here")
-            {
-                FileInfo file = new FileInfo(explorerpath);
-                DirectoryInfo dir = getComponent<IBrowser>().CurrentDir;
 
-                Win32.SHExecute(file, dir.FullName, false);
-                return;
-            }
-            /*            if (cmd == "save 1 here")
+            switch (cmd)
+            {
+                case "edit this":
+                    {
+                        FileInfo file = new FileInfo(vimpath);
+                        IBrowserItem item = getComponent<IBrowser>().Cursor;
+                        Win32.SHExecute(file, "\"" + item.FullPath + "\"", false);
+                        return;
+                    }
+                case "sudo edit this":
+                    {
+                        FileInfo file = new FileInfo(vimpath);
+                        IBrowserItem item = getComponent<IBrowser>().Cursor;
+                        Win32.SHExecute(file, "\"" + item.FullPath + "\"", true);
+                        return;
+                    }
+                case "explore here":
+                    {
+                        FileInfo file = new FileInfo(explorerpath);
+                        DirectoryInfo dir = getComponent<IBrowser>().CurrentDir;
+
+                        Win32.SHExecute(file, dir.FullName, false);
+                        return;
+                    }
+                case "select this":
+                    {
+                        IBrowser browser = getComponent<IBrowser>();
+                        browser.MarkItem(browser.Cursor);
+                        return;
+                    }
+                case "select all":
+                    {
+                        IBrowser browser = getComponent<IBrowser>();
+                        List<IBrowserItem> items = browser.Items;
+                        Selection sel = browser.Selection;
+                        foreach (IBrowserItem item in items)
                         {
-                            object[] args = new object[3];
-                            args[0] = "save";
-                            args[1] = 1;
-                            args[2] = Browser.CurrentDir;
-                            DynamicConfig.execute(args);
+                            sel.addItem(item);
+                        }
+                        return;
+                    }
+                case "alt-u":
+                    {
+                        IBrowser browser = getComponent<IBrowser>();
+                        if (browser.Selection.Count > 0)
+                        {
+                            browser.Selection.clear();
+                        }
+                        else
+                        {
+                            RunCommand("select all");
+                        }
+                        return;
+                    }
+                case "refresh":
+                    {
+                        getComponent<IBrowser>().Refresh();
+                        return;
+                    }
+                case "delete silent":
+                    {
+                        DeleteFiles(true);
+                        return;
+                    }
+                case "delete":
+                    {
+                        DeleteFiles(false);
+                        return;
+                    }
+                case "mount this":
+                    {
+                        FileInfo file = new FileInfo(daemonpath);
+                        IBrowserItem item = getComponent<IBrowser>().Cursor;
+                        Win32.SHExecute(file, "-mount 0," + item.FullPath, false);
+                        return;
+                    }
+                case "!cmd":
+                case "!":
+                case "cmd":
+                    {
+                        Win32.SHExecute("cmd", "", false);
+                        return;
+                    }
+                case "paste":
+                    {
+                        Paste();
+                        return;
+                    }
+                case "cut selected":
+                    {
+                        SetDropFileList(true);
+                        return;
+                    }
+                case "copy selected":
+                    {
+                        SetDropFileList(false);
+                        return;
+                    }
+                case "goroot":
+                    {
+                        getComponent<IBrowser>().CurrentDir = getComponent<IBrowser>().CurrentDir.Root;
+                        return;
+                    }
+                case "test":
+                    {
+                        var temp = UINotify;
+                        if (temp != null)
+                            temp(this, new Notification.NotifyArgs("Asdfnews"));
+                        return;
+                    }
+                case "gc":
+                    {
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        GC.Collect();
+                        return;
+                    }
+                case "set": // FIXME: temporary
+                    {
+                        getComponent<Config.IConfig>()["Font"] = "FixedSys, 12pt";
+                        return;
+                    }
+                default:
+                    {
+                        if (cmd.StartsWith("open ", true, null))
+                        {
+                            getComponent<IBrowser>().CurrentDir = new DirectoryInfo(cmd.Substring(5));
                             return;
                         }
-                        if (cmd == "load 1")
+                        if (cmd.StartsWith("select ", true, null))
                         {
-                            object[] args = new object[2];
-                            args[0] = "load";
-                            args[1] = 1;
-                            DynamicConfig.execute(args);
+                            IBrowser browser = getComponent<IBrowser>();
+                            string tmp = cmd.Substring(7);
+                            IBrowserItem selItem;
+                            selItem = browser.Items.Find(delegate(IBrowserItem item)
+                            {
+                                return (item.showName == tmp);
+                            });
+                            if (selItem == null)
+                            {
+                                throw new FileNotFoundException();
+                            }
+                            browser.Selection.addItem(selItem);
                             return;
-                        }*/
-            if (cmd == "select this")
-            {
-                IBrowser browser = getComponent<IBrowser>();
-                browser.MarkItem(browser.Cursor);
-                return;
+                        }
+                        if (cmd.StartsWith("rename ", true, null))
+                        {
+                            string newFilename = cmd.Substring(7);
+                            IBrowser browser = getComponent<IBrowser>();
+                            browser.Cursor.accept(new RenameVisitor(this, newFilename));
+                            browser.Refresh();
+                            return;
+                        }
+                        if (cmd.StartsWith("save"))
+                        {
+                            string vv = cmd.Substring(4);
+                            getComponent<Config.IConfig>()["Bookmark" + vv] = getComponent<IBrowser>().CurrentDir.FullName;
+                            return;
+                        }
+                        if (cmd.StartsWith("load"))
+                        {
+                            string vv = cmd.Substring(4);
+                            getComponent<IBrowser>().CurrentDir = new DirectoryInfo(getComponent<Config.IConfig>()["Bookmark" + vv]);
+                            return;
+                        }
+                        if (cmd.StartsWith("new "))
+                        {
+                            string vv = cmd.Substring(4);
+                            File.Create(getComponent<IBrowser>().CurrentDir.FullName + "\\" + vv).Close();
+                            getComponent<IBrowser>().Refresh();
+                            return;
+                        }
+                        throw new NotImplementedException("Operation " + cmd + " is not implemented");
+                    }
             }
-            if (cmd == "select all")
-            {
-                IBrowser browser = getComponent<IBrowser>();
-                List<IBrowserItem> items = browser.Items;
-                Selection sel = browser.Selection;
-                foreach (IBrowserItem item in items)
-                {
-                    sel.addItem(item);
-                }
-                return;
-            }
-            if (cmd == "alt-u")
-            {
-                IBrowser browser = getComponent<IBrowser>();
-                if (browser.Selection.Count > 0)
-                {
-                    browser.Selection.clear();
-                }
-                else
-                {
-                    RunCommand("select all");
-                }
-                return;
-            }
-            if (cmd.StartsWith("open ", true, null))
-            {
-                getComponent<IBrowser>().CurrentDir = new DirectoryInfo(cmd.Substring(5));
-                return;
-            }
-            if (cmd.StartsWith("select ", true, null))
-            {
-                IBrowser browser = getComponent<IBrowser>();
-                string tmp = cmd.Substring(7);
-                IBrowserItem selItem;
-                selItem = browser.Items.Find(delegate(IBrowserItem item)
-                {
-                    return (item.showName == tmp);
-                });
-                if (selItem == null)
-                {
-                    throw new FileNotFoundException();
-                }
-                browser.Selection.addItem(selItem);
-                return;
-            }
-            if (cmd.StartsWith("rename ", true, null))
-            {
-                string newFilename = cmd.Substring(7);
-                IBrowser browser = getComponent<IBrowser>();
-                browser.Cursor.accept(new RenameVisitor(this, newFilename));
-                browser.Refresh();
-                return;
-            }
-            if (cmd == "refresh")
-            {
-                getComponent<IBrowser>().Refresh();
-                return;
-            }
-            if (cmd == "delete silent")
-            {
-                DeleteFiles(true);
-                return;
-            }
-            if (cmd == "delete")
-            {
-                DeleteFiles(false);
-                return;
-            }
-            if (cmd == "mount this")
-            {
-                FileInfo file = new FileInfo(daemonpath);
-                IBrowserItem item = getComponent<IBrowser>().Cursor;
-                Win32.SHExecute(file, "-mount 0," + item.FullPath, false);
-                return;
-            }
-            if (cmd == "!cmd" || cmd == "!" || cmd == "cmd")
-            {
-                Win32.SHExecute("cmd", "", false);
-                return;
-            }
-            if (cmd == "paste")
-            {
-                Paste();
-                return;
-            }
-            if (cmd == "cut selected")
-            {
-                SetDropFileList(true);
-                return;
-            }
-            if (cmd == "copy selected")
-            {
-                SetDropFileList(false);
-                return;
-            }
-            if (cmd == "goroot")
-            {
-                getComponent<IBrowser>().CurrentDir = getComponent<IBrowser>().CurrentDir.Root;
-                return;
-            }
-            if (cmd == "test")
-            {
-                var temp = UINotify;
-                if (temp != null)
-                    temp(this, new Notification.NotifyArgs("Asdfnews"));
-                return;
-            }
-            if (cmd == "gc")
-            {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
-                return;
-            }
-            if (cmd == "set") // FIXME: temporary
-            {
-                getComponent<Config.IConfig>()["Font"] = "FixedSys, 12pt";
-                return;
-            }
-            if (cmd.StartsWith("save"))
-            {
-                string vv = cmd.Substring(4);
-                getComponent<Config.IConfig>()["Bookmark" + vv] = getComponent<IBrowser>().CurrentDir.FullName;
-                return;
-            }
-            if (cmd.StartsWith("load"))
-            {
-                string vv = cmd.Substring(4);
-                getComponent<IBrowser>().CurrentDir = new DirectoryInfo(getComponent<Config.IConfig>()["Bookmark" + vv]);
-                return;
-            }
-            if (cmd.StartsWith("new "))
-            {
-                string vv = cmd.Substring(4);
-                File.Create(getComponent<IBrowser>().CurrentDir.FullName + "\\" + vv).Close();
-                getComponent<IBrowser>().Refresh();
-                return;
-            }
-
-            throw new NotImplementedException("Operation " + cmd + " is not implemented");
         }
 
         /// <summary>
@@ -319,7 +310,7 @@ namespace FileHatchery.Engine
             fo.OperationFlags = ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NO_CONNECTED_ELEMENTS
                 | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_WANTNUKEWARNING;
 
-            if(silent)
+            if (silent)
                 fo.OperationFlags = fo.OperationFlags | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NOCONFIRMATION;
 
             bool retVal = fo.DoOperation();
@@ -413,21 +404,21 @@ namespace FileHatchery.Engine
 
             fo.OwnerWindow = m_windowhandle;
             fo.SourceFiles = filearray;
-/*            if (filearray.Length == 0)
-            {
-                string[] destarray = new string[files.Count];
-                for (int i = 0; i < files.Count; i++)
-                {
-                    string filename = files[i].Substring(files[i].LastIndexOf('\\'));
-                    destarray[i] = Browser.CurrentDir.FullName + filename;
-                }
-                fo.DestFiles = destarray;
-            }
-            else*/
+            /*            if (filearray.Length == 0)
+                        {
+                            string[] destarray = new string[files.Count];
+                            for (int i = 0; i < files.Count; i++)
+                            {
+                                string filename = files[i].Substring(files[i].LastIndexOf('\\'));
+                                destarray[i] = Browser.CurrentDir.FullName + filename;
+                            }
+                            fo.DestFiles = destarray;
+                        }
+                        else*/
             {
                 fo.OperationFlags = ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_ALLOWUNDO
                     | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_RENAMEONCOLLISION
-                    | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NO_CONNECTED_ELEMENTS                    
+                    | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_NO_CONNECTED_ELEMENTS
                     | ShellLib.ShellFileOperation.ShellFileOperationFlags.FOF_WANTNUKEWARNING;
 
                 fo.DestFiles = new string[] { getComponent<IBrowser>().CurrentDir.FullName };
