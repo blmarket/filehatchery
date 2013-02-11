@@ -1,13 +1,9 @@
-﻿using System;
+﻿using ShellApi;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
 using System.Drawing;
-using System.Reflection;
-using System.Runtime.InteropServices;
+using System.IO;
 using System.Threading;
-using ShellApi;
 
 namespace FileHatchery
 {

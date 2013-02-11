@@ -1,12 +1,10 @@
-﻿using System;
+﻿using ShellApi;
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
-using System.Collections;
-using ShellApi;
+using System.Windows.Forms;
 
 namespace FileHatchery.Engine
 {
