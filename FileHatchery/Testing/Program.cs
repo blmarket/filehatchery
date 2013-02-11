@@ -67,24 +67,24 @@ namespace Testing
 
         static void Test6()
         {
-            string dirpath = FileHatchery.Components.Config.Util.getExecutablePath();
+            string dirpath = FileHatchery.Engine.Components.Config.Util.getExecutablePath();
             Console.WriteLine(dirpath);
             string filepath = dirpath + "\\test.dat";
             Console.WriteLine(filepath);
 
-            XmlSerializer seri = new XmlSerializer(typeof(FileHatchery.Components.Config.SerializableDictionary<string, string>));
-            FileHatchery.Components.Config.SerializableDictionary<string, string> vv;
+            XmlSerializer seri = new XmlSerializer(typeof(FileHatchery.Engine.Components.Config.SerializableDictionary<string, string>));
+            FileHatchery.Engine.Components.Config.SerializableDictionary<string, string> vv;
 
             FileStream str = File.Open(filepath, FileMode.OpenOrCreate);
 
             try
             {
                 object des = seri.Deserialize(str);
-                vv = des as FileHatchery.Components.Config.SerializableDictionary<string, string>;
+                vv = des as FileHatchery.Engine.Components.Config.SerializableDictionary<string, string>;
             }
             catch (Exception)
             {
-                vv = new FileHatchery.Components.Config.SerializableDictionary<string, string>();
+                vv = new FileHatchery.Engine.Components.Config.SerializableDictionary<string, string>();
             }
 
             vv["asdf"] = "news";
@@ -95,7 +95,7 @@ namespace Testing
 
         static void Test3()
         {
-            FileHatchery.Components.Config.IConfig pp = new FileHatchery.Components.Config.PortableConfig();
+            FileHatchery.Engine.Components.Config.IConfig pp = new FileHatchery.Engine.Components.Config.PortableConfig();
             pp["news"] = "asdf";
             pp.Save();
         }

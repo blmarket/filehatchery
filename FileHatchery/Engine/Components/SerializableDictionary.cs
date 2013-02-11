@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Serialization;
 
 // Code below are copy-pasted from dnGREP, License : GPLv3
-namespace FileHatchery.Components.Config
+namespace FileHatchery.Engine.Components.Config
 {
     /// <summary>
     /// Serializable generic dictionary 

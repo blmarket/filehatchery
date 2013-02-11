@@ -1,4 +1,5 @@
-﻿using ShellApi;
+﻿using FileHatchery;
+using ShellApi;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,21 +10,12 @@ using System.Windows.Forms;
 namespace FileHatchery.Engine
 {
     /// <summary>
-    /// 자동완성 기능 구현 인터페이스
-    /// </summary>
-    public interface IAutoCompletion
-    {
-        List<string> Commands { get; }
-    }
-
-    /// <summary>
     /// 기본 엔진.
     /// </summary>
-    public class TestEngineQuery : ComponentContainer, IAutoCompletion, IDisposable, IExceptionHandler
+    public class TestEngineQuery : ComponentContainer, IDisposable, IExceptionHandler
     {
         public static TestEngineQuery s_inst;
         public event EventHandler<Notification.NotifyArgs> UINotify;
-        Dictionary<string, int> internal_commands { get; set; }
         public System.Drawing.Font Font { get; set; }
         IntPtr m_windowhandle = IntPtr.Zero;
 
@@ -36,40 +28,17 @@ namespace FileHatchery.Engine
         {
             s_inst = this;
             m_windowhandle = windowHandle;
-            internal_commands = new Dictionary<string, int>();
-            // for testing
-            internal_commands.Add("asdfnews", 1);
-            internal_commands.Add("google", 1);
-            internal_commands.Add("gosick", 1);
-            internal_commands.Add("gooooogle", 1);
-            internal_commands.Add("microsoft", 1);
 
             setComponent(typeof(IIconProducer), new NullProducer());
             setComponent(typeof(Components.Config.IConfig), new Components.Config.PortableConfig());
             setComponent(typeof(IBrowser), browser);
             setComponent(typeof(IExceptionHandler), this);
+            setComponent(typeof(Components.IAutoCompletion), new Components.BasicAutoCompletion());
         }
 
         public void Dispose()
         {
         }
-
-        #region IAutoCompletion 멤버
-
-        public List<string> Commands
-        {
-            get
-            {
-                List<string> ret = new List<string>();
-                foreach (KeyValuePair<string, int> kv in internal_commands)
-                {
-                    ret.Add(kv.Key);
-                }
-                return ret;
-            }
-        }
-
-        #endregion
 
         public bool getConfiguration(string name)
         {

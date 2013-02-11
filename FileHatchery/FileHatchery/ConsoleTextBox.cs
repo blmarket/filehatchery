@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Layout;
 using FileHatchery;
 using FileHatchery.Engine;
+using FileHatchery.Engine.Components;
 
 class ConsoleTextBox : TextBox
 {

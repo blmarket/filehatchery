@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace FileHatchery
 {
+    using Engine.Components;
     class ConfigSelector
     {
         public static Font Font
@@ -15,7 +16,7 @@ namespace FileHatchery
             {
                 try
                 {
-                    FileHatchery.Components.Config.IConfig cfg = Program.engine.getComponent<FileHatchery.Components.Config.IConfig>();
+                    FileHatchery.Engine.Components.Config.IConfig cfg = Program.engine.getComponent<FileHatchery.Engine.Components.Config.IConfig>();
 
                     FontConverter fc = new FontConverter();
                     Font tmpFont = (Font)fc.ConvertFromString(cfg["Font"]);
@@ -36,13 +37,13 @@ namespace FileHatchery
                 if (Program.engine.getConfiguration("useConsoleTextBox"))
                 {
                     ConsoleTextBox tmp = new ConsoleTextBox();
-                    tmp.engine = Program.engine;
+                    tmp.engine = Program.engine.getComponent<Engine.Components.IAutoCompletion>();
                     return tmp;
                 }
                 else
                 {
                     AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
-                    foreach (string str in Program.engine.Commands) collection.Add(str);
+                    foreach (string str in Program.engine.getComponent<IAutoCompletion>().Commands) collection.Add(str);
 
                     TextBox console = new TextBox();
                     console.AutoCompleteMode = AutoCompleteMode.Suggest;
