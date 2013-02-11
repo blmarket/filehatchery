@@ -34,26 +34,17 @@ namespace FileHatchery
         {
             get
             {
-                if (Program.engine.getConfiguration("useConsoleTextBox"))
-                {
-                    ConsoleTextBox tmp = new ConsoleTextBox();
-                    tmp.engine = Program.engine.getComponent<Engine.Components.IAutoCompletion>();
-                    return tmp;
-                }
-                else
-                {
-                    AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
-                    foreach (string str in Program.engine.getComponent<IAutoCompletion>().Commands) collection.Add(str);
+                AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
+                foreach (string str in Program.engine.getComponent<IAutoCompletion>().Commands) collection.Add(str);
 
-                    TextBox console = new TextBox();
-                    console.AutoCompleteMode = AutoCompleteMode.Suggest;
-                    console.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                    console.AutoCompleteCustomSource = collection;
-                    console.Width = 200;
-                    console.AcceptsTab = true;
-                    console.KeyDown += new KeyEventHandler(console_KeyDown);
-                    return console;
-                }
+                TextBox console = new TextBox();
+                console.AutoCompleteMode = AutoCompleteMode.Suggest;
+                console.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                console.AutoCompleteCustomSource = collection;
+                console.Width = 200;
+                console.AcceptsTab = true;
+                console.KeyDown += new KeyEventHandler(console_KeyDown);
+                return console;
             }
         }
 
