@@ -284,6 +284,12 @@ namespace FileHatchery
             Engine.Components.Config.IConfig cfg = Program.engine.getComponent<Engine.Components.Config.IConfig>();
             cfg.Save();
         }
+
+        private void 디렉토리생성ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string dirName = Microsoft.VisualBasic.Interaction.InputBox("새 디렉토리 이름을 입력해주세요");
+            Program.engine.RunCommand("mkdir " + dirName);
+        }
     }
 
     class IconQueue : IIconProducer
