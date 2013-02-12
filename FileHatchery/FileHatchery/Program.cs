@@ -26,7 +26,6 @@ namespace FileHatchery
             catch(Exception E)
             {
                 MessageBox.Show(E.Message);
-                throw;
             }
         }
 
