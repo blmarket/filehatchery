@@ -61,11 +61,12 @@
             this.검색ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.정보ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.디렉토리ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.디렉토리생성ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.browserPanel = new FileHatchery.PagedLayoutPanel();
             this.demoFlowPanel1 = new blmarket.DemoFlowPanel();
             this.IconGetter = new System.ComponentModel.BackgroundWorker();
-            this.디렉토리ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.디렉토리생성ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.홈디렉토리로이동하기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -302,31 +303,48 @@
             // 내용ToolStripMenuItem
             // 
             this.내용ToolStripMenuItem.Name = "내용ToolStripMenuItem";
-            this.내용ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.내용ToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.내용ToolStripMenuItem.Text = "내용";
             // 
             // 인덱스ToolStripMenuItem
             // 
             this.인덱스ToolStripMenuItem.Name = "인덱스ToolStripMenuItem";
-            this.인덱스ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.인덱스ToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.인덱스ToolStripMenuItem.Text = "인덱스";
             // 
             // 검색ToolStripMenuItem
             // 
             this.검색ToolStripMenuItem.Name = "검색ToolStripMenuItem";
-            this.검색ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.검색ToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.검색ToolStripMenuItem.Text = "검색";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(107, 6);
             // 
             // 정보ToolStripMenuItem
             // 
             this.정보ToolStripMenuItem.Name = "정보ToolStripMenuItem";
-            this.정보ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.정보ToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.정보ToolStripMenuItem.Text = "정보...";
+            // 
+            // 디렉토리ToolStripMenuItem
+            // 
+            this.디렉토리ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.디렉토리생성ToolStripMenuItem,
+            this.홈디렉토리로이동하기ToolStripMenuItem});
+            this.디렉토리ToolStripMenuItem.Name = "디렉토리ToolStripMenuItem";
+            this.디렉토리ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.디렉토리ToolStripMenuItem.Text = "디렉토리";
+            // 
+            // 디렉토리생성ToolStripMenuItem
+            // 
+            this.디렉토리생성ToolStripMenuItem.Name = "디렉토리생성ToolStripMenuItem";
+            this.디렉토리생성ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.K)));
+            this.디렉토리생성ToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.디렉토리생성ToolStripMenuItem.Text = "디렉토리 생성";
+            this.디렉토리생성ToolStripMenuItem.Click += new System.EventHandler(this.디렉토리생성ToolStripMenuItem_Click);
             // 
             // browserPanel
             // 
@@ -354,21 +372,13 @@
             this.IconGetter.DoWork += new System.ComponentModel.DoWorkEventHandler(this.IconGetter_DoWork);
             this.IconGetter.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.IconGetter_ProgressChanged);
             // 
-            // 디렉토리ToolStripMenuItem
+            // 홈디렉토리로이동하기ToolStripMenuItem
             // 
-            this.디렉토리ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.디렉토리생성ToolStripMenuItem});
-            this.디렉토리ToolStripMenuItem.Name = "디렉토리ToolStripMenuItem";
-            this.디렉토리ToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
-            this.디렉토리ToolStripMenuItem.Text = "디렉토리";
-            // 
-            // 디렉토리생성ToolStripMenuItem
-            // 
-            this.디렉토리생성ToolStripMenuItem.Name = "디렉토리생성ToolStripMenuItem";
-            this.디렉토리생성ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.K)));
-            this.디렉토리생성ToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.디렉토리생성ToolStripMenuItem.Text = "디렉토리 생성";
-            this.디렉토리생성ToolStripMenuItem.Click += new System.EventHandler(this.디렉토리생성ToolStripMenuItem_Click);
+            this.홈디렉토리로이동하기ToolStripMenuItem.Name = "홈디렉토리로이동하기ToolStripMenuItem";
+            this.홈디렉토리로이동하기ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.홈디렉토리로이동하기ToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.홈디렉토리로이동하기ToolStripMenuItem.Text = "홈 디렉토리로 이동하기";
+            this.홈디렉토리로이동하기ToolStripMenuItem.Click += new System.EventHandler(this.홈디렉토리로이동하기ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -430,6 +440,7 @@
         private System.ComponentModel.BackgroundWorker IconGetter;
         private System.Windows.Forms.ToolStripMenuItem 디렉토리ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 디렉토리생성ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 홈디렉토리로이동하기ToolStripMenuItem;
 
     }
 }

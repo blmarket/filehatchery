@@ -176,11 +176,21 @@ namespace FileHatchery.Engine
                     }
                 default:
                     {
+                        if (cmd.StartsWith("notify ", true, null))
+                        {
+                            string msg = cmd.Substring(7);
+                            throw new Exception(msg);
+                        }
                         if (cmd.StartsWith("mkdir ", true, null))
                         {
                             string dirName = cmd.Substring(6);
                             Directory.CreateDirectory(getComponent<IBrowser>().CurrentDir.FullName + "\\" + dirName);
                             getComponent<IBrowser>().Refresh();
+                            return;
+                        }
+                        if (cmd.StartsWith("cd ", true, null))
+                        {
+                            getComponent<IBrowser>().CurrentDir = new DirectoryInfo(cmd.Substring(3));
                             return;
                         }
                         if (cmd.StartsWith("open ", true, null))

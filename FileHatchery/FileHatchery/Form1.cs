@@ -290,6 +290,12 @@ namespace FileHatchery
             string dirName = Microsoft.VisualBasic.Interaction.InputBox("새 디렉토리 이름을 입력해주세요");
             Program.engine.RunCommand("mkdir " + dirName);
         }
+
+        private void 홈디렉토리로이동하기ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            Program.engine.RunCommand("cd "+ path);
+        }
     }
 
     class IconQueue : IIconProducer
