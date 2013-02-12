@@ -63,10 +63,10 @@
             this.정보ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.디렉토리ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.디렉토리생성ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.홈디렉토리로이동하기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.browserPanel = new FileHatchery.PagedLayoutPanel();
             this.demoFlowPanel1 = new blmarket.DemoFlowPanel();
             this.IconGetter = new System.ComponentModel.BackgroundWorker();
-            this.홈디렉토리로이동하기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -279,13 +279,13 @@
             // 사용자지정ToolStripMenuItem
             // 
             this.사용자지정ToolStripMenuItem.Name = "사용자지정ToolStripMenuItem";
-            this.사용자지정ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.사용자지정ToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.사용자지정ToolStripMenuItem.Text = "사용자 지정";
             // 
             // 옵션ToolStripMenuItem
             // 
             this.옵션ToolStripMenuItem.Name = "옵션ToolStripMenuItem";
-            this.옵션ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.옵션ToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.옵션ToolStripMenuItem.Text = "옵션";
             // 
             // 도움말ToolStripMenuItem
@@ -346,6 +346,14 @@
             this.디렉토리생성ToolStripMenuItem.Text = "디렉토리 생성";
             this.디렉토리생성ToolStripMenuItem.Click += new System.EventHandler(this.디렉토리생성ToolStripMenuItem_Click);
             // 
+            // 홈디렉토리로이동하기ToolStripMenuItem
+            // 
+            this.홈디렉토리로이동하기ToolStripMenuItem.Name = "홈디렉토리로이동하기ToolStripMenuItem";
+            this.홈디렉토리로이동하기ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.홈디렉토리로이동하기ToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            this.홈디렉토리로이동하기ToolStripMenuItem.Text = "홈 디렉토리로 이동하기";
+            this.홈디렉토리로이동하기ToolStripMenuItem.Click += new System.EventHandler(this.홈디렉토리로이동하기ToolStripMenuItem_Click);
+            // 
             // browserPanel
             // 
             this.browserPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -372,14 +380,6 @@
             this.IconGetter.DoWork += new System.ComponentModel.DoWorkEventHandler(this.IconGetter_DoWork);
             this.IconGetter.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.IconGetter_ProgressChanged);
             // 
-            // 홈디렉토리로이동하기ToolStripMenuItem
-            // 
-            this.홈디렉토리로이동하기ToolStripMenuItem.Name = "홈디렉토리로이동하기ToolStripMenuItem";
-            this.홈디렉토리로이동하기ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.홈디렉토리로이동하기ToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
-            this.홈디렉토리로이동하기ToolStripMenuItem.Text = "홈 디렉토리로 이동하기";
-            this.홈디렉토리로이동하기ToolStripMenuItem.Click += new System.EventHandler(this.홈디렉토리로이동하기ToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -394,6 +394,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

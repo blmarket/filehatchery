@@ -15,7 +15,8 @@ namespace FileHatchery
 {
     interface IKeyHandler
     {
-        bool HandleKey(Keys keyData);
+        bool handleSpecialKey(Keys keyData);
+        void handleChar(char key);
         bool NeedsFocus { get; }
         void setFocus();
     }
@@ -99,7 +100,7 @@ namespace FileHatchery
                     return true;
                 }
 
-                if (((IKeyHandler)browser).HandleKey(keyData)) return true;
+                if (((IKeyHandler)browser).handleSpecialKey(keyData)) return true;
 
             }
             return base.ProcessCmdKey(ref msg, keyData);
@@ -295,6 +296,11 @@ namespace FileHatchery
         {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             Program.engine.RunCommand("cd "+ path);
+        }
+
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ((IKeyHandler)browser).handleChar(e.KeyChar);
         }
     }
 

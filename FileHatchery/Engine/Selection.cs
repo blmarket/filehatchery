@@ -49,11 +49,11 @@ namespace FileHatchery
         public void MarkItem(IBrowserItem item)
         {
             // Mark할 수 없는 Item인 경우 Mark하지 않는다.
-            if ((item.State & BrowserItemState.UnMarkable) == BrowserItemState.UnMarkable)
+            if (item.State.HasFlag(BrowserItemState.UnMarkable))
                 return;
 
             // 이미 Mark된 경우 해제하고, 안그런 경우 선택한다.
-            if ((item.State & BrowserItemState.Marked) == BrowserItemState.Marked)
+            if (item.State.HasFlag(BrowserItemState.Marked))
             {
                 m_Dict.Remove(item);
             }

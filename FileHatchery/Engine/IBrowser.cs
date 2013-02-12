@@ -13,6 +13,11 @@ namespace FileHatchery
     public enum BrowserItemState
     {
         /// <summary>
+        /// none of your business
+        /// </summary>
+        None = 0,
+
+        /// <summary>
         /// 현재 커서가 Item 위일 때 체크됩니다.
         /// </summary>
         Selected = 1,
