@@ -16,7 +16,7 @@ namespace FileHatchery
             {
                 try
                 {
-                    FileHatchery.Engine.Components.Config.IConfig cfg = Program.engine.getComponent<FileHatchery.Engine.Components.Config.IConfig>();
+                    var cfg = Program.engine.getComponent<FileHatchery.Engine.Components.Config.IConfig>();
 
                     FontConverter fc = new FontConverter();
                     Font tmpFont = (Font)fc.ConvertFromString(cfg["Font"]);
@@ -30,22 +30,19 @@ namespace FileHatchery
             }
         }
 
-        public static TextBox Console
+        public static TextBox createConsole()
         {
-            get
-            {
-                AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
-                foreach (string str in Program.engine.getComponent<IAutoCompletion>().Commands) collection.Add(str);
+            AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
+            foreach (string str in Program.engine.getComponent<IAutoCompletion>().Commands) collection.Add(str);
 
-                TextBox console = new TextBox();
-                console.AutoCompleteMode = AutoCompleteMode.Suggest;
-                console.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                console.AutoCompleteCustomSource = collection;
-                console.Width = 200;
-                console.AcceptsTab = true;
-                console.KeyDown += new KeyEventHandler(console_KeyDown);
-                return console;
-            }
+            TextBox console = new TextBox();
+            console.AutoCompleteMode = AutoCompleteMode.Suggest;
+            console.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            console.AutoCompleteCustomSource = collection;
+            console.Width = 200;
+            console.AcceptsTab = true;
+            console.KeyDown += new KeyEventHandler(console_KeyDown);
+            return console;
         }
 
         static void console_KeyDown(object sender, KeyEventArgs e)

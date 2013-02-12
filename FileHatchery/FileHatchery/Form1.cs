@@ -110,7 +110,7 @@ namespace FileHatchery
             Program.engine.setComponent(typeof(IIconProducer), new IconQueue());
             IconGetter.RunWorkerAsync();
 
-            console = ConfigSelector.Console;
+            console = ConfigSelector.createConsole();
             console.Hide();
 
             Font font = ConfigSelector.Font;
