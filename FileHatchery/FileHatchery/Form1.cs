@@ -300,6 +300,10 @@ namespace FileHatchery
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if (console.Visible)
+            {
+                return;
+            }
             ((IKeyHandler)browser).handleChar(e.KeyChar);
         }
     }
